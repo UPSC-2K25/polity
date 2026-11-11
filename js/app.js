@@ -1,1246 +1,1290 @@
 
 "use strict";
 
-/*
-  INDIAN POLITY REFERENCE SYSTEM
-  Application controller
+/* =========================================================
+   INDIAN POLITY REFERENCE SYSTEM
+   Corrected application controller
+   Compatible with the current index.html and JSON files
+========================================================= */
 
-  Loads:
-    data/institutions.json
-    data/hierarchy.json
-    data/posts.json
-    data/relationships.json
-    data/committees.json
-    data/procedures.json
-    data/constitutional-provisions.json
+const PAGE_SIZE_DEFAULT = 15;
 
-  The application reads content from JSON.
-  It does not contain hardcoded polity records.
-*/
+const DATA_PATH = new URL("../data/", import.meta.url);
 
-const DATA_FILES = {
-  institutions: "data/institutions.json",
-  hierarchy: "data/hierarchy.json",
-  posts: "data/posts.json",
-  relationships: "data/relationships.json",
-  committees: "data/committees.json",
-  procedures: "data/procedures.json",
-  provisions: "data/constitutional-provisions.json"
+const FILES = {
+    institutions: "institutions.json",
+    hierarchy: "hierarchy.json",
+    posts: "posts.json",
+    relationships: "relationships.json",
+    committees: "committees.json",
+    procedures: "procedures.json",
+    provisions: "constitutional-provisions.json"
 };
-
-const PAGE_SIZE = 10;
 
 const state = {
-  data: {},
-  records: [],
-  filteredRecords: [],
-  currentPage: 1,
-  pageSize: PAGE_SIZE,
-  currentView: "list",
-  activeRecord: null,
-  activeTab: "overview",
-  selectedCategory: "all",
-  selectedInstitution: "all",
-  searchTerm: "",
-  sortOrder: "alphabetical"
+    data: {},
+    records: [],
+    filtered: [],
+    currentPage: 1,
+    pageSize: PAGE_SIZE_DEFAULT,
+    currentView: "hierarchy",
+    currentSection: "overview",
+    activeRecord: null,
+    activeTab: "overview"
 };
 
-/* -------------------------------------------------------
+/* =========================================================
    DOM HELPERS
-------------------------------------------------------- */
+========================================================= */
 
-const $ = (...selectors) => {
-  for (const selector of selectors) {
-    const element = document.querySelector(selector);
-    if (element) return element;
-  }
-  return null;
-};
+const $ = selector => document.querySelector(selector);
 
-const $$ = (selector) => [...document.querySelectorAll(selector)];
+const $$ = selector => [...document.querySelectorAll(selector)];
 
 function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[char]);
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
 }
 
-function formatText(value) {
-  if (Array.isArray(value)) {
-    return value.map(item => {
-      if (typeof item === "object") {
-        return item.name || item.title || JSON.stringify(item);
-      }
-      return item;
-    }).join(", ");
-  }
-
-  if (typeof value === "object" && value !== null) {
-    return JSON.stringify(value, null, 2);
-  }
-
-  return String(value ?? "");
+function asArray(value) {
+    return Array.isArray(value) ? value : [];
 }
 
-function toArray(value) {
-  return Array.isArray(value) ? value : [];
+function getName(record) {
+    return record?.name ||
+           record?.title ||
+           (record?.article ? `Article ${record.article}` : "") ||
+           record?.id ||
+           "Untitled";
 }
 
-function getById(collection, id) {
-  return collection.find(item => item.id === id);
+function getDescription(record) {
+    return record?.description ||
+           record?.summary ||
+           record?.purpose ||
+           record?.overview ||
+           "No description available.";
 }
 
-/* -------------------------------------------------------
+function getRecord(id) {
+    return state.records.find(record => record.id === id);
+}
+
+/* =========================================================
    DATA LOADING
-------------------------------------------------------- */
+========================================================= */
 
-async function loadJSON(path) {
-  const response = await fetch(path);
+async function loadJSON(filename) {
+    const url = new URL(filename, DATA_PATH);
 
-  if (!response.ok) {
-    throw new Error(`Unable to load ${path}: ${response.status}`);
-  }
+    let response;
 
-  return response.json();
+    try {
+        response = await fetch(url);
+    } catch (error) {
+        throw new Error(
+            `Network error while loading ${filename}. Check the file path and GitHub Pages deployment.`
+        );
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            `${filename} returned HTTP ${response.status}`
+        );
+    }
+
+    try {
+        return await response.json();
+    } catch (error) {
+        throw new Error(
+            `${filename} contains invalid JSON. Check its syntax.`
+        );
+    }
 }
 
 async function loadAllData() {
-  const entries = Object.entries(DATA_FILES);
+    showMessage("Loading legislative reference data...");
 
-  const results = await Promise.all(
-    entries.map(async ([key, path]) => {
-      const json = await loadJSON(path);
-      return [key, json];
-    })
-  );
+    const entries = Object.entries(FILES);
 
-  state.data = Object.fromEntries(results);
+    const loaded = await Promise.all(
+        entries.map(async ([key, filename]) => {
+            const json = await loadJSON(filename);
+            return [key, json];
+        })
+    );
 
-  buildRecordIndex();
-  populateFilters();
-  applyFilters();
-  renderHierarchy();
+    state.data = Object.fromEntries(loaded);
+
+    validateData();
+
+    buildRecordIndex();
+    populateInstitutionFilter();
+
+    state.currentSection = "overview";
+    state.currentView = "hierarchy";
+
+    updateNavigation();
+    updateViewButtons();
+
+    applyFilters();
 }
 
-function showLoading(message) {
-  const container = $("#resultsContainer, #recordsContainer, #contentArea");
+function validateData() {
+    const requiredArrays = {
+        institutions: "institutions",
+        posts: "posts",
+        committees: "committees",
+        procedures: "procedures",
+        provisions: "provisions",
+        relationships: "relationships",
+        hierarchy: "sections"
+    };
 
-  if (container) {
-    container.innerHTML = `
-      <div class="empty-state">
-        ${escapeHTML(message)}
-      </div>
-    `;
-  }
+    for (const [file, property] of Object.entries(requiredArrays)) {
+        if (!Array.isArray(state.data[file]?.[property])) {
+            throw new Error(
+                `${FILES[file]} is missing a valid "${property}" array.`
+            );
+        }
+    }
 }
 
-function showError(error) {
-  console.error(error);
-
-  showLoading(
-    "The reference data could not be loaded. Check that the project is running through a local web server and that all JSON file paths are correct."
-  );
-}
-
-/* -------------------------------------------------------
-   BUILD SEARCHABLE RECORD INDEX
-------------------------------------------------------- */
+/* =========================================================
+   BUILD THE COMMON SEARCH INDEX
+========================================================= */
 
 function buildRecordIndex() {
-  const {
-    institutions,
-    posts,
-    committees,
-    procedures,
-    provisions
-  } = state.data;
+    const records = [];
 
-  const records = [];
+    const addRecords = (items, type, categoryFunction) => {
+        asArray(items).forEach(item => {
+            records.push({
+                ...item,
+                record_type: type,
+                category: categoryFunction(item)
+            });
+        });
+    };
 
-  toArray(institutions.institutions).forEach(item => {
-    records.push({
-      ...item,
-      record_type: "institution",
-      category: item.type || "institution"
-    });
-  });
+    addRecords(
+        state.data.institutions.institutions,
+        "institution",
+        item => item.type || "institution"
+    );
 
-  toArray(posts.posts).forEach(item => {
-    records.push({
-      ...item,
-      record_type: "post",
-      category: item.category || "post"
-    });
-  });
+    addRecords(
+        state.data.posts.posts,
+        "post",
+        item => item.category || "post"
+    );
 
-  toArray(committees.committees).forEach(item => {
-    records.push({
-      ...item,
-      record_type: "committee",
-      category: "committee"
-    });
-  });
+    addRecords(
+        state.data.committees.committees,
+        "committee",
+        () => "committee"
+    );
 
-  toArray(procedures.procedures).forEach(item => {
-    records.push({
-      ...item,
-      record_type: "procedure",
-      category: item.category || "procedure"
-    });
-  });
+    addRecords(
+        state.data.procedures.procedures,
+        "procedure",
+        item => item.category || "procedure"
+    );
 
-  toArray(provisions.provisions).forEach(item => {
-    records.push({
-      ...item,
-      record_type: "provision",
-      category: "constitutional_provision"
-    });
-  });
+    addRecords(
+        state.data.provisions.provisions,
+        "provision",
+        () => "constitutional_provision"
+    );
 
-  state.records = records;
+    state.records = records;
 }
 
-/* -------------------------------------------------------
+/* =========================================================
    SEARCH
-------------------------------------------------------- */
+========================================================= */
 
 function searchableText(record) {
-  const values = [
-    record.id,
-    record.name,
-    record.short_name,
-    record.title,
-    record.description,
-    record.summary,
-    record.article,
-    record.category,
-    record.level,
-    record.type,
-    record.position_type,
-    record.institution_id,
-    record.keywords,
-    record.powers_and_functions,
-    record.purpose,
-    record.purposes,
-    record.functions,
-    record.key_points,
-    record.legal_basis,
-    record.constitutional_basis,
-    record.references,
-    record.related_entities,
-    record.relationships,
-    record.stages,
-    record.steps,
-    record.types
-  ];
-
-  return JSON.stringify(values).toLowerCase();
+    return JSON.stringify(record)
+        .toLowerCase()
+        .replace(/[_-]/g, " ");
 }
 
 function matchesSearch(record, term) {
-  if (!term) return true;
+    if (!term) return true;
 
-  const words = term
-    .toLowerCase()
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-
-  const content = searchableText(record);
-
-  return words.every(word => content.includes(word));
-}
-
-/* -------------------------------------------------------
-   FILTERS
-------------------------------------------------------- */
-
-function populateFilters() {
-  populateCategoryFilter();
-  populateInstitutionFilter();
-}
-
-function populateCategoryFilter() {
-  const select = $(
-    "#categoryFilter",
-    "#filterCategory",
-    "[name='categoryFilter']"
-  );
-
-  if (!select) return;
-
-  const currentValue = select.value || "all";
-
-  const categories = [
-    ...new Set(state.records.map(record => record.category).filter(Boolean))
-  ].sort();
-
-  select.innerHTML = `
-    <option value="all">All categories</option>
-    ${categories.map(category => `
-      <option value="${escapeHTML(category)}">
-        ${escapeHTML(category.replaceAll("_", " "))}
-      </option>
-    `).join("")}
-  `;
-
-  select.value = categories.includes(currentValue)
-    ? currentValue
-    : "all";
-}
-
-function populateInstitutionFilter() {
-  const select = $(
-    "#institutionFilter",
-    "#filterInstitution",
-    "[name='institutionFilter']"
-  );
-
-  if (!select) return;
-
-  const currentValue = select.value || "all";
-
-  const institutions = toArray(
-    state.data.institutions.institutions
-  );
-
-  select.innerHTML = `
-    <option value="all">All institutions</option>
-    ${institutions.map(item => `
-      <option value="${escapeHTML(item.id)}">
-        ${escapeHTML(item.name)}
-      </option>
-    `).join("")}
-  `;
-
-  select.value = institutions.some(item => item.id === currentValue)
-    ? currentValue
-    : "all";
+    return searchableText(record).includes(
+        term.toLowerCase()
+    );
 }
 
 function matchesInstitution(record, institutionId) {
-  if (institutionId === "all") return true;
+    if (institutionId === "all") return true;
 
-  const related = [
-    record.institution_id,
-    record.parent_id,
-    ...toArray(record.related_entities),
-    ...toArray(record.relationships).flatMap(item =>
-      typeof item === "object"
-        ? [item.entity_id, item.target_id, item.source_id]
-        : [item]
-    )
-  ].filter(Boolean);
+    const relatedIds = [
+        record.institution_id,
+        record.parent_id,
+        record.jurisdiction,
+        record.level,
+        ...asArray(record.related_entities),
+        ...asArray(record.linked_entities)
+    ].filter(Boolean).map(String);
 
-  return related.includes(institutionId);
+    if (relatedIds.includes(institutionId)) return true;
+
+    // Match institution relationships from the relationship file.
+    const relations = asArray(
+        state.data.relationships.relationships
+    );
+
+    return relations.some(relation => {
+        const source = relation.source || {};
+        const target = relation.target || {};
+
+        return (
+            (source.id === record.id &&
+             target.id === institutionId) ||
+            (target.id === record.id &&
+             source.id === institutionId)
+        );
+    });
 }
+
+/* =========================================================
+   FILTERS AND SORTING
+========================================================= */
 
 function applyFilters() {
-  const searchInput = $(
-    "#globalSearch",
-    "#searchInput",
-    "[name='search']"
-  );
+    const search = $("#global-search")?.value.trim() || "";
+    const category = $("#category-filter")?.value || "all";
+    const institution = $("#institution-filter")?.value || "all";
+    const sort = $("#sort-filter")?.value || "default";
 
-  const categorySelect = $(
-    "#categoryFilter",
-    "#filterCategory",
-    "[name='categoryFilter']"
-  );
+    let results = state.records.filter(record => {
+        const searchMatch = matchesSearch(record, search);
 
-  const institutionSelect = $(
-    "#institutionFilter",
-    "#filterInstitution",
-    "[name='institutionFilter']"
-  );
+        const categoryMatch =
+            category === "all" ||
+            record.category === category;
 
-  const sortSelect = $(
-    "#sortSelect",
-    "#sortOrder",
-    "[name='sort']"
-  );
+        const institutionMatch =
+            matchesInstitution(record, institution);
 
-  state.searchTerm = searchInput?.value.trim() || "";
-  state.selectedCategory = categorySelect?.value || "all";
-  state.selectedInstitution = institutionSelect?.value || "all";
-  state.sortOrder = sortSelect?.value || "alphabetical";
-
-  let results = state.records.filter(record => {
-    const searchMatch = matchesSearch(record, state.searchTerm);
-
-    const categoryMatch =
-      state.selectedCategory === "all" ||
-      record.category === state.selectedCategory;
-
-    const institutionMatch = matchesInstitution(
-      record,
-      state.selectedInstitution
-    );
-
-    return searchMatch && categoryMatch && institutionMatch;
-  });
-
-  results = sortRecords(results);
-
-  state.filteredRecords = results;
-  state.currentPage = 1;
-
-  renderResults();
-  renderPagination();
-  updateResultCount();
-}
-
-function sortRecords(records) {
-  const sorted = [...records];
-
-  switch (state.sortOrder) {
-    case "newest":
-      return sorted.reverse();
-
-    case "type":
-      return sorted.sort((a, b) =>
-        String(a.record_type).localeCompare(String(b.record_type))
-      );
-
-    case "alphabetical":
-    default:
-      return sorted.sort((a, b) =>
-        getRecordName(a).localeCompare(getRecordName(b))
-      );
-  }
-}
-
-/* -------------------------------------------------------
-   RECORD DISPLAY
-------------------------------------------------------- */
-
-function getRecordName(record) {
-  return record.name || record.title || record.short_name || record.id;
-}
-
-function getRecordDescription(record) {
-  return record.description || record.summary || "";
-}
-
-function getRecordTypeLabel(record) {
-  const labels = {
-    institution: "Institution",
-    post: "Constitutional / Legislative Post",
-    committee: "Committee",
-    procedure: "Procedure",
-    provision: "Constitutional Provision"
-  };
-
-  return labels[record.record_type] || "Reference";
-}
-
-function renderResults() {
-  const container = $(
-    "#resultsContainer",
-    "#recordsContainer",
-    "#contentArea"
-  );
-
-  if (!container) return;
-
-  if (state.currentView === "hierarchy") {
-    renderHierarchy();
-    return;
-  }
-
-  const start = (state.currentPage - 1) * state.pageSize;
-
-  const pageRecords = state.filteredRecords.slice(
-    start,
-    start + state.pageSize
-  );
-
-  if (pageRecords.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        No matching records found.
-        <p>Try a different keyword or remove one of the filters.</p>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = `
-    <div class="record-list">
-      ${pageRecords.map(record => `
-        <article
-          class="record-card"
-          data-record-id="${escapeHTML(record.id)}"
-          tabindex="0"
-          role="button"
-          aria-label="Open ${escapeHTML(getRecordName(record))}"
-        >
-          <div class="record-card-main">
-            <div class="record-card-heading">
-              <h3>${escapeHTML(getRecordName(record))}</h3>
-              <span class="record-type">
-                ${escapeHTML(getRecordTypeLabel(record))}
-              </span>
-            </div>
-
-            <p>${escapeHTML(getRecordDescription(record))}</p>
-
-            <div class="record-meta">
-              ${record.level
-                ? `<span>${escapeHTML(record.level)}</span>`
-                : ""}
-              ${record.article
-                ? `<span>Article ${escapeHTML(record.article)}</span>`
-                : ""}
-              ${record.short_name
-                ? `<span>${escapeHTML(record.short_name)}</span>`
-                : ""}
-            </div>
-          </div>
-          <span class="record-open">View details →</span>
-        </article>
-      `).join("")}
-    </div>
-  `;
-
-  container.querySelectorAll("[data-record-id]").forEach(card => {
-    const open = () => openRecord(card.dataset.recordId);
-
-    card.addEventListener("click", open);
-
-    card.addEventListener("keydown", event => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        open();
-      }
+        return searchMatch && categoryMatch && institutionMatch;
     });
-  });
-}
 
-function updateResultCount() {
-  const count = $(
-    "#resultCount",
-    "#resultsCount",
-    "[data-result-count]"
-  );
-
-  if (count) {
-    count.textContent =
-      `${state.filteredRecords.length} records found`;
-  }
-}
-
-/* -------------------------------------------------------
-   PAGINATION
-------------------------------------------------------- */
-
-function renderPagination() {
-  const container = $(
-    "#pagination",
-    "#paginationContainer"
-  );
-
-  if (!container) return;
-
-  const totalPages = Math.ceil(
-    state.filteredRecords.length / state.pageSize
-  );
-
-  if (totalPages <= 1) {
-    container.innerHTML = "";
-    return;
-  }
-
-  const current = state.currentPage;
-
-  let buttons = "";
-
-  for (let page = 1; page <= totalPages; page++) {
-    if (
-      page === 1 ||
-      page === totalPages ||
-      Math.abs(page - current) <= 2
-    ) {
-      buttons += `
-        <button
-          type="button"
-          class="page-button ${page === current ? "active" : ""}"
-          data-page="${page}"
-          aria-current="${page === current ? "page" : "false"}"
-        >
-          ${page}
-        </button>
-      `;
-    } else if (
-      Math.abs(page - current) === 3
-    ) {
-      buttons += `<span class="page-ellipsis">…</span>`;
+    if (sort === "alphabetical") {
+        results.sort((a, b) =>
+            getName(a).localeCompare(getName(b))
+        );
     }
-  }
 
-  container.innerHTML = `
-    <button
-      type="button"
-      class="page-button"
-      data-page="${current - 1}"
-      ${current === 1 ? "disabled" : ""}
-    >
-      Previous
-    </button>
+    if (sort === "category") {
+        results.sort((a, b) =>
+            String(a.category).localeCompare(String(b.category)) ||
+            getName(a).localeCompare(getName(b))
+        );
+    }
 
-    ${buttons}
+    state.filtered = results;
+    state.currentPage = 1;
 
-    <button
-      type="button"
-      class="page-button"
-      data-page="${current + 1}"
-      ${current === totalPages ? "disabled" : ""}
-    >
-      Next
-    </button>
-  `;
+    updateResultSummary();
 
-  container.querySelectorAll("[data-page]").forEach(button => {
-    button.addEventListener("click", () => {
-      const page = Number(button.dataset.page);
+    if (search || category !== "all" || institution !== "all") {
+        state.currentView = "list";
+        updateViewButtons();
+    }
 
-      if (page < 1 || page > totalPages) return;
-
-      state.currentPage = page;
-
-      renderResults();
-      renderPagination();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-  });
+    renderCurrentView();
 }
 
-/* -------------------------------------------------------
-   HIERARCHY VIEW
-------------------------------------------------------- */
+function populateInstitutionFilter() {
+    const select = $("#institution-filter");
+    if (!select) return;
 
-function renderHierarchy() {
-  const container = $(
-    "#resultsContainer",
-    "#recordsContainer",
-    "#contentArea"
-  );
+    const currentValue = select.value;
 
-  if (!container) return;
+    const institutions = asArray(
+        state.data.institutions.institutions
+    );
 
-  const hierarchy = state.data.hierarchy;
-  const sections = toArray(hierarchy.sections);
-
-  if (!sections.length) {
-    container.innerHTML = `
-      <div class="empty-state">
-        Hierarchy data is not available.
-      </div>
-    `;
-    return;
-  }
-
-  const html = sections.map(section => {
-    const groups = toArray(section.groups);
-
-    return `
-      <section class="hierarchy-section">
-        <h2>${escapeHTML(section.name || section.title || section.id)}</h2>
-
-        ${section.description
-          ? `<p>${escapeHTML(section.description)}</p>`
-          : ""}
-
-        ${groups.map(group => `
-          <div class="hierarchy-group">
-            <h3>${escapeHTML(group.name || group.title || "")}</h3>
-
-            <div class="hierarchy-items">
-              ${toArray(group.items).map(item => {
-                const record = findHierarchyRecord(item);
-
-                if (!record) return "";
-
-                return `
-                  <button
-                    type="button"
-                    class="hierarchy-item"
-                    data-record-id="${escapeHTML(record.id)}"
-                  >
-                    <span>${escapeHTML(getRecordName(record))}</span>
-                    <span>View →</span>
-                  </button>
-                `;
-              }).join("")}
-            </div>
-          </div>
+    select.innerHTML = `
+        <option value="all">All Institutions</option>
+        ${institutions.map(item => `
+            <option value="${escapeHTML(item.id)}">
+                ${escapeHTML(item.name)}
+            </option>
         `).join("")}
-      </section>
-    `;
-  }).join("");
-
-  container.innerHTML = html;
-
-  container.querySelectorAll("[data-record-id]").forEach(button => {
-    button.addEventListener("click", () => {
-      openRecord(button.dataset.recordId);
-    });
-  });
-}
-
-function findHierarchyRecord(item) {
-  const type = item.type;
-  const id = item.id || item.ref || item.target_id;
-
-  if (!id) return null;
-
-  if (type === "institution") {
-    return getById(
-      state.data.institutions.institutions,
-      id
-    );
-  }
-
-  if (type === "post") {
-    return getById(state.data.posts.posts, id);
-  }
-
-  if (type === "collection") {
-    return getCollectionRecord(id);
-  }
-
-  return state.records.find(record => record.id === id) || null;
-}
-
-function getCollectionRecord(collectionId) {
-  const sources = [
-    state.data.committees,
-    state.data.procedures
-  ];
-
-  for (const source of sources) {
-    const collection = toArray(source.collections).find(
-      item => item.id === collectionId
-    );
-
-    if (!collection) continue;
-
-    const ids = collection.committee_ids ||
-      collection.procedure_ids ||
-      [];
-
-    return {
-      id: collection.id,
-      name: collection.name,
-      description: collection.description,
-      record_type: "collection",
-      category: "collection",
-      collection_items: ids.map(id =>
-        state.records.find(record => record.id === id)
-      ).filter(Boolean)
-    };
-  }
-
-  return null;
-}
-
-/* -------------------------------------------------------
-   DETAIL MODAL
-------------------------------------------------------- */
-
-function openRecord(recordId) {
-  const record = state.records.find(item => item.id === recordId);
-
-  if (!record) {
-    console.warn(`Record not found: ${recordId}`);
-    return;
-  }
-
-  state.activeRecord = record;
-  state.activeTab = "overview";
-
-  renderModal();
-
-  const modal = $(
-    "#detailModal",
-    "#recordModal",
-    "[data-detail-modal]"
-  );
-
-  if (!modal) return;
-
-  if (typeof modal.showModal === "function") {
-    modal.showModal();
-  } else {
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-  }
-}
-
-function closeModal() {
-  const modal = $(
-    "#detailModal",
-    "#recordModal",
-    "[data-detail-modal]"
-  );
-
-  if (!modal) return;
-
-  if (typeof modal.close === "function" && modal.open) {
-    modal.close();
-  } else {
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-  }
-
-  state.activeRecord = null;
-}
-
-function renderModal() {
-  const record = state.activeRecord;
-
-  if (!record) return;
-
-  const title = $(
-    "#modalTitle",
-    "#detailModalTitle"
-  );
-
-  const body = $(
-    "#modalBody",
-    "#detailModalBody"
-  );
-
-  const tabs = $(
-    "#modalTabs",
-    "#detailModalTabs"
-  );
-
-  if (title) {
-    title.textContent = getRecordName(record);
-  }
-
-  if (tabs) {
-    tabs.innerHTML = `
-      <button data-tab="overview" class="modal-tab active">
-        Overview
-      </button>
-      <button data-tab="powers" class="modal-tab">
-        Powers & Functions
-      </button>
-      <button data-tab="legal" class="modal-tab">
-        Legal Basis
-      </button>
-      <button data-tab="relationships" class="modal-tab">
-        Relationships
-      </button>
-      <button data-tab="references" class="modal-tab">
-        References
-      </button>
     `;
 
-    tabs.querySelectorAll("[data-tab]").forEach(button => {
-      button.addEventListener("click", () => {
-        state.activeTab = button.dataset.tab;
+    select.value = institutions.some(
+        item => item.id === currentValue
+    ) ? currentValue : "all";
+}
 
-        tabs.querySelectorAll("[data-tab]").forEach(tab => {
-          tab.classList.toggle(
+function updateResultSummary() {
+    const summary = $("#results-summary");
+    if (!summary) return;
+
+    summary.textContent =
+        `${state.filtered.length} records found`;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function updateNavigation() {
+    $$("[data-section]").forEach(button => {
+        button.classList.toggle(
             "active",
-            tab.dataset.tab === state.activeTab
-          );
-        });
-
-        renderModalBody();
-      });
+            button.dataset.section === state.currentSection
+        );
     });
-  }
-
-  renderModalBody();
-}
-
-function renderModalBody() {
-  const body = $(
-    "#modalBody",
-    "#detailModalBody"
-  );
-
-  if (!body || !state.activeRecord) return;
-
-  const record = state.activeRecord;
-
-  const renderers = {
-    overview: renderOverviewTab,
-    powers: renderPowersTab,
-    legal: renderLegalTab,
-    relationships: renderRelationshipsTab,
-    references: renderReferencesTab
-  };
-
-  const renderer = renderers[state.activeTab] || renderOverviewTab;
-
-  body.innerHTML = renderer(record);
-}
-
-/* -------------------------------------------------------
-   MODAL TAB CONTENT
-------------------------------------------------------- */
-
-function renderOverviewTab(record) {
-  const fields = [
-    ["Description", record.description],
-    ["Summary", record.summary],
-    ["Purpose", record.purpose],
-    ["Level", record.level],
-    ["Category", record.category],
-    ["Position type", record.position_type],
-    ["Institution", getInstitutionName(record.institution_id)],
-    ["Article", record.article ? `Article ${record.article}` : null],
-    ["Qualifications", record.qualifications],
-    ["Appointment / Selection", record.appointment_or_selection],
-    ["Tenure and Removal", record.tenure_and_removal]
-  ];
-
-  return `
-    <div class="modal-section">
-      ${fields.map(([label, value]) => renderField(label, value)).join("")}
-
-      ${renderArraySection("Key Points", record.key_points)}
-      ${renderArraySection("Steps", record.steps)}
-      ${renderArraySection("Stages", record.stages)}
-      ${renderArraySection("Types", record.types)}
-    </div>
-  `;
-}
-
-function renderPowersTab(record) {
-  return `
-    <div class="modal-section">
-      ${renderField("Powers and Functions", record.powers_and_functions)}
-      ${renderArraySection("Functions", record.functions)}
-      ${renderArraySection("Purpose", record.purposes)}
-      ${renderArraySection("Limitations", record.limitations)}
-      ${renderArraySection("Effects", record.effects)}
-      ${renderArraySection("Key Rules", record.key_rules)}
-    </div>
-  `;
-}
-
-function renderLegalTab(record) {
-  return `
-    <div class="modal-section">
-      ${renderField("Legal Basis", record.legal_basis)}
-      ${renderField("Constitutional Basis", record.constitutional_basis)}
-      ${renderField("Scope", record.scope)}
-      ${renderArraySection("Applicable Rules", record.legal_basis)}
-    </div>
-  `;
-}
-
-function renderRelationshipsTab(record) {
-  const related = [
-    ...toArray(record.related_entities),
-    ...toArray(record.children),
-    ...toArray(record.relationships)
-  ];
-
-  const unique = [...new Set(
-    related.map(item => {
-      if (typeof item === "string") return item;
-
-      return item.entity_id ||
-        item.target_id ||
-        item.source_id ||
-        item.id ||
-        item.name;
-    }).filter(Boolean)
-  )];
-
-  return `
-    <div class="modal-section">
-      ${renderField("Parent", record.parent_id)}
-      ${renderField("Institution", record.institution_id)}
-      ${renderField("Supports", record.supports)}
-
-      <h3>Related Records</h3>
-
-      ${unique.length
-        ? `<ul class="related-record-list">
-            ${unique.map(id => {
-              const relatedRecord = state.records.find(item =>
-                item.id === id
-              );
-
-              return `
-                <li>
-                  ${relatedRecord
-                    ? `<button
-                        type="button"
-                        class="related-record-link"
-                        data-related-id="${escapeHTML(id)}"
-                      >
-                        ${escapeHTML(getRecordName(relatedRecord))}
-                      </button>`
-                    : escapeHTML(id)}
-                </li>
-              `;
-            }).join("")}
-          </ul>`
-        : `<p>No linked records are listed.</p>`
-      }
-    </div>
-  `;
-}
-
-function renderReferencesTab(record) {
-  return `
-    <div class="modal-section">
-      ${renderArraySection("References", record.references)}
-      ${renderArraySection("Sources", record.sources)}
-      ${renderArraySection("Data Quality Notes", record.data_quality)}
-      ${renderField("Last Reviewed", record.last_reviewed)}
-    </div>
-  `;
-}
-
-function renderField(label, value) {
-  if (
-    value === undefined ||
-    value === null ||
-    value === "" ||
-    (Array.isArray(value) && value.length === 0)
-  ) {
-    return "";
-  }
-
-  return `
-    <div class="detail-field">
-      <h3>${escapeHTML(label)}</h3>
-      <div>${escapeHTML(formatText(value))}</div>
-    </div>
-  `;
-}
-
-function renderArraySection(title, values) {
-  if (!values || (Array.isArray(values) && values.length === 0)) {
-    return "";
-  }
-
-  const items = Array.isArray(values) ? values : [values];
-
-  return `
-    <section class="detail-section">
-      <h3>${escapeHTML(title)}</h3>
-      <ul>
-        ${items.map(item => {
-          if (typeof item === "object" && item !== null) {
-            const heading = item.name || item.title || item.article || "";
-            const description = item.description || item.summary || "";
-
-            return `
-              <li>
-                ${heading
-                  ? `<strong>${escapeHTML(heading)}</strong>`
-                  : ""}
-                ${description
-                  ? `<p>${escapeHTML(description)}</p>`
-                  : ""}
-                ${!heading && !description
-                  ? escapeHTML(formatText(item))
-                  : ""}
-              </li>
-            `;
-          }
-
-          return `<li>${escapeHTML(item)}</li>`;
-        }).join("")}
-      </ul>
-    </section>
-  `;
-}
-
-function getInstitutionName(institutionId) {
-  if (!institutionId) return "";
-
-  const institution = getById(
-    state.data.institutions.institutions,
-    institutionId
-  );
-
-  return institution?.name || institutionId;
-}
-
-/* -------------------------------------------------------
-   EVENT BINDINGS
-------------------------------------------------------- */
-
-function bindSearch() {
-  const searchInput = $(
-    "#globalSearch",
-    "#searchInput",
-    "[name='search']"
-  );
-
-  if (!searchInput) return;
-
-  let searchDelay;
-
-  searchInput.addEventListener("input", () => {
-    clearTimeout(searchDelay);
-
-    searchDelay = setTimeout(() => {
-      applyFilters();
-    }, 180);
-  });
-}
-
-function bindFilters() {
-  const controls = [
-    "#categoryFilter",
-    "#filterCategory",
-    "#institutionFilter",
-    "#filterInstitution",
-    "#sortSelect",
-    "#sortOrder"
-  ];
-
-  controls.forEach(selector => {
-    const element = $(selector);
-
-    element?.addEventListener("change", applyFilters);
-  });
-}
-
-function bindViewControls() {
-  const listButton = $(
-    "#listViewButton",
-    "#listViewBtn",
-    "[data-view='list']"
-  );
-
-  const hierarchyButton = $(
-    "#hierarchyViewButton",
-    "#hierarchyViewBtn",
-    "[data-view='hierarchy']"
-  );
-
-  listButton?.addEventListener("click", () => {
-    state.currentView = "list";
-    updateViewButtons();
-    renderResults();
-  });
-
-  hierarchyButton?.addEventListener("click", () => {
-    state.currentView = "hierarchy";
-    updateViewButtons();
-    renderHierarchy();
-  });
 }
 
 function updateViewButtons() {
-  $$("[data-view]").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.view === state.currentView
-    );
-  });
+    $$("[data-view]").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.view === state.currentView
+        );
+    });
 }
 
-function bindModalControls() {
-  const closeButtons = $$(
-    "#closeModal, #modalClose, [data-close-modal]"
-  );
+function selectSection(sectionId) {
+    state.currentSection = sectionId;
 
-  closeButtons.forEach(button => {
-    button.addEventListener("click", closeModal);
-  });
+    const search = $("#global-search");
+    const category = $("#category-filter");
+    const institution = $("#institution-filter");
 
-  const modal = $(
-    "#detailModal",
-    "#recordModal",
-    "[data-detail-modal]"
-  );
-
-  modal?.addEventListener("click", event => {
-    if (event.target === modal) {
-      closeModal();
-    }
-  });
-
-  modal?.addEventListener("click", event => {
-    const relatedButton = event.target.closest("[data-related-id]");
-
-    if (relatedButton) {
-      openRecord(relatedButton.dataset.relatedId);
-    }
-  });
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && state.activeRecord) {
-      closeModal();
-    }
-  });
-}
-
-function bindResetButton() {
-  const resetButton = $(
-    "#resetFilters",
-    "#clearFilters",
-    "[data-reset-filters]"
-  );
-
-  resetButton?.addEventListener("click", () => {
-    const searchInput = $(
-      "#globalSearch",
-      "#searchInput",
-      "[name='search']"
-    );
-
-    const category = $(
-      "#categoryFilter",
-      "#filterCategory"
-    );
-
-    const institution = $(
-      "#institutionFilter",
-      "#filterInstitution"
-    );
-
-    const sort = $(
-      "#sortSelect",
-      "#sortOrder"
-    );
-
-    if (searchInput) searchInput.value = "";
+    if (search) search.value = "";
     if (category) category.value = "all";
     if (institution) institution.value = "all";
-    if (sort) sort.value = "alphabetical";
+
+    state.filtered = [...state.records];
+    state.currentPage = 1;
+    state.currentView = "hierarchy";
+
+    updateNavigation();
+    updateViewButtons();
+    updateResultSummary();
+    renderHierarchy();
+}
+
+/* =========================================================
+   MAIN RENDERER
+========================================================= */
+
+function renderCurrentView() {
+    if (state.currentView === "hierarchy") {
+        renderHierarchy();
+    } else {
+        renderList();
+    }
+}
+
+function showMessage(message, isError = false) {
+    const container = $("#content-area");
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="empty-state" ${isError ? 'style="color:#b42318"' : ""}>
+            ${escapeHTML(message)}
+        </div>
+    `;
+}
+
+/* =========================================================
+   LIST VIEW
+========================================================= */
+
+function renderList() {
+    const container = $("#content-area");
+    if (!container) return;
+
+    const start = (state.currentPage - 1) * state.pageSize;
+
+    const pageRecords = state.filtered.slice(
+        start,
+        start + state.pageSize
+    );
+
+    if (!pageRecords.length) {
+        container.innerHTML = `
+            <div class="empty-state">
+                No matching records found.
+            </div>
+        `;
+
+        renderPagination();
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="record-list">
+            ${pageRecords.map(record => `
+                <article
+                    class="record-card"
+                    data-record-id="${escapeHTML(record.id)}"
+                    tabindex="0"
+                    role="button"
+                    aria-label="View ${escapeHTML(getName(record))}"
+                >
+                    <div class="record-card-content">
+                        <div class="record-card-heading">
+                            <h3>${escapeHTML(getName(record))}</h3>
+
+                            <span class="record-type">
+                                ${escapeHTML(getTypeLabel(record))}
+                            </span>
+                        </div>
+
+                        <p>${escapeHTML(getDescription(record))}</p>
+
+                        <div class="record-meta">
+                            ${record.level ? `
+                                <span>${escapeHTML(record.level)}</span>
+                            ` : ""}
+
+                            ${record.article ? `
+                                <span>Article ${escapeHTML(record.article)}</span>
+                            ` : ""}
+
+                            ${record.short_name ? `
+                                <span>${escapeHTML(record.short_name)}</span>
+                            ` : ""}
+                        </div>
+                    </div>
+
+                    <span class="record-open">View details →</span>
+                </article>
+            `).join("")}
+        </div>
+    `;
+
+    renderPagination();
+}
+
+function getTypeLabel(record) {
+    const labels = {
+        institution: "Institution",
+        post: "Office / Position",
+        committee: "Committee",
+        procedure: "Procedure",
+        provision: "Constitutional Article"
+    };
+
+    return labels[record.record_type] || record.record_type;
+}
+
+/* =========================================================
+   HIERARCHY VIEW
+========================================================= */
+
+function renderHierarchy() {
+    const container = $("#content-area");
+    if (!container) return;
+
+    const sections = asArray(
+        state.data.hierarchy.sections
+    );
+
+    const section = sections.find(
+        item => item.id === state.currentSection
+    );
+
+    if (!section) {
+        showMessage("The selected section was not found.", true);
+        return;
+    }
+
+    const groups = asArray(section.groups)
+        .slice()
+        .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    const html = groups.map(group => {
+        const cards = asArray(group.items)
+            .map(item => resolveHierarchyItem(item))
+            .filter(Boolean);
+
+        if (!cards.length) return "";
+
+        return `
+            <section class="hierarchy-group">
+                <h2>${escapeHTML(group.title || "Group")}</h2>
+
+                ${group.description ? `
+                    <p>${escapeHTML(group.description)}</p>
+                ` : ""}
+
+                <div class="hierarchy-cards">
+                    ${cards.map(record => `
+                        <article
+                            class="record-card"
+                            data-record-id="${escapeHTML(record.id)}"
+                            tabindex="0"
+                            role="button"
+                        >
+                            <div class="record-card-content">
+                                <div class="record-card-heading">
+                                    <h3>${escapeHTML(getName(record))}</h3>
+
+                                    <span class="record-type">
+                                        ${escapeHTML(getTypeLabel(record))}
+                                    </span>
+                                </div>
+
+                                <p>${escapeHTML(getDescription(record))}</p>
+
+                                <div class="record-meta">
+                                    ${record.level ? `
+                                        <span>${escapeHTML(record.level)}</span>
+                                    ` : ""}
+                                    ${record.article ? `
+                                        <span>Article ${escapeHTML(record.article)}</span>
+                                    ` : ""}
+                                </div>
+                            </div>
+
+                            <span class="record-open">View details →</span>
+                        </article>
+                    `).join("")}
+                </div>
+            </section>
+        `;
+    }).join("");
+
+    container.innerHTML = html || `
+        <div class="empty-state">
+            No records are configured in this section.
+        </div>
+    `;
+
+    renderPagination();
+}
+
+function resolveHierarchyItem(item) {
+    if (!item || !item.type) return null;
+
+    if (item.type === "institution") {
+        return getRecord(item.institution_id);
+    }
+
+    if (item.type === "post") {
+        return getRecord(item.post_id);
+    }
+
+    if (item.type === "collection") {
+        return getCollectionRecord(item.collection_id);
+    }
+
+    return null;
+}
+
+/* =========================================================
+   COLLECTIONS
+========================================================= */
+
+function getCollectionRecord(collectionId) {
+    const sources = [
+        {
+            data: state.data.committees,
+            itemsKey: "committee_ids",
+            recordType: "committee"
+        },
+        {
+            data: state.data.procedures,
+            itemsKey: "procedure_ids",
+            recordType: "procedure"
+        }
+    ];
+
+    for (const source of sources) {
+        const collection = asArray(source.data.collections).find(
+            item => item.id === collectionId
+        );
+
+        if (collection) {
+            const ids = asArray(collection[source.itemsKey]);
+
+            return {
+                id: collection.id,
+                name: collection.title || collection.name,
+                title: collection.title || collection.name,
+                description: collection.description || "",
+                record_type: "collection",
+                category: "collection",
+                collection_items: ids
+                    .map(id => getRecord(id))
+                    .filter(Boolean)
+            };
+        }
+    }
+
+    // Constitutional provisions are grouped by Article number.
+    if (
+        collectionId === "union_legislative_articles" ||
+        collectionId === "state_legislative_articles"
+    ) {
+        const all = asArray(state.data.provisions.provisions);
+
+        const items = all.filter(item => {
+            const number = Number(item.article);
+
+            return collectionId === "union_legislative_articles"
+                ? number >= 75 && number <= 123
+                : (number >= 164 && number <= 213) || number === 368;
+        });
+
+        return {
+            id: collectionId,
+            name: collectionId === "union_legislative_articles"
+                ? "Union Legislative Articles"
+                : "State Legislative Articles",
+            description: "Relevant constitutional provisions.",
+            record_type: "collection",
+            category: "collection",
+            collection_items: items
+        };
+    }
+
+    return null;
+}
+
+/* =========================================================
+   RECORD CARD EVENTS
+========================================================= */
+
+document.addEventListener("click", event => {
+    const card = event.target.closest("[data-record-id]");
+    if (!card) return;
+
+    openRecord(card.dataset.recordId);
+});
+
+document.addEventListener("keydown", event => {
+    const card = event.target.closest("[data-record-id]");
+
+    if (
+        card &&
+        (event.key === "Enter" || event.key === " ")
+    ) {
+        event.preventDefault();
+        openRecord(card.dataset.recordId);
+    }
+});
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+function renderPagination() {
+    const numbers = $("#page-numbers");
+    const info = $("#pagination-info");
+
+    if (!numbers) return;
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(state.filtered.length / state.pageSize)
+    );
+
+    state.currentPage = Math.min(
+        state.currentPage,
+        totalPages
+    );
+
+    numbers.innerHTML = Array.from(
+        { length: totalPages },
+        (_, index) => index + 1
+    ).filter(page => (
+        page === 1 ||
+        page === totalPages ||
+        Math.abs(page - state.currentPage) <= 2
+    )).map(page => `
+        <button
+            type="button"
+            class="page-button ${page === state.currentPage ? "active" : ""}"
+            data-page="${page}"
+            aria-current="${page === state.currentPage ? "page" : "false"}"
+        >
+            ${page}
+        </button>
+    `).join("");
+
+    if (info) {
+        info.textContent =
+            `Page ${state.currentPage} of ${totalPages}`;
+    }
+
+    setButtonDisabled("#first-page", state.currentPage === 1);
+    setButtonDisabled("#previous-page", state.currentPage === 1);
+    setButtonDisabled("#next-page", state.currentPage === totalPages);
+    setButtonDisabled("#last-page", state.currentPage === totalPages);
+}
+
+function setButtonDisabled(selector, disabled) {
+    const button = $(selector);
+    if (button) button.disabled = disabled;
+}
+
+function goToPage(page) {
+    const totalPages = Math.max(
+        1,
+        Math.ceil(state.filtered.length / state.pageSize)
+    );
+
+    state.currentPage = Math.max(
+        1,
+        Math.min(page, totalPages)
+    );
+
+    renderCurrentView();
+}
+
+$("#page-numbers")?.addEventListener("click", event => {
+    const button = event.target.closest("[data-page]");
+    if (button) goToPage(Number(button.dataset.page));
+});
+
+$("#first-page")?.addEventListener("click", () => goToPage(1));
+
+$("#previous-page")?.addEventListener("click", () => {
+    goToPage(state.currentPage - 1);
+});
+
+$("#next-page")?.addEventListener("click", () => {
+    goToPage(state.currentPage + 1);
+});
+
+$("#last-page")?.addEventListener("click", () => {
+    const total = Math.ceil(
+        state.filtered.length / state.pageSize
+    );
+    goToPage(total);
+});
+
+$("#page-size")?.addEventListener("change", event => {
+    state.pageSize = Number(event.target.value) || PAGE_SIZE_DEFAULT;
+    state.currentPage = 1;
+    renderCurrentView();
+});
+
+/* =========================================================
+   DETAIL MODAL
+========================================================= */
+
+function openRecord(recordId) {
+    let record = getRecord(recordId);
+
+    if (!record) {
+        // Collections can also be opened from hierarchy.
+        record = getCollectionRecord(recordId);
+    }
+
+    if (!record) {
+        console.warn("Record not found:", recordId);
+        return;
+    }
+
+    state.activeRecord = record;
+    state.activeTab = "overview";
+
+    $("#modal-title").textContent = getName(record);
+
+    $("#modal-category").textContent =
+        getTypeLabel(record);
+
+    $("#modal-subtitle").textContent =
+        record.short_name || record.level || "";
+
+    $("#modal-record-id").textContent =
+        `Record ID: ${record.id}`;
+
+    updateModalTabs();
+    renderModalContent();
+
+    const modal = $("#details-modal");
+
+    if (modal && !modal.open) {
+        modal.showModal();
+    }
+}
+
+function closeModal() {
+    const modal = $("#details-modal");
+
+    if (modal?.open) {
+        modal.close();
+    }
+
+    state.activeRecord = null;
+}
+
+$("#modal-close")?.addEventListener("click", closeModal);
+
+$("#modal-footer-close")?.addEventListener("click", closeModal);
+
+$("#details-modal")?.addEventListener("click", event => {
+    if (event.target === $("#details-modal")) {
+        closeModal();
+    }
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        state.activeRecord = null;
+    }
+});
+
+/* =========================================================
+   MODAL TABS
+========================================================= */
+
+$$("[data-tab]").forEach(button => {
+    button.addEventListener("click", () => {
+        state.activeTab = button.dataset.tab;
+        updateModalTabs();
+        renderModalContent();
+    });
+});
+
+function updateModalTabs() {
+    $$("[data-tab]").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.tab === state.activeTab
+        );
+    });
+}
+
+function renderModalContent() {
+    const container = $("#modal-content");
+    const record = state.activeRecord;
+
+    if (!container || !record) return;
+
+    if (record.record_type === "collection") {
+        container.innerHTML = renderCollectionDetails(record);
+        return;
+    }
+
+    const renderers = {
+        overview: renderOverviewTab,
+        powers: renderPowersTab,
+        legal: renderLegalTab,
+        relationships: renderRelationshipsTab,
+        references: renderReferencesTab
+    };
+
+    const renderer = renderers[state.activeTab] || renderOverviewTab;
+
+    container.innerHTML = renderer(record);
+}
+
+/* =========================================================
+   MODAL CONTENT HELPERS
+========================================================= */
+
+function renderField(label, value) {
+    if (
+        value === undefined ||
+        value === null ||
+        value === "" ||
+        (Array.isArray(value) && value.length === 0)
+    ) {
+        return "";
+    }
+
+    return `
+        <div class="detail-field">
+            <h3>${escapeHTML(label)}</h3>
+            <div>${escapeHTML(formatValue(value))}</div>
+        </div>
+    `;
+}
+
+function formatValue(value) {
+    if (Array.isArray(value)) {
+        return value.map(item => {
+            if (typeof item === "object" && item !== null) {
+                return item.name || item.title ||
+                       item.description || JSON.stringify(item);
+            }
+            return String(item);
+        }).join("; ");
+    }
+
+    if (typeof value === "object" && value !== null) {
+        return Object.entries(value)
+            .map(([key, item]) =>
+                `${key.replace(/_/g, " ")}: ${formatValue(item)}`
+            ).join(" | ");
+    }
+
+    return String(value);
+}
+
+function renderArraySection(title, values) {
+    if (
+        values === undefined ||
+        values === null ||
+        (Array.isArray(values) && values.length === 0)
+    ) {
+        return "";
+    }
+
+    const items = Array.isArray(values) ? values : [values];
+
+    return `
+        <section class="detail-section">
+            <h3>${escapeHTML(title)}</h3>
+            <ul>
+                ${items.map(item => {
+                    if (typeof item === "object" && item !== null) {
+                        const heading =
+                            item.name || item.title ||
+                            item.article || "";
+
+                        const description =
+                            item.description || item.summary || "";
+
+                        return `
+                            <li>
+                                ${heading ? `<strong>${escapeHTML(heading)}</strong>` : ""}
+                                ${description ? `<p>${escapeHTML(description)}</p>` : ""}
+                                ${!heading && !description ? escapeHTML(formatValue(item)) : ""}
+                            </li>
+                        `;
+                    }
+
+                    return `<li>${escapeHTML(item)}</li>`;
+                }).join("")}
+            </ul>
+        </section>
+    `;
+}
+
+/* =========================================================
+   OVERVIEW TAB
+========================================================= */
+
+function renderOverviewTab(record) {
+    return `
+        <div class="modal-section">
+            ${renderField("Description", record.description)}
+            ${renderField("Summary", record.summary)}
+            ${renderField("Purpose", record.purpose)}
+            ${renderField("Category", record.category)}
+            ${renderField("Type", record.type)}
+            ${renderField("Level", record.level)}
+            ${renderField("Institution", getInstitutionName(record.institution_id))}
+            ${renderField("Jurisdiction", record.jurisdiction)}
+            ${renderField("Position type", record.position_type)}
+            ${renderField("Appointment / Selection", record.appointment_or_selection)}
+            ${renderField("Qualifications", record.qualifications)}
+            ${renderField("Tenure and Removal", record.tenure_and_removal)}
+            ${renderArraySection("Key Points", record.key_points)}
+            ${renderArraySection("Stages", record.stages)}
+            ${renderArraySection("Steps", record.steps)}
+            ${renderArraySection("Composition", record.composition)}
+        </div>
+    `;
+}
+
+/* =========================================================
+   POWERS AND FUNCTIONS TAB
+========================================================= */
+
+function renderPowersTab(record) {
+    return `
+        <div class="modal-section">
+            ${renderField("Powers and Functions", record.powers_and_functions)}
+            ${renderArraySection("Functions", record.functions)}
+            ${renderArraySection("Purpose", record.purposes)}
+            ${renderArraySection("Duties", record.duties)}
+            ${renderArraySection("Limitations", record.limitations)}
+            ${renderArraySection("Effects", record.effects)}
+            ${renderArraySection("Key Rules", record.key_rules)}
+        </div>
+    `;
+}
+
+/* =========================================================
+   LEGAL BASIS TAB
+========================================================= */
+
+function renderLegalTab(record) {
+    return `
+        <div class="modal-section">
+            ${renderField("Legal Basis", record.legal_basis)}
+            ${renderField("Constitutional Basis", record.constitutional_basis)}
+            ${renderField("Scope", record.scope)}
+            ${renderField("Legal Authority", record.legal_authority)}
+            ${renderArraySection("Applicable Rules", record.applicable_rules)}
+            ${renderArraySection("Key Constitutional Points", record.key_points)}
+        </div>
+    `;
+}
+
+/* =========================================================
+   RELATIONSHIPS TAB
+========================================================= */
+
+function renderRelationshipsTab(record) {
+    const related = [
+        ...asArray(record.children),
+        ...asArray(record.related_entities),
+        ...asArray(record.linked_entities),
+        ...asArray(record.relationships)
+    ];
+
+    const ids = [...new Set(
+        related.map(item => {
+            if (typeof item === "string") return item;
+
+            return item.entity_id ||
+                   item.target_id ||
+                   item.source_id ||
+                   item.id;
+        }).filter(Boolean)
+    )];
+
+    const linkedRecords = ids.map(id => {
+        const found = getRecord(id);
+
+        if (found) return found;
+
+        const institution = asArray(
+            state.data.institutions.institutions
+        ).find(item => item.id === id);
+
+        return institution || null;
+    }).filter(Boolean);
+
+    return `
+        <div class="modal-section">
+            ${renderField("Parent Institution", record.parent_id)}
+            ${renderField("Institution", getInstitutionName(record.institution_id))}
+            ${renderField("Supports", record.supports)}
+
+            ${renderArraySection("Relationships", record.relationships)}
+
+            <section class="detail-section">
+                <h3>Related Records</h3>
+
+                ${linkedRecords.length ? `
+                    <ul class="related-record-list">
+                        ${linkedRecords.map(item => `
+                            <li>
+                                <button
+                                    type="button"
+                                    class="related-record-button"
+                                    data-related-id="${escapeHTML(item.id)}"
+                                >
+                                    ${escapeHTML(getName(item))}
+                                </button>
+                            </li>
+                        `).join("")}
+                    </ul>
+                ` : "<p>No linked records available.</p>"}
+            </section>
+        </div>
+    `;
+}
+
+/* =========================================================
+   REFERENCES TAB
+========================================================= */
+
+function renderReferencesTab(record) {
+    return `
+        <div class="modal-section">
+            ${renderField("References", record.references)}
+            ${renderField("Sources", record.sources)}
+            ${renderField("Source Notes", record.source_notes)}
+            ${renderField("Data Quality", record.data_quality)}
+            ${renderField("Last Reviewed", record.last_reviewed)}
+            ${renderField("Last Updated", record.last_updated)}
+            ${renderArraySection("Keywords", record.keywords)}
+        </div>
+    `;
+}
+
+/* =========================================================
+   COLLECTION DETAILS
+========================================================= */
+
+function renderCollectionDetails(collection) {
+    const items = asArray(collection.collection_items);
+
+    return `
+        <div class="modal-section">
+            ${renderField("Description", collection.description)}
+
+            <h3>Records in this collection (${items.length})</h3>
+
+            <div class="collection-record-list">
+                ${items.map(item => `
+                    <article class="record-card">
+                        <h3>${escapeHTML(getName(item))}</h3>
+                        <p>${escapeHTML(getDescription(item))}</p>
+
+                        <button
+                            type="button"
+                            class="related-record-button"
+                            data-related-id="${escapeHTML(item.id)}"
+                        >
+                            Open details
+                        </button>
+                    </article>
+                `).join("")}
+            </div>
+        </div>
+    `;
+}
+
+/* =========================================================
+   INSTITUTION NAME
+========================================================= */
+
+function getInstitutionName(id) {
+    if (!id) return "";
+
+    const institution = asArray(
+        state.data.institutions.institutions
+    ).find(item => item.id === id);
+
+    return institution?.name || id;
+}
+
+/* =========================================================
+   MODAL RELATED RECORD EVENTS
+========================================================= */
+
+$("#modal-content")?.addEventListener("click", event => {
+    const button = event.target.closest("[data-related-id]");
+
+    if (!button) return;
+
+    openRecord(button.dataset.relatedId);
+});
+
+/* =========================================================
+   EVENT BINDINGS
+========================================================= */
+
+// Search
+$("#global-search")?.addEventListener("input", () => {
+    applyFilters();
+});
+
+// Clear search
+$("#clear-search")?.addEventListener("click", () => {
+    const search = $("#global-search");
+    if (search) search.value = "";
 
     applyFilters();
-  });
+});
+
+// Filters
+$("#category-filter")?.addEventListener("change", applyFilters);
+$("#institution-filter")?.addEventListener("change", applyFilters);
+$("#sort-filter")?.addEventListener("change", applyFilters);
+
+// Section navigation
+$$("[data-section]").forEach(button => {
+    button.addEventListener("click", () => {
+        selectSection(button.dataset.section);
+    });
+});
+
+// Quick category navigation
+$$("[data-category]").forEach(button => {
+    button.addEventListener("click", () => {
+        const category = button.dataset.category;
+
+        const select = $("#category-filter");
+
+        if (select) {
+            select.value = category;
+        }
+
+        state.currentView = "list";
+        updateViewButtons();
+        applyFilters();
+    });
+});
+
+// View buttons
+$$("[data-view]").forEach(button => {
+    button.addEventListener("click", () => {
+        state.currentView = button.dataset.view;
+        updateViewButtons();
+        renderCurrentView();
+    });
+});
+
+// Expand and collapse all hierarchy groups
+$("#expand-all")?.addEventListener("click", () => {
+    $$(".hierarchy-group").forEach(group => {
+        group.classList.remove("collapsed");
+    });
+});
+
+$("#collapse-all")?.addEventListener("click", () => {
+    $$(".hierarchy-group").forEach(group => {
+        group.classList.add("collapsed");
+    });
+});
+
+// Toggle an individual hierarchy group, if clicked on its heading.
+$("#content-area")?.addEventListener("click", event => {
+    const heading = event.target.closest(".hierarchy-group > h2");
+
+    if (heading) {
+        heading.parentElement.classList.toggle("collapsed");
+    }
+});
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+async function initialiseApp() {
+    try {
+        await loadAllData();
+
+        console.info(
+            `Indian Polity loaded: ${state.records.length} records`
+        );
+
+    } catch (error) {
+        console.error("Application initialisation failed:", error);
+
+        const message = `
+            Data loading failed.
+
+            ${error.message}
+
+            Check the browser console and verify the JSON file paths.
+        `;
+
+        showMessage(message, true);
+
+        const summary = $("#results-summary");
+        if (summary) {
+            summary.textContent = "Unable to load reference data.";
+        }
+    }
 }
 
-/* -------------------------------------------------------
-   INITIALISE
-------------------------------------------------------- */
-
-function initialiseApp() {
-  bindSearch();
-  bindFilters();
-  bindViewControls();
-  bindModalControls();
-  bindResetButton();
-
-  showLoading("Loading reference data...");
-
-  loadAllData().catch(showError);
-}
-
-document.addEventListener("DOMContentLoaded", initialiseApp);
+initialiseApp();
