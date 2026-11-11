@@ -1,0 +1,704 @@
+
+{
+  "metadata": {
+    "title": "Legislative Committees of India",
+    "version": "1.0.0",
+    "description": "Structured reference data for parliamentary and state legislative committees.",
+    "last_updated": "2026-11-11",
+    "notes": [
+      "Committee membership and composition may change between terms.",
+      "State committee structures differ across States and Union Territories.",
+      "State-level entries are reference templates, not assertions that every State has each committee."
+    ]
+  },
+  "collections": [
+    {
+      "id": "union_committees",
+      "title": "Union Parliamentary Committees",
+      "level": "union",
+      "committee_ids": [
+        "public_accounts_committee",
+        "estimates_committee",
+        "committee_on_public_undertakings",
+        "department_related_standing_committees",
+        "business_advisory_committee_lok_sabha",
+        "business_advisory_committee_rajya_sabha",
+        "rules_committee_lok_sabha",
+        "rules_committee_rajya_sabha",
+        "committee_of_privileges",
+        "committee_on_petitions",
+        "committee_on_subordinate_legislation",
+        "committee_on_government_assurances",
+        "committee_on_ethics",
+        "committee_on_private_members_bills",
+        "joint_committee",
+        "select_committee"
+      ]
+    },
+    {
+      "id": "state_committees",
+      "title": "State Legislative Committees",
+      "level": "state",
+      "committee_ids": [
+        "state_public_accounts_committee",
+        "state_estimates_committee",
+        "state_public_undertakings_committee",
+        "state_privileges_committee",
+        "state_petitions_committee",
+        "state_subordinate_legislation_committee",
+        "state_government_assurances_committee"
+      ]
+    }
+  ],
+  "committees": [
+    {
+      "id": "public_accounts_committee",
+      "name": "Public Accounts Committee",
+      "short_name": "PAC",
+      "category": "financial",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Parliament",
+      "purpose": "Examines the appropriation accounts, annual finance accounts and reports of the Comptroller and Auditor General of India.",
+      "functions": [
+        "Examines whether money granted by Parliament has been spent within the scope of the grant.",
+        "Examines expenditure against parliamentary authorisation.",
+        "Considers CAG audit findings referred to it.",
+        "Reports irregularities, financial control weaknesses and instances of waste or excess expenditure."
+      ],
+      "composition": {
+        "total_members": 22,
+        "lok_sabha_members": 15,
+        "rajya_sabha_members": 7,
+        "selection": "Members are elected by the respective Houses through proportional representation by means of the single transferable vote.",
+        "term": "One year",
+        "minister_membership": "A Minister cannot be elected as a member."
+      },
+      "chairperson": {
+        "appointed_by": "Speaker of the Lok Sabha",
+        "convention": "Since 1967, the chairperson has conventionally been appointed from the Opposition."
+      },
+      "limitations": [
+        "Does not examine the wisdom of policy underlying expenditure.",
+        "Its recommendations are not equivalent to judicial orders."
+      ],
+      "legal_basis": {
+        "type": "Rules of Procedure and parliamentary practice",
+        "references": [
+          "Rules of Procedure and Conduct of Business in Lok Sabha"
+        ]
+      },
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ],
+      "references": [
+        {
+          "title": "Parliamentary Committees",
+          "source": "Lok Sabha Secretariat",
+          "url": "https://sansad.in"
+        }
+      ],
+      "data_quality": {
+        "composition_status": "standard_reference",
+        "verify_each_term": true
+      }
+    },
+    {
+      "id": "estimates_committee",
+      "name": "Estimates Committee",
+      "short_name": "EC",
+      "category": "financial",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Lok Sabha",
+      "purpose": "Examines budget estimates and suggests improvements in economy, efficiency and administrative organisation.",
+      "functions": [
+        "Suggests economies consistent with policy objectives.",
+        "Recommends improvements in administrative organisation.",
+        "Examines whether money is well laid out within the limits of policy.",
+        "Suggests alternative policies that may improve efficiency and economy.",
+        "Recommends improvements in the form in which estimates are presented to Parliament."
+      ],
+      "composition": {
+        "total_members": 30,
+        "lok_sabha_members": 30,
+        "rajya_sabha_members": 0,
+        "selection": "Members are elected by Lok Sabha through proportional representation by means of the single transferable vote.",
+        "term": "One year",
+        "minister_membership": "A Minister cannot be elected as a member."
+      },
+      "chairperson": {
+        "appointed_by": "Speaker of the Lok Sabha"
+      },
+      "limitations": [
+        "Members are drawn only from Lok Sabha.",
+        "Does not examine the detailed accounts of public undertakings in the same manner as the Public Accounts Committee."
+      ],
+      "legal_basis": {
+        "type": "Rules of Procedure and parliamentary practice",
+        "references": [
+          "Rules of Procedure and Conduct of Business in Lok Sabha"
+        ]
+      },
+      "related_entities": [
+        "lok_sabha"
+      ],
+      "data_quality": {
+        "composition_status": "standard_reference",
+        "verify_each_term": true
+      }
+    },
+    {
+      "id": "committee_on_public_undertakings",
+      "name": "Committee on Public Undertakings",
+      "short_name": "COPU",
+      "category": "financial",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Parliament",
+      "purpose": "Examines the reports and accounts of specified public undertakings and considers their performance and management.",
+      "functions": [
+        "Examines reports and accounts of public undertakings.",
+        "Examines CAG reports relating to public undertakings.",
+        "Reviews whether public undertakings are managed in accordance with sound business principles and prudent commercial practices.",
+        "Examines matters referred to it under the applicable rules."
+      ],
+      "composition": {
+        "total_members": 22,
+        "lok_sabha_members": 15,
+        "rajya_sabha_members": 7,
+        "selection": "Members are drawn from both Houses under the applicable parliamentary procedure.",
+        "term": "One year",
+        "minister_membership": "A Minister cannot be elected as a member."
+      },
+      "chairperson": {
+        "appointed_by": "Speaker of the Lok Sabha"
+      },
+      "limitations": [
+        "Does not examine matters assigned to other parliamentary committees.",
+        "Its examination is subject to the committee's prescribed jurisdiction."
+      ],
+      "legal_basis": {
+        "type": "Rules of Procedure and parliamentary practice",
+        "references": [
+          "Rules of Procedure and Conduct of Business in Lok Sabha"
+        ]
+      },
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ],
+      "data_quality": {
+        "composition_status": "standard_reference",
+        "verify_each_term": true
+      }
+    },
+    {
+      "id": "department_related_standing_committees",
+      "name": "Department-related Standing Committees",
+      "short_name": "DRSCs",
+      "category": "departmental",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Parliament",
+      "purpose": "Provide detailed parliamentary scrutiny of the work of Union ministries and departments.",
+      "functions": [
+        "Consider demands for grants of the concerned ministries and departments.",
+        "Examine Bills referred to the committee.",
+        "Consider annual reports of the concerned ministries and departments.",
+        "Examine national policy documents referred to them."
+      ],
+      "composition": {
+        "number_of_committees": 24,
+        "members_per_committee": 31,
+        "lok_sabha_members": 21,
+        "rajya_sabha_members": 10,
+        "selection": "Members are nominated by the Speaker of Lok Sabha and the Chairman of Rajya Sabha in accordance with the applicable procedure.",
+        "term": "Normally one year"
+      },
+      "chairperson": {
+        "appointed_by": "Speaker of Lok Sabha or Chairman of Rajya Sabha, depending on the committee."
+      },
+      "limitations": [
+        "Does not consider matters relating to day-to-day administration.",
+        "Does not ordinarily consider matters which are under consideration by another parliamentary committee."
+      ],
+      "legal_basis": {
+        "type": "Rules of Procedure and parliamentary practice",
+        "references": [
+          "Rules of Procedure and Conduct of Business in Lok Sabha",
+          "Rules of Procedure and Conduct of Business in Rajya Sabha"
+        ]
+      },
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ],
+      "data_quality": {
+        "composition_status": "verify_current_structure",
+        "verify_each_term": true
+      }
+    },
+    {
+      "id": "business_advisory_committee_lok_sabha",
+      "name": "Business Advisory Committee of Lok Sabha",
+      "short_name": "BAC",
+      "category": "house_management",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Lok Sabha",
+      "purpose": "Recommends the allocation of time for government and other business in the House.",
+      "functions": [
+        "Recommends time allocation for legislative and other business.",
+        "Considers matters relating to the scheduling of House business.",
+        "Helps organise the work of the House."
+      ],
+      "composition": {
+        "membership": "Speaker and members nominated under Lok Sabha rules",
+        "fixed_membership": false
+      },
+      "chairperson": {
+        "office": "Speaker of Lok Sabha"
+      },
+      "legal_basis": {
+        "type": "Rules of Procedure",
+        "references": [
+          "Rules of Procedure and Conduct of Business in Lok Sabha"
+        ]
+      },
+      "related_entities": [
+        "lok_sabha",
+        "speaker_lok_sabha"
+      ]
+    },
+    {
+      "id": "business_advisory_committee_rajya_sabha",
+      "name": "Business Advisory Committee of Rajya Sabha",
+      "short_name": "BAC",
+      "category": "house_management",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Rajya Sabha",
+      "purpose": "Recommends the time to be allocated for government and other business in Rajya Sabha.",
+      "functions": [
+        "Recommends time allocation for business.",
+        "Considers the organisation and scheduling of House business."
+      ],
+      "composition": {
+        "membership": "Chairman and members nominated under Rajya Sabha rules",
+        "fixed_membership": false
+      },
+      "chairperson": {
+        "office": "Chairman of Rajya Sabha"
+      },
+      "legal_basis": {
+        "type": "Rules of Procedure",
+        "references": [
+          "Rules of Procedure and Conduct of Business in the Council of States"
+        ]
+      },
+      "related_entities": [
+        "rajya_sabha",
+        "chairman_rajya_sabha"
+      ]
+    },
+    {
+      "id": "rules_committee_lok_sabha",
+      "name": "Rules Committee of Lok Sabha",
+      "category": "house_management",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Lok Sabha",
+      "purpose": "Considers matters relating to the rules of procedure and conduct of business of Lok Sabha.",
+      "functions": [
+        "Considers amendments to the Rules of Procedure.",
+        "Examines procedural questions referred to it."
+      ],
+      "chairperson": {
+        "office": "Speaker of Lok Sabha"
+      },
+      "composition": {
+        "membership": "Speaker and members nominated under Lok Sabha rules",
+        "fixed_membership": false
+      },
+      "related_entities": [
+        "lok_sabha",
+        "speaker_lok_sabha"
+      ]
+    },
+    {
+      "id": "rules_committee_rajya_sabha",
+      "name": "Rules Committee of Rajya Sabha",
+      "category": "house_management",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Rajya Sabha",
+      "purpose": "Considers matters relating to the rules of procedure and conduct of business of Rajya Sabha.",
+      "functions": [
+        "Considers amendments to the Rules of Procedure.",
+        "Examines procedural matters referred to it."
+      ],
+      "chairperson": {
+        "office": "Chairman of Rajya Sabha"
+      },
+      "composition": {
+        "membership": "Chairman and members nominated under Rajya Sabha rules",
+        "fixed_membership": false
+      },
+      "related_entities": [
+        "rajya_sabha",
+        "chairman_rajya_sabha"
+      ]
+    },
+    {
+      "id": "committee_of_privileges",
+      "name": "Committee of Privileges",
+      "category": "privileges",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "House-specific",
+      "purpose": "Examines questions involving breach of privilege and contempt of the House referred to it.",
+      "functions": [
+        "Examines matters referred by the House or its presiding officer.",
+        "Determines the facts and circumstances of an alleged breach.",
+        "Makes recommendations to the House."
+      ],
+      "composition": {
+        "membership": "Members nominated under the rules of the respective House",
+        "fixed_membership": false
+      },
+      "chairperson": {
+        "appointed_by": "Presiding officer of the respective House"
+      },
+      "limitations": [
+        "The committee makes recommendations; the House retains the relevant decision-making authority."
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ]
+    },
+    {
+      "id": "committee_on_petitions",
+      "name": "Committee on Petitions",
+      "category": "scrutiny",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "House-specific",
+      "purpose": "Considers admissible petitions presented to the respective House.",
+      "functions": [
+        "Examines petitions referred to it.",
+        "Considers the issues raised in petitions.",
+        "Recommends action or remedial measures where appropriate."
+      ],
+      "composition": {
+        "membership": "Members nominated under the rules of the respective House",
+        "fixed_membership": false
+      },
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ]
+    },
+    {
+      "id": "committee_on_subordinate_legislation",
+      "name": "Committee on Subordinate Legislation",
+      "category": "legislative_scrutiny",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "House-specific",
+      "purpose": "Examines whether powers to make rules, regulations, orders and other subordinate legislation have been properly exercised.",
+      "functions": [
+        "Examines whether delegated legislative powers are exercised within the scope of the parent Act.",
+        "Considers whether rules impose an unauthorised tax or other burden.",
+        "Examines whether subordinate legislation requires retrospective effect or contains unusual provisions.",
+        "Considers whether publication and laying requirements have been followed."
+      ],
+      "composition": {
+        "membership": "Members nominated under the rules of the respective House",
+        "fixed_membership": false
+      },
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ]
+    },
+    {
+      "id": "committee_on_government_assurances",
+      "name": "Committee on Government Assurances",
+      "category": "executive_accountability",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "House-specific",
+      "purpose": "Reviews assurances, promises and undertakings given by Ministers on the floor of the House.",
+      "functions": [
+        "Identifies assurances given by Ministers.",
+        "Reviews progress in fulfilling assurances.",
+        "Examines reasons for delay or non-implementation."
+      ],
+      "composition": {
+        "membership": "Members nominated under the rules of the respective House",
+        "fixed_membership": false
+      },
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ]
+    },
+    {
+      "id": "committee_on_ethics",
+      "name": "Committee on Ethics",
+      "category": "ethics",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "House-specific",
+      "purpose": "Examines ethical conduct and matters referred under the applicable rules and directions.",
+      "functions": [
+        "Considers complaints or matters relating to members' conduct.",
+        "Examines alleged violations of the applicable code of conduct.",
+        "Makes recommendations to the House."
+      ],
+      "composition": {
+        "membership": "Members nominated under the rules or directions of the respective House",
+        "fixed_membership": false
+      },
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ]
+    },
+    {
+      "id": "committee_on_private_members_bills",
+      "name": "Committee on Private Members' Bills and Resolutions",
+      "category": "legislative_business",
+      "type": "standing",
+      "level": "union",
+      "jurisdiction": "Lok Sabha",
+      "purpose": "Assists in organising and examining the business relating to Private Members' Bills and resolutions.",
+      "functions": [
+        "Classifies Private Members' Bills and resolutions.",
+        "Recommends allocation of time for their discussion.",
+        "Considers procedural and scheduling matters relating to this business."
+      ],
+      "composition": {
+        "membership": "Members nominated under Lok Sabha rules",
+        "fixed_membership": false
+      },
+      "related_entities": [
+        "lok_sabha"
+      ]
+    },
+    {
+      "id": "joint_committee",
+      "name": "Joint Committee of Parliament",
+      "category": "legislative_scrutiny",
+      "type": "ad_hoc",
+      "level": "union",
+      "jurisdiction": "Parliament",
+      "purpose": "Examines a specified subject, Bill or matter referred to it by Parliament.",
+      "functions": [
+        "Examines the matter specified in the motion or resolution constituting it.",
+        "Takes evidence where authorised.",
+        "Submits a report with findings and recommendations."
+      ],
+      "composition": {
+        "membership": "Members from both Houses",
+        "fixed_membership": false,
+        "determined_by": "Constituting motion or resolution"
+      },
+      "chairperson": {
+        "determined_by": "Constituting motion or applicable parliamentary decision"
+      },
+      "term": "Until completion of assigned work or as otherwise specified",
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ]
+    },
+    {
+      "id": "select_committee",
+      "name": "Select Committee",
+      "category": "legislative_scrutiny",
+      "type": "ad_hoc",
+      "level": "union",
+      "jurisdiction": "A single House",
+      "purpose": "Examines a Bill referred to a committee of the House concerned.",
+      "functions": [
+        "Examines the provisions of the referred Bill.",
+        "May take evidence or invite views as permitted.",
+        "Reports its recommendations to the House."
+      ],
+      "composition": {
+        "membership": "Members of the House referring the Bill",
+        "fixed_membership": false,
+        "determined_by": "Motion adopted by the House"
+      },
+      "term": "Until submission of its report or as specified by the House",
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha"
+      ]
+    },
+    {
+      "id": "state_public_accounts_committee",
+      "name": "State Public Accounts Committee",
+      "short_name": "State PAC",
+      "category": "financial",
+      "type": "standing",
+      "level": "state",
+      "jurisdiction": "State Legislature",
+      "purpose": "Examines State expenditure and audit reports of the Comptroller and Auditor General relating to the State.",
+      "functions": [
+        "Examines State appropriation accounts.",
+        "Considers State finance accounts and relevant audit findings.",
+        "Reviews whether expenditure was authorised and properly applied."
+      ],
+      "composition": {
+        "membership": "Determined by the rules and practice of the State Legislature",
+        "fixed_membership": false,
+        "source_of_variation": "State-specific rules"
+      },
+      "chairperson": {
+        "determined_by": "Relevant State House rules and practice"
+      },
+      "legal_basis": {
+        "type": "State Legislature Rules of Procedure"
+      },
+      "data_quality": {
+        "record_status": "template",
+        "requires_state_specific_record": true
+      }
+    },
+    {
+      "id": "state_estimates_committee",
+      "name": "State Estimates Committee",
+      "category": "financial",
+      "type": "standing",
+      "level": "state",
+      "jurisdiction": "State Legislature",
+      "purpose": "Examines State budget estimates and considers economy and efficiency in public expenditure.",
+      "functions": [
+        "Examines estimates referred to it.",
+        "Suggests improvements in economy and efficiency.",
+        "May recommend administrative or policy improvements within its mandate."
+      ],
+      "composition": {
+        "membership": "Determined by the rules and practice of the State Legislature",
+        "fixed_membership": false
+      },
+      "data_quality": {
+        "record_status": "template",
+        "requires_state_specific_record": true
+      }
+    },
+    {
+      "id": "state_public_undertakings_committee",
+      "name": "State Committee on Public Undertakings",
+      "category": "financial",
+      "type": "standing",
+      "level": "state",
+      "jurisdiction": "State Legislature",
+      "purpose": "Examines the performance, accounts and audit findings relating to State public undertakings where constituted.",
+      "functions": [
+        "Examines accounts and reports of covered public undertakings.",
+        "Considers relevant CAG audit findings.",
+        "Reviews management and financial performance within its mandate."
+      ],
+      "composition": {
+        "membership": "State-specific",
+        "fixed_membership": false
+      },
+      "data_quality": {
+        "record_status": "template",
+        "requires_state_specific_record": true
+      }
+    },
+    {
+      "id": "state_privileges_committee",
+      "name": "State Committee of Privileges",
+      "category": "privileges",
+      "type": "standing",
+      "level": "state",
+      "jurisdiction": "State Legislature",
+      "purpose": "Examines questions of breach of privilege referred under the rules of the relevant House.",
+      "functions": [
+        "Examines matters referred by the House or presiding officer.",
+        "Reports findings and recommendations."
+      ],
+      "composition": {
+        "membership": "Determined by State House rules",
+        "fixed_membership": false
+      },
+      "data_quality": {
+        "record_status": "template",
+        "requires_state_specific_record": true
+      }
+    },
+    {
+      "id": "state_petitions_committee",
+      "name": "State Committee on Petitions",
+      "category": "scrutiny",
+      "type": "standing",
+      "level": "state",
+      "jurisdiction": "State Legislature",
+      "purpose": "Considers petitions presented to the relevant State House and referred under its rules.",
+      "functions": [
+        "Examines admissible petitions.",
+        "Considers matters raised by petitioners.",
+        "Makes recommendations within its mandate."
+      ],
+      "composition": {
+        "membership": "Determined by State House rules",
+        "fixed_membership": false
+      },
+      "data_quality": {
+        "record_status": "template",
+        "requires_state_specific_record": true
+      }
+    },
+    {
+      "id": "state_subordinate_legislation_committee",
+      "name": "State Committee on Subordinate Legislation",
+      "category": "legislative_scrutiny",
+      "type": "standing",
+      "level": "state",
+      "jurisdiction": "State Legislature",
+      "purpose": "Examines rules and other subordinate legislation made under State laws, where such a committee is constituted.",
+      "functions": [
+        "Examines whether delegated powers have been exercised within the parent law.",
+        "Reviews procedural compliance and other matters prescribed by State rules."
+      ],
+      "composition": {
+        "membership": "Determined by State House rules",
+        "fixed_membership": false
+      },
+      "data_quality": {
+        "record_status": "template",
+        "requires_state_specific_record": true
+      }
+    },
+    {
+      "id": "state_government_assurances_committee",
+      "name": "State Committee on Government Assurances",
+      "category": "executive_accountability",
+      "type": "standing",
+      "level": "state",
+      "jurisdiction": "State Legislature",
+      "purpose": "Reviews assurances and undertakings given by State Ministers in the House, where such a committee is constituted.",
+      "functions": [
+        "Tracks assurances given by Ministers.",
+        "Reviews implementation and delays.",
+        "Reports matters requiring attention."
+      ],
+      "composition": {
+        "membership": "Determined by State House rules",
+        "fixed_membership": false
+      },
+      "data_quality": {
+        "record_status": "template",
+        "requires_state_specific_record": true
+      }
+    }
+  ]
+}

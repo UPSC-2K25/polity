@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Interactive Indian Polity Reference System">
+
+    <title>Indian Polity | Legislature</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- TOP NAVIGATION -->
+
+    <header class="topbar">
+
+        <div class="brand">
+            <span class="brand-name">INDIAN POLITY</span>
+            <span class="brand-subtitle">Reference System</span>
+        </div>
+
+        <nav class="module-nav"
+             aria-label="Polity modules">
+
+            <button class="nav-item active"
+                    data-module="legislature">
+                Legislature
+            </button>
+
+            <button class="nav-item" disabled
+                    title="Coming in a future module">
+                Executive
+            </button>
+
+            <button class="nav-item" disabled
+                    title="Coming in a future module">
+                Judiciary
+            </button>
+
+            <button class="nav-item" disabled
+                    title="Coming in a future module">
+                Constitutional Bodies
+            </button>
+
+        </nav>
+
+        <div class="topbar-right">
+            <span class="module-label">LEGISLATURE</span>
+        </div>
+
+    </header>
+
+
+    <!-- MAIN WORKSPACE -->
+
+    <div class="workspace">
+
+        <!-- LEFT SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-heading">
+                LEGISLATURE
+            </div>
+
+            <nav aria-label="Legislature sections">
+
+                <button class="sidebar-item active"
+                        data-section="overview">
+                    <span>Overview</span>
+                </button>
+
+                <button class="sidebar-item"
+                        data-section="union">
+                    <span>Union Legislature</span>
+                </button>
+
+                <button class="sidebar-item"
+                        data-section="state">
+                    <span>State Legislature</span>
+                </button>
+
+                <button class="sidebar-item"
+                        data-section="secretariat">
+                    <span>Legislative Secretariats</span>
+                </button>
+
+                <button class="sidebar-item"
+                        data-section="committees">
+                    <span>Committees</span>
+                </button>
+
+                <button class="sidebar-item"
+                        data-section="procedures">
+                    <span>Legislative Procedures</span>
+                </button>
+
+                <button class="sidebar-item"
+                        data-section="provisions">
+                    <span>Constitutional Provisions</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-heading">
+                QUICK ACCESS
+            </div>
+
+            <button class="sidebar-item"
+                    data-category="presiding_officer">
+                Presiding Officers
+            </button>
+
+            <button class="sidebar-item"
+                    data-category="elected_representative">
+                Elected Representatives
+            </button>
+
+            <button class="sidebar-item"
+                    data-category="party_leadership">
+                Parliamentary Leadership
+            </button>
+
+            <button class="sidebar-item"
+                    data-category="administrative">
+                Administrative Posts
+            </button>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content">
+
+            <!-- PAGE TOOLBAR -->
+
+            <section class="page-toolbar">
+
+                <div class="page-context">
+                    <div class="breadcrumb">
+                        Indian Polity / Legislature
+                    </div>
+
+                    <h1 id="page-title">
+                        Legislative Structure
+                    </h1>
+                </div>
+
+                <div class="toolbar-actions">
+
+                    <button id="expand-all"
+                            class="secondary-button">
+                        Expand All
+                    </button>
+
+                    <button id="collapse-all"
+                            class="secondary-button">
+                        Collapse All
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- SEARCH AND FILTERS -->
+
+            <section class="search-panel"
+                     aria-label="Search and filter">
+
+                <div class="search-box">
+
+                    <label for="global-search">
+                        Search
+                    </label>
+
+                    <input
+                        type="search"
+                        id="global-search"
+                        placeholder="Search posts, offices, Articles, committees..."
+                        autocomplete="off"
+                    >
+
+                    <button id="clear-search"
+                            type="button"
+                            aria-label="Clear search">
+                        Clear
+                    </button>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label for="category-filter">
+                        Category
+                    </label>
+
+                    <select id="category-filter">
+
+                        <option value="all">
+                            All Categories
+                        </option>
+
+                        <option value="presiding_officer">
+                            Presiding Officers
+                        </option>
+
+                        <option value="elected_representative">
+                            Elected Representatives
+                        </option>
+
+                        <option value="party_leadership">
+                            Party Leadership
+                        </option>
+
+                        <option value="administrative">
+                            Administrative Posts
+                        </option>
+
+                        <option value="committee">
+                            Committees
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label for="institution-filter">
+                        Institution
+                    </label>
+
+                    <select id="institution-filter">
+
+                        <option value="all">
+                            All Institutions
+                        </option>
+
+                        <option value="lok_sabha">
+                            Lok Sabha
+                        </option>
+
+                        <option value="rajya_sabha">
+                            Rajya Sabha
+                        </option>
+
+                        <option value="state_assembly">
+                            State Assembly
+                        </option>
+
+                        <option value="state_council">
+                            State Council
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label for="sort-filter">
+                        Sort
+                    </label>
+
+                    <select id="sort-filter">
+
+                        <option value="default">
+                            Default Order
+                        </option>
+
+                        <option value="alphabetical">
+                            Alphabetical
+                        </option>
+
+                        <option value="category">
+                            Category
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+
+            <!-- SEARCH RESULTS SUMMARY -->
+
+            <section class="results-toolbar">
+
+                <div id="results-summary"
+                     aria-live="polite">
+
+                    Loading legislative information...
+
+                </div>
+
+                <div class="view-options">
+
+                    <button class="view-button active"
+                            data-view="hierarchy">
+                        Hierarchy
+                    </button>
+
+                    <button class="view-button"
+                            data-view="list">
+                        List
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- MAIN DATA DISPLAY -->
+
+            <section id="content-area"
+                     class="content-area"
+                     aria-label="Legislative information">
+
+                <div id="loading-message">
+                    Loading data...
+                </div>
+
+                <!-- JavaScript inserts hierarchy,
+                     post cards and other content here -->
+
+            </section>
+
+
+            <!-- PAGINATION -->
+
+            <section class="pagination-section"
+                     aria-label="Pagination">
+
+                <div id="pagination-info">
+                    Page 1
+                </div>
+
+                <div class="pagination-controls">
+
+                    <button id="first-page"
+                            class="page-button"
+                            aria-label="First page">
+                        First
+                    </button>
+
+                    <button id="previous-page"
+                            class="page-button"
+                            aria-label="Previous page">
+                        Previous
+                    </button>
+
+                    <div id="page-numbers"
+                         class="page-numbers">
+                    </div>
+
+                    <button id="next-page"
+                            class="page-button"
+                            aria-label="Next page">
+                        Next
+                    </button>
+
+                    <button id="last-page"
+                            class="page-button"
+                            aria-label="Last page">
+                        Last
+                    </button>
+
+                </div>
+
+                <div class="page-size-control">
+
+                    <label for="page-size">
+                        Records per page
+                    </label>
+
+                    <select id="page-size">
+
+                        <option value="10">10</option>
+                        <option value="15" selected>15</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- POST DETAILS MODAL -->
+
+    <dialog id="details-modal"
+            class="details-modal"
+            aria-labelledby="modal-title">
+
+        <div class="modal-container">
+
+            <!-- MODAL HEADER -->
+
+            <header class="modal-header">
+
+                <div class="modal-heading">
+
+                    <div id="modal-category"
+                         class="modal-category">
+                    </div>
+
+                    <h2 id="modal-title">
+                        Post Details
+                    </h2>
+
+                    <div id="modal-subtitle"
+                         class="modal-subtitle">
+                    </div>
+
+                </div>
+
+                <button id="modal-close"
+                        class="modal-close"
+                        aria-label="Close details">
+                    &times;
+                </button>
+
+            </header>
+
+
+            <!-- MODAL NAVIGATION -->
+
+            <nav class="modal-tabs"
+                 aria-label="Post information sections">
+
+                <button class="modal-tab active"
+                        data-tab="overview">
+                    Overview
+                </button>
+
+                <button class="modal-tab"
+                        data-tab="powers">
+                    Powers & Functions
+                </button>
+
+                <button class="modal-tab"
+                        data-tab="legal">
+                    Legal Basis
+                </button>
+
+                <button class="modal-tab"
+                        data-tab="relationships">
+                    Relationships
+                </button>
+
+                <button class="modal-tab"
+                        data-tab="references">
+                    References
+                </button>
+
+            </nav>
+
+
+            <!-- MODAL BODY -->
+
+            <div id="modal-content"
+                 class="modal-content"
+                 tabindex="0">
+
+                <!-- JavaScript inserts post information here -->
+
+            </div>
+
+
+            <!-- MODAL FOOTER -->
+
+            <footer class="modal-footer">
+
+                <div id="modal-record-id"
+                     class="modal-record-id">
+                </div>
+
+                <button id="modal-footer-close"
+                        class="secondary-button">
+                    Close
+                </button>
+
+            </footer>
+
+        </div>
+
+    </dialog>
+
+
+    <!-- APPLICATION FOOTER -->
+
+    <footer class="app-footer">
+
+        <span>Indian Polity Reference System</span>
+
+        <span>Legislature Module</span>
+
+    </footer>
+
+</div>
+
+
+<!-- APPLICATION SCRIPT -->
+
+<script type="module" src="js/app.js"></script>
+
+</body>
+
+</html>

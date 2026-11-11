@@ -1,0 +1,299 @@
+
+{
+  "metadata": {
+    "module": "legislature",
+    "title": "Institutions of the Indian Legislature",
+    "version": "1.0",
+    "description": "Institutional structure of the Union Parliament and State Legislatures of India.",
+    "last_updated": "2026-11-11"
+  },
+
+  "institutions": [
+
+    {
+      "id": "indian_legislature",
+      "name": "Indian Legislature",
+      "short_name": "Legislature",
+      "type": "constitutional_institution",
+      "level": "national",
+      "description": "The legislative framework of India, comprising the Union Legislature and the Legislatures of the States.",
+      "legal_basis": [],
+      "parent_id": null,
+      "children": [
+        "union_legislature",
+        "state_legislature"
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "union_legislature",
+      "name": "Union Legislature",
+      "short_name": "Union Legislature",
+      "type": "constitutional_institution",
+      "level": "union",
+      "description": "The legislative institution at the Union level of India.",
+      "legal_basis": [
+        "Article 79"
+      ],
+      "parent_id": "indian_legislature",
+      "children": [
+        "parliament"
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "parliament",
+      "name": "Parliament of India",
+      "short_name": "Parliament",
+      "type": "legislature",
+      "level": "union",
+      "description": "The Union Legislature of India, constitutionally consisting of the President and two Houses: the Council of States and the House of the People.",
+      "legal_basis": [
+        "Article 79",
+        "Articles 80-81"
+      ],
+      "parent_id": "union_legislature",
+      "children": [
+        "lok_sabha",
+        "rajya_sabha"
+      ],
+      "constitutional_components": [
+        "president_of_india"
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "president_of_india",
+      "name": "President of India",
+      "short_name": "President",
+      "type": "constitutional_component",
+      "level": "union",
+      "description": "The constitutional head of the Union and a constituent component of Parliament under Article 79.",
+      "legal_basis": [
+        "Article 52",
+        "Article 53",
+        "Article 79",
+        "Articles 85-111"
+      ],
+      "parent_id": null,
+      "relationships": [
+        {
+          "type": "constitutional_component_of",
+          "target_id": "parliament"
+        }
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "lok_sabha",
+      "name": "House of the People",
+      "short_name": "Lok Sabha",
+      "type": "legislative_house",
+      "level": "union",
+      "description": "The lower House of Parliament, consisting of representatives directly elected by the people, subject to constitutional provisions.",
+      "legal_basis": [
+        "Article 79",
+        "Article 81",
+        "Article 83",
+        "Article 93"
+      ],
+      "parent_id": "parliament",
+      "house_type": "lower_house",
+      "presiding_office": "speaker_lok_sabha",
+      "secretariat_id": "lok_sabha_secretariat",
+      "status": "active"
+    },
+
+    {
+      "id": "rajya_sabha",
+      "name": "Council of States",
+      "short_name": "Rajya Sabha",
+      "type": "legislative_house",
+      "level": "union",
+      "description": "The upper House of Parliament, representing the States and Union Territories through its constitutionally prescribed composition.",
+      "legal_basis": [
+        "Article 79",
+        "Article 80",
+        "Article 83",
+        "Article 89"
+      ],
+      "parent_id": "parliament",
+      "house_type": "upper_house",
+      "presiding_office": "chairman_rajya_sabha",
+      "secretariat_id": "rajya_sabha_secretariat",
+      "status": "active"
+    },
+
+    {
+      "id": "state_legislature",
+      "name": "State Legislature",
+      "short_name": "State Legislature",
+      "type": "constitutional_institution",
+      "level": "state",
+      "description": "The legislative institution of an Indian State, consisting of the Governor and either one or two legislative Houses, depending on the State's constitutional arrangement.",
+      "legal_basis": [
+        "Article 168"
+      ],
+      "parent_id": "indian_legislature",
+      "children": [
+        "state_assembly",
+        "state_council"
+      ],
+      "constitutional_components": [
+        "governor_of_state"
+      ],
+      "structure": {
+        "type": "unicameral_or_bicameral",
+        "unicameral": [
+          "state_assembly"
+        ],
+        "bicameral": [
+          "state_assembly",
+          "state_council"
+        ]
+      },
+      "status": "active"
+    },
+
+    {
+      "id": "governor_of_state",
+      "name": "Governor",
+      "short_name": "Governor",
+      "type": "constitutional_component",
+      "level": "state",
+      "description": "The constitutional head of a State and a constituent component of its Legislature under Article 168.",
+      "legal_basis": [
+        "Article 153",
+        "Article 154",
+        "Article 163",
+        "Article 168",
+        "Articles 174-201"
+      ],
+      "parent_id": null,
+      "relationships": [
+        {
+          "type": "constitutional_component_of",
+          "target_id": "state_legislature"
+        }
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "state_assembly",
+      "name": "Legislative Assembly",
+      "short_name": "Vidhan Sabha",
+      "type": "legislative_house",
+      "level": "state",
+      "description": "The directly elected House of a State Legislature. Every State has a Legislative Assembly.",
+      "legal_basis": [
+        "Article 168",
+        "Article 170",
+        "Article 172",
+        "Article 178"
+      ],
+      "parent_id": "state_legislature",
+      "house_type": "lower_house",
+      "presiding_office": "speaker_state_assembly",
+      "secretariat_id": "state_assembly_secretariat",
+      "availability": "all_states",
+      "status": "active"
+    },
+
+    {
+      "id": "state_council",
+      "name": "Legislative Council",
+      "short_name": "Vidhan Parishad",
+      "type": "legislative_house",
+      "level": "state",
+      "description": "The upper House of a bicameral State Legislature. It exists only in States where it has been established under the Constitution.",
+      "legal_basis": [
+        "Article 168",
+        "Article 169",
+        "Article 171",
+        "Article 172",
+        "Article 182"
+      ],
+      "parent_id": "state_legislature",
+      "house_type": "upper_house",
+      "presiding_office": "chairman_state_council",
+      "secretariat_id": "state_council_secretariat",
+      "availability": "selected_states",
+      "status": "active"
+    },
+
+    {
+      "id": "lok_sabha_secretariat",
+      "name": "Lok Sabha Secretariat",
+      "short_name": "Lok Sabha Secretariat",
+      "type": "legislative_secretariat",
+      "level": "union",
+      "description": "The administrative and procedural establishment supporting the functioning of the Lok Sabha and its presiding officers.",
+      "legal_basis": [
+        "Article 98"
+      ],
+      "parent_id": null,
+      "supports": [
+        "lok_sabha"
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "rajya_sabha_secretariat",
+      "name": "Rajya Sabha Secretariat",
+      "short_name": "Rajya Sabha Secretariat",
+      "type": "legislative_secretariat",
+      "level": "union",
+      "description": "The administrative and procedural establishment supporting the functioning of the Rajya Sabha and its presiding officers.",
+      "legal_basis": [
+        "Article 98"
+      ],
+      "parent_id": null,
+      "supports": [
+        "rajya_sabha"
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "state_assembly_secretariat",
+      "name": "State Legislative Assembly Secretariat",
+      "short_name": "Assembly Secretariat",
+      "type": "legislative_secretariat",
+      "level": "state",
+      "description": "The administrative establishment supporting the functioning of a State Legislative Assembly.",
+      "legal_basis": [
+        "Article 187"
+      ],
+      "parent_id": null,
+      "supports": [
+        "state_assembly"
+      ],
+      "status": "active"
+    },
+
+    {
+      "id": "state_council_secretariat",
+      "name": "State Legislative Council Secretariat",
+      "short_name": "Council Secretariat",
+      "type": "legislative_secretariat",
+      "level": "state",
+      "description": "The administrative establishment supporting the functioning of a State Legislative Council, wherever such a Council exists.",
+      "legal_basis": [
+        "Article 187"
+      ],
+      "parent_id": null,
+      "supports": [
+        "state_council"
+      ],
+      "availability": "selected_states",
+      "status": "active"
+    }
+
+  ]
+}

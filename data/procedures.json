@@ -1,0 +1,1163 @@
+
+{
+  "metadata": {
+    "title": "Legislative Procedures of India",
+    "version": "1.0.0",
+    "description": "Structured reference data for legislative and parliamentary procedures at Union and State levels.",
+    "last_reviewed": "2026-11-11",
+    "notes": [
+      "Constitutional provisions and House rules are distinct sources of procedural authority.",
+      "Detailed notice periods, admissibility requirements and scheduling may change under House rules and directions.",
+      "State procedures are templates and must be checked against the relevant State Legislature's rules."
+    ]
+  },
+  "collections": [
+    {
+      "id": "house_proceedings",
+      "name": "House Proceedings",
+      "description": "Procedures governing the conduct and business of legislative Houses.",
+      "procedure_ids": [
+        "summoning_of_house",
+        "prorogation",
+        "dissolution_of_lok_sabha",
+        "adjournment",
+        "adjournment_sine_die",
+        "question_hour",
+        "zero_hour",
+        "motions",
+        "no_confidence_motion",
+        "censure_motion",
+        "calling_attention",
+        "short_duration_discussion"
+      ]
+    },
+    {
+      "id": "legislative_bills",
+      "name": "Legislative Bill Procedures",
+      "description": "Procedures for introduction, consideration, passage and assent of Bills.",
+      "procedure_ids": [
+        "ordinary_bill_procedure",
+        "money_bill_procedure",
+        "financial_bill_procedure",
+        "constitution_amendment_bill_procedure",
+        "joint_sitting",
+        "ordinance_replacement"
+      ]
+    },
+    {
+      "id": "legislative_financial_business",
+      "name": "Legislative Financial Business",
+      "description": "Procedures relating to budgets, grants, taxation and withdrawal of public funds.",
+      "procedure_ids": [
+        "budget_presentation",
+        "demands_for_grants",
+        "cut_motions",
+        "guillotine",
+        "appropriation_bill",
+        "finance_bill",
+        "vote_on_account",
+        "vote_of_credit",
+        "exceptional_grant"
+      ]
+    }
+  ],
+  "procedures": [
+    {
+      "id": "summoning_of_house",
+      "name": "Summoning of a House",
+      "short_name": "Summoning",
+      "category": "house_proceeding",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "The formal process by which a legislative House is called to meet for a session.",
+      "authority": [
+        "President of India",
+        "Governor of the State"
+      ],
+      "steps": [
+        "The constitutional authority summons the House.",
+        "The summons specifies the date, time and place of the sitting.",
+        "Members are notified through the prescribed parliamentary or legislative process.",
+        "The House meets on the appointed date."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "85",
+          "description": "Sessions of Parliament, prorogation and dissolution of the House of the People."
+        },
+        {
+          "article": "174",
+          "description": "Sessions of the State Legislature, prorogation and dissolution of the Legislative Assembly."
+        }
+      ],
+      "key_rules": [
+        "The interval between the last sitting of one session and the first sitting of the next session must not exceed six months.",
+        "The President summons each House of Parliament.",
+        "The Governor summons the State Legislature."
+      ],
+      "related_entities": [
+        "president_of_india",
+        "governor_of_state",
+        "parliament",
+        "state_legislature",
+        "lok_sabha",
+        "rajya_sabha"
+      ],
+      "references": [
+        "Constitution of India, Articles 85 and 174"
+      ]
+    },
+    {
+      "id": "prorogation",
+      "name": "Prorogation",
+      "short_name": "Prorogation",
+      "category": "house_proceeding",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "The formal termination of a session of a House by the constitutional authority.",
+      "authority": [
+        "President of India",
+        "Governor of the State"
+      ],
+      "steps": [
+        "The constitutional authority issues an order of prorogation.",
+        "The session of the concerned House formally ends.",
+        "The House remains in existence and may be summoned again for a subsequent session."
+      ],
+      "effects": [
+        "Prorogation terminates a session, not the existence of the House.",
+        "A Bill pending in Parliament does not lapse merely because Parliament is prorogued.",
+        "Other pending business is dealt with according to the applicable House rules and conventions."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "85",
+          "description": "Prorogation of either House of Parliament."
+        },
+        {
+          "article": "174",
+          "description": "Prorogation of a House or Houses of the State Legislature."
+        },
+        {
+          "article": "107(3)",
+          "description": "A Bill pending in Parliament does not lapse by reason of prorogation."
+        }
+      ],
+      "related_entities": [
+        "president_of_india",
+        "governor_of_state",
+        "parliament",
+        "state_legislature"
+      ],
+      "references": [
+        "Constitution of India, Articles 85, 107 and 174"
+      ]
+    },
+    {
+      "id": "dissolution_of_lok_sabha",
+      "name": "Dissolution of the Lok Sabha",
+      "short_name": "Lok Sabha Dissolution",
+      "category": "house_proceeding",
+      "level": "union",
+      "scope": "constitutional",
+      "description": "The formal termination of the Lok Sabha before or at the end of its constitutional term.",
+      "authority": [
+        "President of India"
+      ],
+      "steps": [
+        "The Lok Sabha is dissolved by the President.",
+        "The membership of the dissolved House ends.",
+        "A general election is held to constitute a new Lok Sabha."
+      ],
+      "effects": [
+        "The Rajya Sabha is not dissolved.",
+        "A Bill pending in the Lok Sabha lapses.",
+        "A Bill passed by the Lok Sabha but pending in the Rajya Sabha lapses.",
+        "A Bill pending in the Rajya Sabha which has not been passed by the Lok Sabha does not lapse."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "83(2)",
+          "description": "Duration of the House of the People."
+        },
+        {
+          "article": "85(2)(b)",
+          "description": "Power of the President to dissolve the House of the People."
+        },
+        {
+          "article": "107(4)",
+          "description": "Effect of dissolution on Bills pending in the Rajya Sabha."
+        },
+        {
+          "article": "107(5)",
+          "description": "Effect of dissolution on Bills pending in or passed by the Lok Sabha."
+        }
+      ],
+      "related_entities": [
+        "president_of_india",
+        "lok_sabha",
+        "rajya_sabha"
+      ],
+      "references": [
+        "Constitution of India, Articles 83, 85 and 107"
+      ]
+    },
+    {
+      "id": "adjournment",
+      "name": "Adjournment",
+      "short_name": "Adjournment",
+      "category": "house_proceeding",
+      "level": "union_and_state",
+      "scope": "house_rule_and_practice",
+      "description": "The suspension of a sitting of a House to a specified later time or date.",
+      "authority": [
+        "Speaker",
+        "Chairman",
+        "Presiding Officer"
+      ],
+      "steps": [
+        "The Presiding Officer announces the adjournment.",
+        "The current sitting is suspended.",
+        "The House resumes at the announced time or date."
+      ],
+      "key_distinction": "Adjournment suspends a sitting. It does not terminate the session or dissolve the House.",
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House"
+      ],
+      "related_entities": [
+        "speaker_lok_sabha",
+        "chairman_rajya_sabha",
+        "speaker_state_assembly",
+        "chairman_state_council"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure"
+      ]
+    },
+    {
+      "id": "adjournment_sine_die",
+      "name": "Adjournment Sine Die",
+      "short_name": "Sine Die",
+      "category": "house_proceeding",
+      "level": "union_and_state",
+      "scope": "house_rule_and_practice",
+      "description": "The adjournment of a House without appointing a date for its next sitting.",
+      "authority": [
+        "Speaker",
+        "Chairman",
+        "Presiding Officer"
+      ],
+      "steps": [
+        "The Presiding Officer announces that the House is adjourned sine die.",
+        "No date is fixed for the next sitting.",
+        "The session may subsequently be prorogued by the constitutional authority."
+      ],
+      "key_distinction": "Adjournment sine die does not itself prorogue the session.",
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House",
+        "Constitutional provisions governing prorogation"
+      ],
+      "related_entities": [
+        "speaker_lok_sabha",
+        "chairman_rajya_sabha",
+        "president_of_india",
+        "governor_of_state"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure",
+        "Constitution of India, Articles 85 and 174"
+      ]
+    },
+    {
+      "id": "question_hour",
+      "name": "Question Hour",
+      "short_name": "Question Hour",
+      "category": "accountability_device",
+      "level": "union_and_state",
+      "scope": "house_rule",
+      "description": "A period during which members question Ministers and seek information about government policies, administration and public matters.",
+      "types": [
+        {
+          "id": "starred_question",
+          "name": "Starred Question",
+          "answer_type": "oral",
+          "supplementary_questions": true
+        },
+        {
+          "id": "unstarred_question",
+          "name": "Unstarred Question",
+          "answer_type": "written",
+          "supplementary_questions": false
+        },
+        {
+          "id": "short_notice_question",
+          "name": "Short Notice Question",
+          "answer_type": "oral",
+          "condition": "Relates to a matter of urgent public importance and is admitted under the applicable rules."
+        }
+      ],
+      "steps": [
+        "A member submits a question notice in the prescribed manner.",
+        "The notice is examined for admissibility under the House rules.",
+        "Admitted questions are listed for the relevant sitting.",
+        "The concerned Minister answers the question.",
+        "Supplementary questions may follow where permitted."
+      ],
+      "purpose": [
+        "Obtain information from the government.",
+        "Promote executive accountability.",
+        "Bring administrative matters to public and legislative attention."
+      ],
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House"
+      ],
+      "related_entities": [
+        "member_lok_sabha",
+        "member_rajya_sabha",
+        "speaker_lok_sabha",
+        "chairman_rajya_sabha"
+      ],
+      "references": [
+        "Lok Sabha Rules of Procedure",
+        "Rajya Sabha Rules of Procedure"
+      ]
+    },
+    {
+      "id": "zero_hour",
+      "name": "Zero Hour",
+      "short_name": "Zero Hour",
+      "category": "accountability_device",
+      "level": "union_and_state",
+      "scope": "parliamentary_convention",
+      "description": "A parliamentary practice through which members raise matters of urgent public importance, generally after Question Hour.",
+      "steps": [
+        "Members give notices in accordance with the applicable directions or established practice.",
+        "The Presiding Officer determines which matters may be raised.",
+        "Selected members raise the permitted matters before the House."
+      ],
+      "key_distinction": "Zero Hour is a parliamentary convention and is not expressly provided for in the Constitution.",
+      "purpose": [
+        "Raise urgent public issues.",
+        "Draw the attention of the government to matters requiring immediate response."
+      ],
+      "legal_basis": [
+        "Parliamentary convention",
+        "Directions of the Presiding Officer and applicable House practice"
+      ],
+      "related_entities": [
+        "member_lok_sabha",
+        "member_rajya_sabha",
+        "speaker_lok_sabha",
+        "chairman_rajya_sabha"
+      ],
+      "references": [
+        "Digital Sansad, Parliamentary Procedures and House Information"
+      ]
+    },
+    {
+      "id": "motions",
+      "name": "Motions in the House",
+      "short_name": "Motions",
+      "category": "house_proceeding",
+      "level": "union_and_state",
+      "scope": "house_rule_and_practice",
+      "description": "Formal proposals submitted for the consideration or decision of a legislative House.",
+      "types": [
+        {
+          "id": "substantive_motion",
+          "name": "Substantive Motion",
+          "description": "An independent proposal placed before the House for its decision."
+        },
+        {
+          "id": "substitute_motion",
+          "name": "Substitute Motion",
+          "description": "A proposal moved as an alternative to an original motion."
+        },
+        {
+          "id": "subsidiary_motion",
+          "name": "Subsidiary Motion",
+          "description": "A motion connected with another question before the House."
+        },
+        {
+          "id": "closure_motion",
+          "name": "Closure Motion",
+          "description": "A procedural motion seeking to bring debate to an end under the applicable rules."
+        }
+      ],
+      "steps": [
+        "A member gives notice of the proposed motion where required.",
+        "The Presiding Officer determines admissibility.",
+        "The motion is moved and debated according to the applicable rules.",
+        "The House may decide the motion by voting or another prescribed procedure."
+      ],
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House"
+      ],
+      "related_entities": [
+        "member_lok_sabha",
+        "member_rajya_sabha",
+        "speaker_lok_sabha",
+        "chairman_rajya_sabha"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure"
+      ]
+    },
+    {
+      "id": "no_confidence_motion",
+      "name": "No-Confidence Motion",
+      "short_name": "No-Confidence",
+      "category": "executive_accountability",
+      "level": "union_and_state",
+      "scope": "constitutional_principle_and_house_rule",
+      "description": "A motion expressing that the Council of Ministers no longer enjoys the confidence of the directly elected House to which it is collectively responsible.",
+      "steps": [
+        "A member gives notice in the prescribed manner.",
+        "The Presiding Officer determines whether the motion is admissible.",
+        "The House may grant leave and schedule the motion under its rules.",
+        "The motion is debated.",
+        "The House votes on the motion."
+      ],
+      "effects": [
+        "If the motion is carried in the Lok Sabha, the Union Council of Ministers cannot continue in office on the basis of its existing confidence.",
+        "If carried in a State Legislative Assembly, the State Council of Ministers cannot continue in office on the basis of its existing confidence."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "75(3)",
+          "description": "The Union Council of Ministers is collectively responsible to the House of the People."
+        },
+        {
+          "article": "164(2)",
+          "description": "The State Council of Ministers is collectively responsible to the Legislative Assembly of the State."
+        }
+      ],
+      "legal_basis": [
+        "Relevant House Rules of Procedure"
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "state_assembly"
+      ],
+      "references": [
+        "Constitution of India, Articles 75(3) and 164(2)",
+        "Relevant House Rules of Procedure"
+      ]
+    },
+    {
+      "id": "censure_motion",
+      "name": "Censure Motion",
+      "short_name": "Censure",
+      "category": "executive_accountability",
+      "level": "union_and_state",
+      "scope": "parliamentary_practice",
+      "description": "A motion expressing disapproval of a specific policy, action or conduct of the government.",
+      "steps": [
+        "A member gives notice in accordance with the applicable rules.",
+        "The Presiding Officer considers admissibility.",
+        "The motion is taken up if admitted and scheduled.",
+        "The House debates and decides the motion."
+      ],
+      "key_distinction": "A censure motion generally identifies specific grounds of criticism. Its procedural and political consequences differ from a no-confidence motion.",
+      "legal_basis": [
+        "House Rules of Procedure and parliamentary practice"
+      ],
+      "related_entities": [
+        "member_lok_sabha",
+        "member_state_assembly",
+        "speaker_lok_sabha",
+        "speaker_state_assembly"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure"
+      ]
+    },
+    {
+      "id": "calling_attention",
+      "name": "Calling Attention",
+      "short_name": "Calling Attention",
+      "category": "accountability_device",
+      "level": "union_and_state",
+      "scope": "house_rule",
+      "description": "A parliamentary device through which a member, with the permission of the Presiding Officer, draws the attention of a Minister to a matter of urgent public importance.",
+      "steps": [
+        "A member submits notice identifying the matter.",
+        "The Presiding Officer determines admissibility.",
+        "The member calls the attention of the concerned Minister.",
+        "The Minister makes a statement.",
+        "Permitted clarifications may follow under the applicable rules."
+      ],
+      "purpose": [
+        "Secure a government response on an urgent public matter.",
+        "Enable focused legislative scrutiny."
+      ],
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House"
+      ],
+      "related_entities": [
+        "member_lok_sabha",
+        "member_rajya_sabha",
+        "speaker_lok_sabha",
+        "chairman_rajya_sabha"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure"
+      ]
+    },
+    {
+      "id": "short_duration_discussion",
+      "name": "Short Duration Discussion",
+      "short_name": "Short Discussion",
+      "category": "accountability_device",
+      "level": "union_and_state",
+      "scope": "house_rule",
+      "description": "A discussion on a matter of urgent public importance for a limited period, conducted under the applicable House rules.",
+      "steps": [
+        "A member gives notice of the proposed discussion.",
+        "The Presiding Officer determines admissibility and scheduling.",
+        "The matter is discussed for the permitted duration.",
+        "The concerned Minister may respond."
+      ],
+      "key_distinction": "The procedure ordinarily does not involve a substantive motion or a vote on the matter discussed.",
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House"
+      ],
+      "related_entities": [
+        "member_lok_sabha",
+        "member_rajya_sabha",
+        "speaker_lok_sabha",
+        "chairman_rajya_sabha"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure"
+      ]
+    },
+    {
+      "id": "ordinary_bill_procedure",
+      "name": "Ordinary Bill Procedure",
+      "short_name": "Ordinary Bill",
+      "category": "bill_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional_and_house_rule",
+      "description": "The legislative process for a Bill that is neither a Money Bill nor a Constitution Amendment Bill.",
+      "stages": [
+        {
+          "stage": 1,
+          "name": "First Reading",
+          "description": "Introduction of the Bill in the House."
+        },
+        {
+          "stage": 2,
+          "name": "Second Reading",
+          "description": "Consideration of the Bill, including general discussion, clause-by-clause consideration and possible committee examination."
+        },
+        {
+          "stage": 3,
+          "name": "Third Reading",
+          "description": "Final consideration and voting on the Bill."
+        }
+      ],
+      "steps": [
+        "The Bill is introduced in either House, subject to constitutional restrictions.",
+        "The House considers the Bill and may refer it to a committee or circulate it for eliciting opinion where permitted.",
+        "The House considers the clauses and proposed amendments.",
+        "The House votes on the Bill.",
+        "The other House considers and passes the Bill in the required form.",
+        "The Bill is presented to the President or Governor, as applicable, for assent."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "107",
+          "description": "Introduction and passing of Bills."
+        },
+        {
+          "article": "108",
+          "description": "Joint sitting in certain cases of deadlock."
+        },
+        {
+          "article": "109",
+          "description": "Special procedure for Money Bills."
+        },
+        {
+          "article": "111",
+          "description": "Assent to Bills."
+        },
+        {
+          "article": "196",
+          "description": "Introduction and passing of Bills in State Legislatures."
+        },
+        {
+          "article": "200",
+          "description": "Assent to Bills by the Governor."
+        }
+      ],
+      "key_rules": [
+        "An ordinary Bill may generally originate in either House.",
+        "Both Houses must agree to the Bill, subject to constitutional exceptions.",
+        "A joint sitting may be available for certain deadlocks in Parliament.",
+        "The joint sitting procedure does not apply to Money Bills or Constitution Amendment Bills."
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha",
+        "president_of_india",
+        "state_assembly",
+        "state_council",
+        "governor_of_state"
+      ],
+      "references": [
+        "Constitution of India, Articles 107–111 and 196–201"
+      ]
+    },
+    {
+      "id": "money_bill_procedure",
+      "name": "Money Bill Procedure",
+      "short_name": "Money Bill",
+      "category": "bill_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "A special legislative procedure for Bills containing only provisions falling within the constitutional definition of a Money Bill.",
+      "steps": [
+        "The Bill is introduced only in the Lok Sabha at Union level or the Legislative Assembly at State level.",
+        "The required recommendation of the President or Governor is obtained where constitutionally necessary.",
+        "The Speaker certifies whether the Bill is a Money Bill.",
+        "At Union level, the Bill is transmitted to the Rajya Sabha after passage by the Lok Sabha.",
+        "The Rajya Sabha may make recommendations within fourteen days.",
+        "The Lok Sabha may accept or reject any or all recommendations.",
+        "The Bill is presented for assent."
+      ],
+      "key_rules": [
+        "A Money Bill must satisfy Article 110 at Union level or Article 199 at State level.",
+        "At Union level, the Rajya Sabha cannot reject or amend a Money Bill; it may only recommend amendments.",
+        "The Rajya Sabha must return the Bill within fourteen days.",
+        "If it is not returned within fourteen days, it is deemed passed in the form passed by the Lok Sabha.",
+        "A joint sitting is not provided for Money Bills."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "109",
+          "description": "Special procedure in respect of Money Bills."
+        },
+        {
+          "article": "110",
+          "description": "Definition of Money Bills."
+        },
+        {
+          "article": "117(1)",
+          "description": "Special provisions as to certain financial Bills."
+        },
+        {
+          "article": "198",
+          "description": "Special procedure in respect of Money Bills in State Legislatures."
+        },
+        {
+          "article": "199",
+          "description": "Definition of Money Bills."
+        }
+      ],
+      "related_entities": [
+        "speaker_lok_sabha",
+        "lok_sabha",
+        "rajya_sabha",
+        "speaker_state_assembly",
+        "state_assembly",
+        "state_council"
+      ],
+      "references": [
+        "Constitution of India, Articles 109, 110, 117, 198 and 199"
+      ]
+    },
+    {
+      "id": "financial_bill_procedure",
+      "name": "Financial Bill Procedure",
+      "short_name": "Financial Bill",
+      "category": "bill_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "The procedure for Bills dealing with specified financial matters that do not necessarily qualify as Money Bills.",
+      "types": [
+        {
+          "name": "Financial Bill under Article 117(1)",
+          "description": "Contains one or more matters specified in Article 110(1), together with other matters.",
+          "restriction": "Cannot be introduced in the Rajya Sabha and requires the President's recommendation."
+        },
+        {
+          "name": "Financial Bill under Article 117(3)",
+          "description": "A Bill which, if enacted and brought into operation, would involve expenditure from the Consolidated Fund of India.",
+          "restriction": "Cannot be passed by either House unless the President has recommended consideration of the Bill."
+        }
+      ],
+      "key_rules": [
+        "A Financial Bill is not automatically a Money Bill.",
+        "The applicable procedure depends on the category of Financial Bill.",
+        "A Bill under Article 117(1) cannot be introduced in the Rajya Sabha.",
+        "A Bill under Article 117(3) may be introduced in either House, subject to the constitutional recommendation requirement for passage."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "117",
+          "description": "Special provisions as to Financial Bills."
+        },
+        {
+          "article": "207",
+          "description": "Special provisions as to Financial Bills in State Legislatures."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha",
+        "president_of_india",
+        "state_assembly",
+        "state_council",
+        "governor_of_state"
+      ],
+      "references": [
+        "Constitution of India, Articles 117 and 207"
+      ]
+    },
+    {
+      "id": "constitution_amendment_bill_procedure",
+      "name": "Constitution Amendment Bill Procedure",
+      "short_name": "Constitution Amendment",
+      "category": "bill_procedure",
+      "level": "union",
+      "scope": "constitutional",
+      "description": "The special legislative procedure for amending the Constitution under Article 368.",
+      "steps": [
+        "The Bill may be introduced in either House of Parliament.",
+        "Each House considers and votes on the Bill separately.",
+        "Each House must pass the Bill by the required special majority.",
+        "Where the amendment concerns specified federal provisions, ratification by at least half of the State Legislatures is also required.",
+        "The Bill is presented to the President for assent."
+      ],
+      "key_rules": [
+        "The special majority generally requires a majority of the total membership of each House and not less than two-thirds of members present and voting.",
+        "Where the proviso to Article 368(2) applies, ratification by at least half of the State Legislatures is required.",
+        "There is no provision for a joint sitting to resolve disagreement between the Houses on a Constitution Amendment Bill.",
+        "The President shall give assent to a Constitution Amendment Bill duly passed under Article 368."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "368",
+          "description": "Power of Parliament to amend the Constitution and procedure therefor."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha",
+        "state_legislature",
+        "president_of_india"
+      ],
+      "references": [
+        "Constitution of India, Article 368"
+      ]
+    },
+    {
+      "id": "joint_sitting",
+      "name": "Joint Sitting of Parliament",
+      "short_name": "Joint Sitting",
+      "category": "bill_procedure",
+      "level": "union",
+      "scope": "constitutional",
+      "description": "A joint meeting of both Houses of Parliament to resolve certain legislative deadlocks.",
+      "grounds": [
+        "One House rejects a Bill passed by the other House.",
+        "The Houses finally disagree on amendments to a Bill.",
+        "More than six months elapse after receipt of a Bill by the other House without it being passed, subject to constitutional exclusions."
+      ],
+      "steps": [
+        "A qualifying deadlock arises between the Houses.",
+        "The President notifies the intention to summon a joint sitting.",
+        "The joint sitting is convened and presided over according to Article 108 and applicable rules.",
+        "The Bill is considered and decided by the members present and voting."
+      ],
+      "exceptions": [
+        "Money Bills",
+        "Constitution Amendment Bills"
+      ],
+      "constitutional_basis": [
+        {
+          "article": "108",
+          "description": "Joint sitting of both Houses in certain cases."
+        }
+      ],
+      "related_entities": [
+        "president_of_india",
+        "lok_sabha",
+        "rajya_sabha",
+        "speaker_lok_sabha"
+      ],
+      "references": [
+        "Constitution of India, Article 108",
+        "Digital Sansad, Lok Sabha and Rajya Sabha FAQs"
+      ]
+    },
+    {
+      "id": "ordinance_replacement",
+      "name": "Legislative Approval of an Ordinance",
+      "short_name": "Ordinance Replacement",
+      "category": "bill_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "The process by which an ordinance promulgated during a legislative recess is placed before the legislature for approval or replacement by legislation.",
+      "steps": [
+        "An ordinance is promulgated when the constitutional conditions for doing so are satisfied.",
+        "The ordinance is laid before the relevant legislature.",
+        "The legislature may enact a Bill dealing with the same subject.",
+        "The ordinance ceases to operate according to the applicable constitutional time limit or earlier legislative action."
+      ],
+      "key_rules": [
+        "An ordinance is not a permanent substitute for legislation.",
+        "At Union level, an ordinance generally ceases to operate six weeks after the reassembly of Parliament, unless it ceases earlier or is withdrawn.",
+        "The corresponding State rule is governed by Article 213."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "123",
+          "description": "Power of the President to promulgate Ordinances during recess of Parliament."
+        },
+        {
+          "article": "213",
+          "description": "Power of the Governor to promulgate Ordinances during recess of the State Legislature."
+        }
+      ],
+      "related_entities": [
+        "president_of_india",
+        "governor_of_state",
+        "parliament",
+        "state_legislature"
+      ],
+      "references": [
+        "Constitution of India, Articles 123 and 213"
+      ]
+    },
+    {
+      "id": "budget_presentation",
+      "name": "Presentation of the Union Budget",
+      "short_name": "Union Budget",
+      "category": "financial_procedure",
+      "level": "union",
+      "scope": "constitutional_and_house_rule",
+      "description": "The presentation of the annual financial statement of the estimated receipts and expenditure of the Government of India.",
+      "steps": [
+        "The President causes the annual financial statement to be laid before both Houses.",
+        "The Finance Minister presents the Budget in the Lok Sabha as per parliamentary practice.",
+        "The Budget is laid before the Rajya Sabha.",
+        "General discussion takes place in the Houses.",
+        "Demands for Grants are considered and voted upon in the Lok Sabha.",
+        "Appropriation and Finance Bills are taken up through the applicable procedures."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "112",
+          "description": "Annual financial statement."
+        }
+      ],
+      "related_entities": [
+        "president_of_india",
+        "lok_sabha",
+        "rajya_sabha"
+      ],
+      "references": [
+        "Constitution of India, Articles 112–117"
+      ]
+    },
+    {
+      "id": "demands_for_grants",
+      "name": "Demands for Grants",
+      "short_name": "Grants",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "The legislative process through which expenditure charged on the relevant fund and other expenditure are dealt with under the constitutional budget procedure.",
+      "steps": [
+        "The annual financial statement is presented.",
+        "Demands for Grants are placed before the House.",
+        "The House discusses the demands.",
+        "The House votes on demands that are subject to voting.",
+        "The approved grants form the basis for the Appropriation Bill."
+      ],
+      "key_rules": [
+        "At Union level, Demands for Grants are submitted to the Lok Sabha.",
+        "The Rajya Sabha may discuss the Budget but does not vote on Demands for Grants.",
+        "Expenditure charged on the Consolidated Fund is not submitted to the vote of the House, though it may be discussed.",
+        "At State level, the Legislative Assembly votes on Demands for Grants."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "113",
+          "description": "Procedure in Parliament with respect to estimates."
+        },
+        {
+          "article": "203",
+          "description": "Procedure in State Legislatures with respect to estimates."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha",
+        "state_assembly",
+        "state_council"
+      ],
+      "references": [
+        "Constitution of India, Articles 113 and 203"
+      ]
+    },
+    {
+      "id": "cut_motions",
+      "name": "Cut Motions",
+      "short_name": "Cut Motions",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "house_rule_and_practice",
+      "description": "Motions moved to reduce the amount of a Demand for Grant and to scrutinise government expenditure.",
+      "types": [
+        {
+          "id": "policy_cut",
+          "name": "Policy Cut",
+          "description": "A proposal to reduce the demand to Re. 1, expressing disapproval of the policy underlying the demand."
+        },
+        {
+          "id": "economy_cut",
+          "name": "Economy Cut",
+          "description": "A proposal to reduce the demand by a specified amount, seeking economy in expenditure."
+        },
+        {
+          "id": "token_cut",
+          "name": "Token Cut",
+          "description": "A proposal to reduce the demand by Rs. 100 to ventilate a specific grievance."
+        }
+      ],
+      "steps": [
+        "A member gives notice of the proposed cut motion.",
+        "The motion is examined for admissibility under the applicable rules.",
+        "The motion may be discussed with the relevant Demand for Grant.",
+        "The House votes on the motion."
+      ],
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House"
+      ],
+      "related_entities": [
+        "member_lok_sabha",
+        "member_state_assembly",
+        "lok_sabha",
+        "state_assembly"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure"
+      ]
+    },
+    {
+      "id": "guillotine",
+      "name": "Guillotine in Budget Procedure",
+      "short_name": "Guillotine",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "house_rule_and_practice",
+      "description": "The procedural practice of putting outstanding Demands for Grants to vote without further discussion when the allotted time for their consideration expires.",
+      "steps": [
+        "Time is allocated for discussion of Demands for Grants.",
+        "The allotted period expires.",
+        "The Presiding Officer puts the remaining outstanding demands to vote as provided by the House rules."
+      ],
+      "purpose": [
+        "Ensure completion of the financial business within the allotted timetable.",
+        "Enable the legislature to proceed to the Appropriation Bill."
+      ],
+      "key_distinction": "Guillotine is a procedural practice governed by House rules and scheduling; it is not an independent constitutional power.",
+      "legal_basis": [
+        "Rules of Procedure and Conduct of Business of the respective House"
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "state_assembly",
+        "speaker_lok_sabha",
+        "speaker_state_assembly"
+      ],
+      "references": [
+        "Relevant House Rules of Procedure",
+        "Parliamentary practice relating to Budget procedure"
+      ]
+    },
+    {
+      "id": "appropriation_bill",
+      "name": "Appropriation Bill",
+      "short_name": "Appropriation",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "A Bill authorising withdrawal of money from the Consolidated Fund to meet grants made by the legislature and expenditure charged on the Fund.",
+      "steps": [
+        "The relevant grants are voted upon where voting is constitutionally required.",
+        "The Appropriation Bill is introduced.",
+        "The Bill is considered and passed under the applicable special financial procedure.",
+        "It is presented for assent.",
+        "Withdrawals from the Consolidated Fund are authorised in accordance with the enacted law."
+      ],
+      "key_rules": [
+        "Amendments to an Appropriation Bill are restricted by the Constitution.",
+        "No money may be withdrawn from the Consolidated Fund except under appropriation made by law, subject to constitutional provisions."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "114",
+          "description": "Appropriation Bills."
+        },
+        {
+          "article": "204",
+          "description": "Appropriation Bills in State Legislatures."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "state_assembly",
+        "president_of_india",
+        "governor_of_state"
+      ],
+      "references": [
+        "Constitution of India, Articles 114 and 204"
+      ]
+    },
+    {
+      "id": "finance_bill",
+      "name": "Finance Bill",
+      "short_name": "Finance Bill",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional_and_house_rule",
+      "description": "A Bill giving effect to the government's financial proposals, including taxation measures where applicable.",
+      "steps": [
+        "The financial proposals are presented as part of the Budget process.",
+        "The relevant Finance Bill is introduced under the applicable constitutional procedure.",
+        "The House considers and passes the Bill.",
+        "The Bill is transmitted to the other House where constitutionally required.",
+        "The Bill is presented for assent."
+      ],
+      "key_distinction": "A Finance Bill may be classified as a Money Bill or another category of Financial Bill depending on its provisions. The title alone does not determine its constitutional classification.",
+      "constitutional_basis": [
+        {
+          "article": "110",
+          "description": "Definition of Money Bills."
+        },
+        {
+          "article": "117",
+          "description": "Special provisions as to Financial Bills."
+        },
+        {
+          "article": "199",
+          "description": "Definition of Money Bills in State Legislatures."
+        },
+        {
+          "article": "207",
+          "description": "Special provisions as to Financial Bills in State Legislatures."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "rajya_sabha",
+        "state_assembly",
+        "state_council"
+      ],
+      "references": [
+        "Constitution of India, Articles 110, 117, 199 and 207"
+      ]
+    },
+    {
+      "id": "vote_on_account",
+      "name": "Vote on Account",
+      "short_name": "Vote on Account",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "A grant made in advance to enable the government to meet expenditure for part of a financial year while the regular budgetary procedure is being completed.",
+      "steps": [
+        "The government seeks an advance grant for a specified period.",
+        "The relevant House considers the proposal.",
+        "The grant is voted upon in accordance with the constitutional procedure.",
+        "The necessary appropriation law authorises withdrawal from the Consolidated Fund."
+      ],
+      "key_distinction": "A Vote on Account provides temporary spending authority and is distinct from approval of the full year's Demands for Grants.",
+      "constitutional_basis": [
+        {
+          "article": "116(1)(a)",
+          "description": "Vote on account at Union level."
+        },
+        {
+          "article": "206(1)(a)",
+          "description": "Vote on account at State level."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "state_assembly"
+      ],
+      "references": [
+        "Constitution of India, Articles 116 and 206"
+      ]
+    },
+    {
+      "id": "vote_of_credit",
+      "name": "Vote of Credit",
+      "short_name": "Vote of Credit",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "A grant for meeting an unexpected demand upon the resources of the government where the magnitude or indefinite character of the service prevents the demand from being stated with the detail ordinarily given in the annual financial statement.",
+      "steps": [
+        "An unexpected financial demand arises.",
+        "The government seeks a grant under the relevant constitutional provision.",
+        "The legislature considers the grant.",
+        "The necessary appropriation law authorises withdrawal from the Consolidated Fund."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "116(1)(b)",
+          "description": "Vote of credit at Union level."
+        },
+        {
+          "article": "206(1)(b)",
+          "description": "Vote of credit at State level."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "state_assembly"
+      ],
+      "references": [
+        "Constitution of India, Articles 116 and 206"
+      ]
+    },
+    {
+      "id": "exceptional_grant",
+      "name": "Exceptional Grant",
+      "short_name": "Exceptional Grant",
+      "category": "financial_procedure",
+      "level": "union_and_state",
+      "scope": "constitutional",
+      "description": "A grant forming no part of the current service of any financial year.",
+      "steps": [
+        "The government identifies expenditure that does not form part of the current service of the financial year.",
+        "The grant is submitted to the legislature.",
+        "The legislature considers and votes on the grant.",
+        "The necessary appropriation law authorises withdrawal from the Consolidated Fund."
+      ],
+      "constitutional_basis": [
+        {
+          "article": "116(1)(c)",
+          "description": "Exceptional grant at Union level."
+        },
+        {
+          "article": "206(1)(c)",
+          "description": "Exceptional grant at State level."
+        }
+      ],
+      "related_entities": [
+        "lok_sabha",
+        "state_assembly"
+      ],
+      "references": [
+        "Constitution of India, Articles 116 and 206"
+      ]
+    }
+  ]
+}

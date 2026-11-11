@@ -1,0 +1,1038 @@
+
+/* =========================================
+   1. GLOBAL SETTINGS
+========================================= */
+
+:root {
+    --primary: #24466b;
+    --primary-dark: #183450;
+    --primary-light: #eaf0f7;
+
+    --background: #f4f6f9;
+    --surface: #ffffff;
+    --surface-alt: #f0f3f7;
+
+    --text: #253142;
+    --text-secondary: #657184;
+
+    --border: #dce2e9;
+
+    --success: #28764c;
+    --warning: #94651b;
+
+    --sidebar-width: 220px;
+    --topbar-height: 54px;
+
+    --font-size: 14px;
+    --small-size: 12px;
+
+    --radius: 6px;
+}
+
+
+/* =========================================
+   2. RESET AND BASE
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: var(--font-size);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.45;
+    min-width: 1000px;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid #4a8fd8;
+    outline-offset: 2px;
+}
+
+a {
+    color: var(--primary);
+}
+
+
+/* =========================================
+   3. APPLICATION CONTAINER
+========================================= */
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================
+   4. TOP NAVIGATION
+========================================= */
+
+.topbar {
+    height: var(--topbar-height);
+    min-height: var(--topbar-height);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: var(--primary-dark);
+    color: white;
+
+    padding: 0 20px;
+    gap: 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 230px;
+}
+
+.brand-name {
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.brand-subtitle {
+    font-size: 12px;
+    color: #d3dfeb;
+}
+
+.module-nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-item {
+    border: none;
+    background: transparent;
+    color: #dce6f0;
+
+    padding: 9px 13px;
+    border-radius: 4px;
+
+    font-size: 13px;
+}
+
+.nav-item:hover:not(:disabled),
+.nav-item.active {
+    background: #365779;
+    color: white;
+}
+
+.topbar-right {
+    min-width: 120px;
+    text-align: right;
+}
+
+.module-label {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #dce6f0;
+}
+
+
+/* =========================================
+   5. MAIN WORKSPACE
+========================================= */
+
+.workspace {
+    flex: 1;
+
+    display: grid;
+    grid-template-columns:
+        var(--sidebar-width)
+        minmax(0, 1fr);
+
+    min-height: 0;
+}
+
+
+/* =========================================
+   6. SIDEBAR
+========================================= */
+
+.sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+
+    padding: 16px 10px;
+
+    overflow-y: auto;
+}
+
+.sidebar-heading {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+
+    color: var(--text-secondary);
+
+    padding: 8px 10px;
+    margin-bottom: 5px;
+}
+
+.sidebar-item {
+    display: block;
+    width: 100%;
+
+    text-align: left;
+
+    border: none;
+    background: transparent;
+
+    padding: 9px 11px;
+    margin-bottom: 3px;
+
+    border-radius: 4px;
+
+    color: var(--text);
+    font-size: 13px;
+}
+
+.sidebar-item:hover {
+    background: var(--surface-alt);
+}
+
+.sidebar-item.active {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: bold;
+
+    border-left: 3px solid var(--primary);
+    padding-left: 8px;
+}
+
+.sidebar-divider {
+    border-top: 1px solid var(--border);
+    margin: 14px 5px;
+}
+
+
+/* =========================================
+   7. MAIN CONTENT
+========================================= */
+
+.main-content {
+    min-width: 0;
+
+    padding: 16px 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.page-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.breadcrumb {
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+.page-context h1 {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 7px;
+}
+
+
+/* =========================================
+   8. BUTTONS
+========================================= */
+
+.secondary-button {
+    border: 1px solid var(--border);
+    background: var(--surface);
+
+    color: var(--text);
+
+    border-radius: 4px;
+    padding: 7px 11px;
+
+    font-size: 12px;
+}
+
+.secondary-button:hover {
+    background: var(--surface-alt);
+    border-color: #aab7c5;
+}
+
+.primary-button {
+    border: none;
+    background: var(--primary);
+    color: white;
+
+    border-radius: 4px;
+    padding: 8px 12px;
+
+    font-size: 12px;
+}
+
+.primary-button:hover {
+    background: var(--primary-dark);
+}
+
+
+/* =========================================
+   9. SEARCH AND FILTER PANEL
+========================================= */
+
+.search-panel {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+
+    padding: 12px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 2;
+    min-width: 280px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    min-width: 145px;
+}
+
+.search-panel label {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+
+.search-panel input,
+.search-panel select {
+    height: 34px;
+
+    border: 1px solid var(--border);
+    border-radius: 4px;
+
+    padding: 5px 9px;
+
+    background: white;
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+#clear-search {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+
+    background: transparent;
+    border: none;
+
+    color: var(--primary);
+    font-size: 11px;
+}
+
+
+/* =========================================
+   10. RESULTS TOOLBAR
+========================================= */
+
+.results-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    min-height: 30px;
+}
+
+#results-summary {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.view-options {
+    display: flex;
+    gap: 4px;
+}
+
+.view-button {
+    border: 1px solid var(--border);
+    background: var(--surface);
+
+    padding: 6px 12px;
+
+    border-radius: 4px;
+
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.view-button.active {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-color: #b7c9dd;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   11. CONTENT AREA
+========================================= */
+
+.content-area {
+    flex: 1;
+    min-height: 300px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    padding: 15px;
+
+    overflow: auto;
+}
+
+#loading-message {
+    color: var(--text-secondary);
+    padding: 15px;
+    text-align: center;
+}
+
+
+/* =========================================
+   12. HIERARCHY DISPLAY
+========================================= */
+
+.hierarchy-section {
+    margin-bottom: 22px;
+}
+
+.hierarchy-heading {
+    font-size: 14px;
+    font-weight: bold;
+
+    color: var(--primary-dark);
+
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.hierarchy-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(215px, 1fr));
+
+    gap: 10px;
+}
+
+.hierarchy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+
+    border-radius: 5px;
+    padding: 11px;
+
+    transition: border-color 0.15s ease,
+                background 0.15s ease;
+}
+
+.hierarchy-card:hover {
+    border-color: #91a9c2;
+    background: #f9fbfd;
+}
+
+.hierarchy-card h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--primary-dark);
+}
+
+.hierarchy-card p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 7px;
+}
+
+.card-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.card-tag {
+    display: inline-block;
+
+    background: var(--surface-alt);
+    color: #455468;
+
+    border-radius: 3px;
+
+    padding: 3px 6px;
+
+    font-size: 11px;
+}
+
+.card-action {
+    border: none;
+    background: transparent;
+
+    color: var(--primary);
+
+    font-size: 12px;
+    font-weight: bold;
+
+    padding: 5px 0 0;
+    text-align: left;
+}
+
+
+/* =========================================
+   13. LIST VIEW
+========================================= */
+
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.post-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 1.5fr)
+        minmax(120px, 1fr)
+        minmax(120px, 1fr)
+        85px;
+
+    gap: 12px;
+    align-items: center;
+
+    padding: 10px 8px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.post-row:hover {
+    background: #f7f9fb;
+}
+
+.post-name {
+    font-weight: bold;
+    font-size: 13px;
+    color: var(--primary-dark);
+}
+
+.post-description,
+.post-category,
+.post-institution {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.post-open {
+    background: transparent;
+    border: 1px solid var(--border);
+
+    padding: 5px 8px;
+    border-radius: 4px;
+
+    color: var(--primary);
+    font-size: 11px;
+}
+
+.post-open:hover {
+    background: var(--primary-light);
+}
+
+
+/* =========================================
+   14. PAGINATION
+========================================= */
+
+.pagination-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+    flex-wrap: wrap;
+
+    padding: 10px 12px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+}
+
+#pagination-info {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.page-button,
+.page-number {
+    border: 1px solid var(--border);
+    background: white;
+
+    padding: 5px 9px;
+
+    border-radius: 4px;
+
+    font-size: 11px;
+    color: var(--text);
+}
+
+.page-number.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.page-button:hover:not(:disabled),
+.page-number:hover {
+    background: var(--primary-light);
+}
+
+.page-size-control {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.page-size-control select {
+    padding: 5px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+
+    background: white;
+}
+
+
+/* =========================================
+   15. DETAILS MODAL
+========================================= */
+
+.details-modal {
+    border: none;
+    padding: 0;
+
+    width: min(900px, 92vw);
+    height: min(700px, 90vh);
+
+    max-width: none;
+    max-height: none;
+
+    margin: auto;
+
+    border-radius: 7px;
+
+    box-shadow: 0 12px 45px rgba(0,0,0,0.25);
+
+    color: var(--text);
+    background: var(--surface);
+}
+
+.details-modal::backdrop {
+    background: rgba(15, 28, 43, 0.62);
+}
+
+.modal-container {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+
+/* Modal Header */
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 17px 20px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-category {
+    font-size: 11px;
+    color: var(--success);
+
+    font-weight: bold;
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+.modal-heading h2 {
+    font-size: 19px;
+    color: var(--primary-dark);
+}
+
+.modal-subtitle {
+    margin-top: 4px;
+
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+
+    font-size: 27px;
+    line-height: 1;
+
+    color: var(--text-secondary);
+
+    padding: 0 5px;
+}
+
+.modal-close:hover {
+    color: #b42318;
+}
+
+
+/* Modal Tabs */
+
+.modal-tabs {
+    display: flex;
+    gap: 3px;
+
+    padding: 8px 15px;
+
+    background: var(--surface-alt);
+
+    border-bottom: 1px solid var(--border);
+
+    overflow-x: auto;
+}
+
+.modal-tab {
+    border: none;
+    background: transparent;
+
+    padding: 8px 12px;
+
+    border-radius: 4px;
+
+    font-size: 12px;
+    white-space: nowrap;
+
+    color: var(--text-secondary);
+}
+
+.modal-tab.active {
+    background: white;
+    color: var(--primary-dark);
+
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+
+/* Modal Content */
+
+.modal-content {
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 18px 22px;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+}
+
+.detail-section h3 {
+    font-size: 14px;
+    color: var(--primary-dark);
+
+    margin-bottom: 7px;
+
+    padding-bottom: 5px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-section p {
+    font-size: 13px;
+    line-height: 1.6;
+
+    color: var(--text);
+    margin-bottom: 7px;
+}
+
+.detail-section ul {
+    padding-left: 20px;
+}
+
+.detail-section li {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px 20px;
+}
+
+.detail-field {
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-label {
+    display: block;
+
+    font-size: 11px;
+    color: var(--text-secondary);
+
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    font-size: 13px;
+    color: var(--text);
+}
+
+
+/* Modal Footer */
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10px 18px;
+
+    background: var(--surface-alt);
+    border-top: 1px solid var(--border);
+}
+
+.modal-record-id {
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+
+/* =========================================
+   16. EMPTY AND ERROR STATES
+========================================= */
+
+.empty-state,
+.error-state {
+    text-align: center;
+    padding: 35px 15px;
+
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.error-state {
+    color: #a52b2b;
+}
+
+
+/* =========================================
+   17. FOOTER
+========================================= */
+
+.app-footer {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 8px 18px;
+
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+
+/* =========================================
+   18. COLLAPSED SECTIONS
+========================================= */
+
+.hierarchy-section.collapsed .hierarchy-grid {
+    display: none;
+}
+
+.hierarchy-section.collapsed .hierarchy-heading {
+    cursor: pointer;
+}
+
+
+/* =========================================
+   19. PRINT
+========================================= */
+
+@media print {
+
+    body {
+        min-width: 0;
+        background: white;
+    }
+
+    .topbar,
+    .sidebar,
+    .search-panel,
+    .toolbar-actions,
+    .pagination-section,
+    .app-footer,
+    .view-options {
+        display: none !important;
+    }
+
+    .workspace {
+        display: block;
+    }
+
+    .main-content {
+        padding: 0;
+    }
+
+    .content-area {
+        border: none;
+        overflow: visible;
+    }
+
+    .hierarchy-card {
+        break-inside: avoid;
+    }
+
+    .details-modal {
+        display: none;
+    }
+
+}
+
+
+/* =========================================
+   20. LAPTOP HEIGHT OPTIMIZATION
+========================================= */
+
+@media (min-width: 1100px) and (min-height: 650px) {
+
+    .main-content {
+        gap: 10px;
+        padding-top: 13px;
+        padding-bottom: 13px;
+    }
+
+    .content-area {
+        padding: 12px;
+    }
+
+    .hierarchy-section {
+        margin-bottom: 16px;
+    }
+
+}
+
+
+/* =========================================
+   21. REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+}
