@@ -1076,3 +1076,45 @@ textarea:focus-visible {
     width: 100%;
   }
 }
+
+
+/* =========================================
+   STICKY HORIZONTAL SECONDARY NAVIGATION
+   ========================================= */
+
+.secondary-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  overflow: hidden;
+}
+
+.secondary-nav-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.secondary-nav-inner a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Keep the navigation usable on smaller screens */
+
+@media (max-width: 768px) {
+  .secondary-nav-inner {
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+
+  .secondary-nav-inner::-webkit-scrollbar {
+    display: none;
+  }
+}
