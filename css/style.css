@@ -4,8 +4,6 @@
    SHARED DESIGN SYSTEM
    ========================================================= */
 
-/* 1. DESIGN TOKENS */
-
 :root {
     --page: #f5f7fa;
     --surface: #ffffff;
@@ -23,9 +21,11 @@
     --content-width: 1440px;
     --reading-width: 1440px;
     --radius: 5px;
+    --sidebar-width: 240px;
+    --header-height: 50px;
 }
 
-/* 2. RESET AND BASE */
+/* RESET AND BASE */
 
 * {
     box-sizing: border-box;
@@ -103,12 +103,11 @@ h6 {
     font-size: 12px;
 }
 
-/* 3. SHARED PAGE WIDTHS */
+/* SHARED PAGE WIDTHS */
 
 .page-container,
 .reading-content,
-.home-content,
-.secondary-nav-inner {
+.home-content {
     width: calc(100% - 48px);
     max-width: var(--content-width);
     margin-left: auto;
@@ -125,7 +124,7 @@ h6 {
     padding: 12px 0 28px;
 }
 
-/* 4. SITE HEADER AND PRIMARY NAVIGATION */
+/* SITE HEADER AND PRIMARY NAVIGATION */
 
 .site-header {
     position: sticky;
@@ -231,46 +230,66 @@ h6 {
     pointer-events: none;
 }
 
-/* 5. SECONDARY NAVIGATION
-   It is a normal second row inside the sticky site header. */
+/* FIXED VERTICAL SECONDARY NAVIGATION */
 
 .secondary-nav {
-    position: static;
-    width: 100%;
-    margin-top: 4px;
+    position: fixed;
+    top: var(--header-height);
+    bottom: 0;
+    left: 0;
+    z-index: 900;
+    width: var(--sidebar-width);
+    margin: 0;
+    padding: 12px 10px 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
     background: #eaf0f6;
-    border-top: 1px solid var(--border);
-    overflow: hidden;
-}
-
-.secondary-nav-inner {
-    min-height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    gap: 4px 17px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    border-right: 1px solid var(--border);
     scrollbar-width: thin;
 }
 
+.secondary-nav-heading {
+    padding: 3px 8px 10px;
+    color: var(--primary-dark);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.secondary-nav-inner {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+}
+
+.secondary-nav-link,
 .secondary-nav-inner a {
-    flex: 0 0 auto;
-    padding: 6px 2px;
+    display: block;
+    width: 100%;
+    padding: 7px 8px;
+    border-radius: 4px;
     color: var(--text-secondary);
     font-size: 11px;
     font-weight: 550;
-    white-space: nowrap;
+    line-height: 1.5;
+    white-space: normal;
 }
 
-.secondary-nav-inner a:hover,
-.secondary-nav-inner a.active {
+.secondary-nav-link:hover,
+.secondary-nav-inner a:hover {
+    background: var(--surface);
     color: var(--primary);
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    text-decoration: none;
+}
+
+.secondary-nav-link.active,
+.secondary-nav-inner a.active {
+    background: var(--primary);
+    color: #ffffff;
+    text-decoration: none;
 }
 
 .secondary-nav-label {
@@ -284,7 +303,43 @@ h6 {
     font-size: 11px;
 }
 
-/* 6. SHARED TYPOGRAPHY */
+/* SECTION PAGE SCROLL LAYOUT */
+
+body.has-sidebar {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.has-sidebar .site-shell {
+    height: 100vh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.has-sidebar .site-header {
+    flex-shrink: 0;
+}
+
+.has-sidebar .site-shell > main {
+    flex: 1;
+    min-height: 0;
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+}
+
+.has-sidebar .site-shell > .site-footer {
+    flex-shrink: 0;
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+}
+
+/* SHARED TYPOGRAPHY */
 
 .eyebrow {
     margin: 0 0 5px;
@@ -331,7 +386,7 @@ h6 {
     text-decoration: underline;
 }
 
-/* 7. NEWER CHAPTER PAGE STRUCTURE */
+/* CHAPTER PAGE STRUCTURE */
 
 .content-section {
     width: 100%;
@@ -437,7 +492,7 @@ h6 {
     color: var(--primary-dark);
 }
 
-/* 8. TABLES */
+/* TABLES */
 
 .content-section table,
 .comparison-table {
@@ -482,8 +537,6 @@ h6 {
     background: #fafbfd;
 }
 
-/* Retain support for comparison-card layouts. */
-
 .comparison-column {
     min-width: 0;
     padding: 12px;
@@ -506,7 +559,7 @@ h6 {
     font-size: 11px;
 }
 
-/* 9. CONCEPT NOTES */
+/* CONCEPT NOTES */
 
 .concept-note {
     margin: 10px 0;
@@ -531,7 +584,7 @@ h6 {
     font-size: 11px;
 }
 
-/* 10. ARTICLE REFERENCES */
+/* ARTICLE REFERENCES */
 
 .article-reference {
     margin: 10px 0;
@@ -570,7 +623,7 @@ h6 {
     font-size: 11px !important;
 }
 
-/* 11. QUESTIONS AND ANSWERS */
+/* QUESTIONS AND ANSWERS */
 
 .question-block {
     margin: 8px 0;
@@ -602,7 +655,7 @@ h6 {
     font-size: 11px !important;
 }
 
-/* 12. CHAPTER NAVIGATION */
+/* CHAPTER NAVIGATION */
 
 .chapter-navigation {
     width: 100%;
@@ -636,7 +689,7 @@ h6 {
     text-align: right;
 }
 
-/* 13. HOME PAGE */
+/* HOME PAGE */
 
 .home-content {
     flex: 1;
@@ -716,6 +769,14 @@ h6 {
 .module-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+/* FOUR-COLUMN CHAPTER DIRECTORY */
+
+.module-list[data-chapter-list],
+.chapter-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
 }
 
@@ -810,7 +871,7 @@ h6 {
     font-size: 11px;
 }
 
-/* 14. DIRECTORY AND TOPIC CONTENT */
+/* DIRECTORY AND TOPIC CONTENT */
 
 .directory-list,
 .chapter-list,
@@ -847,7 +908,7 @@ h6 {
     font-size: 11px;
 }
 
-/* 15. TOOLBARS AND FILTERS */
+/* TOOLBARS AND FILTERS */
 
 .toolbar,
 .filter-toolbar,
@@ -892,7 +953,7 @@ h6 {
     font-size: 11px;
 }
 
-/* 16. PAGINATION */
+/* PAGINATION */
 
 .pagination {
     margin: 14px 0;
@@ -922,7 +983,7 @@ h6 {
     color: #ffffff;
 }
 
-/* 17. FOOTER */
+/* FOOTER */
 
 .site-footer {
     min-height: 38px;
@@ -938,7 +999,7 @@ h6 {
     text-align: center;
 }
 
-/* 18. GENERAL UTILITIES */
+/* GENERAL UTILITIES */
 
 .text-muted {
     color: var(--muted);
@@ -966,7 +1027,7 @@ hr {
     border-top: 1px solid var(--border);
 }
 
-/* 19. ACCESSIBILITY */
+/* ACCESSIBILITY */
 
 a:focus-visible,
 button:focus-visible,
@@ -986,7 +1047,18 @@ textarea:focus-visible {
     }
 }
 
-/* 20. TABLET */
+/* TABLET */
+
+@media (max-width: 1100px) {
+    :root {
+        --sidebar-width: 210px;
+    }
+
+    .module-list[data-chapter-list],
+    .chapter-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
 
 @media (max-width: 900px) {
     .site-header {
@@ -1022,19 +1094,28 @@ textarea:focus-visible {
     .learning-item:nth-child(4) {
         border-top: 1px solid var(--border);
     }
+
+    .module-list[data-chapter-list],
+    .chapter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
-/* 21. MOBILE */
+/* MOBILE */
 
 @media (max-width: 600px) {
+    :root {
+        --sidebar-width: 155px;
+        --header-height: 46px;
+    }
+
     html {
         scroll-padding-top: 105px;
     }
 
     .page-container,
     .reading-content,
-    .home-content,
-    .secondary-nav-inner {
+    .home-content {
         width: calc(100% - 24px);
     }
 
@@ -1096,23 +1177,13 @@ textarea:focus-visible {
     }
 
     .secondary-nav {
-        margin-top: 4px;
+        padding: 9px 7px 16px;
     }
 
-    .secondary-nav-inner {
-        min-height: 32px;
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        gap: 2px 12px;
-        scrollbar-width: none;
-    }
-
-    .secondary-nav-inner::-webkit-scrollbar {
-        display: none;
-    }
-
+    .secondary-nav-link,
     .secondary-nav-inner a {
-        font-size: 11px;
+        padding: 7px 6px;
+        font-size: 10px;
     }
 
     .page-container {
@@ -1165,6 +1236,8 @@ textarea:focus-visible {
 
     .learning-strip,
     .module-list,
+    .module-list[data-chapter-list],
+    .chapter-grid,
     .directory-list,
     .chapter-list,
     .topic-list,

@@ -4,608 +4,230 @@
     "name": "Indian Polity",
     "subtitle": "Learning Reference",
     "brandMark": "IP",
-    "home": "index.html"
+    "home": "index.html",
+    "homeTitle": "Polity Modules",
+    "homeIntro": "Study the Indian constitutional and administrative system through structured chapters, from the Constitution and institutions of government to governance and public accountability."
   },
-  "primaryNavigation": [
-    {
-      "id": "home",
-      "label": "Home",
-      "path": "index.html"
-    },
-    {
-      "id": "constitutional-framework",
-      "label": "Constitutional Framework",
-      "path": "constitutional-framework/index.html"
-    },
-    {
-      "id": "legislature",
-      "label": "Legislature",
-      "path": "legislature/index.html"
-    },
-    {
-      "id": "executive",
-      "label": "Executive",
-      "path": "executive/index.html"
-    },
-    {
-      "id": "judiciary",
-      "label": "Judiciary",
-      "path": "judiciary/index.html"
-    },
-    {
-      "id": "constitutional-bodies",
-      "label": "Constitutional Bodies",
-      "path": "constitutional-bodies/index.html"
-    },
-    {
-      "id": "statutory-bodies",
-      "label": "Statutory Bodies",
-      "path": "statutory-bodies/index.html"
-    },
-    {
-      "id": "governance",
-      "label": "Governance and Other Topics",
-      "path": "governance/index.html"
-    }
-  ],
   "sections": [
     {
       "id": "constitutional-framework",
       "label": "Constitutional Framework",
       "path": "constitutional-framework/index.html",
+      "description": "The Constitution of India is the supreme law of the country. It establishes the institutions of government, distributes powers between the Union and the States, defines rights and duties, and lays down the principles guiding the Republic. Adopted on 26 November 1949 and brought into force on 26 January 1950, it combines parliamentary government, federal features, Fundamental Rights, Directive Principles, an independent judiciary and democratic representation.",
+      "explanation": "The Constitutional Framework explains the historical evolution, making, philosophy and institutional design of the Indian Constitution. It examines how constitutional provisions organise the State, regulate the relationship between institutions and individuals, protect liberty and equality, and provide a framework for social and economic justice.",
+      "studyGuidance": [
+        "Begin with the historical background and making of the Constitution to understand the circumstances and ideas that shaped it.",
+        "Study the salient features, sources, Preamble, Parts and Schedules to understand the Constitution's structure and philosophy.",
+        "Examine Fundamental Rights, Directive Principles of State Policy and Fundamental Duties together, noting their distinct but complementary purposes.",
+        "Finish with constitutional amendment and the Basic Structure doctrine to understand constitutional change and judicial limits on amendment."
+      ],
+      "examRelevance": "Constitutional provisions, landmark judgments, amendments, rights, institutional relationships and constitutional doctrines are foundational to Indian Polity and recur across both conceptual and factual questions.",
       "chapters": [
-        {
-          "id": "overview",
-          "label": "Overview",
-          "path": "constitutional-framework/index.html"
-        },
-        {
-          "id": "historical-background",
-          "label": "Historical Background",
-          "path": "constitutional-framework/historical-background.html"
-        },
-        {
-          "id": "making-of-the-constitution",
-          "label": "Making of the Constitution",
-          "path": "constitutional-framework/making-of-the-constitution.html"
-        },
-        {
-          "id": "salient-features",
-          "label": "Salient Features",
-          "path": "constitutional-framework/salient-features.html"
-        },
-        {
-          "id": "sources-of-the-constitution",
-          "label": "Sources of the Constitution",
-          "path": "constitutional-framework/sources-of-the-constitution.html"
-        },
-        {
-          "id": "preamble",
-          "label": "The Preamble",
-          "path": "constitutional-framework/preamble.html"
-        },
-        {
-          "id": "parts-of-the-constitution",
-          "label": "Parts of the Constitution",
-          "path": "constitutional-framework/parts-of-the-constitution.html"
-        },
-        {
-          "id": "schedules-of-the-constitution",
-          "label": "Schedules of the Constitution",
-          "path": "constitutional-framework/schedules-of-the-constitution.html"
-        },
-        {
-          "id": "fundamental-rights",
-          "label": "Fundamental Rights",
-          "path": "constitutional-framework/fundamental-rights.html"
-        },
-        {
-          "id": "directive-principles",
-          "label": "Directive Principles",
-          "path": "constitutional-framework/directive-principles.html"
-        },
-        {
-          "id": "fundamental-duties",
-          "label": "Fundamental Duties",
-          "path": "constitutional-framework/fundamental-duties.html"
-        },
-        {
-          "id": "constitutional-amendment",
-          "label": "Constitutional Amendment",
-          "path": "constitutional-framework/constitutional-amendment.html"
-        },
-        {
-          "id": "basic-structure-doctrine",
-          "label": "Basic Structure Doctrine",
-          "path": "constitutional-framework/basic-structure-doctrine.html"
-        }
+        { "id": "overview", "label": "Overview", "path": "constitutional-framework/index.html" },
+        { "id": "historical-background", "label": "Historical Background", "path": "constitutional-framework/historical-background.html" },
+        { "id": "making-of-the-constitution", "label": "Making of the Constitution", "path": "constitutional-framework/making-of-the-constitution.html" },
+        { "id": "salient-features", "label": "Salient Features", "path": "constitutional-framework/salient-features.html" },
+        { "id": "sources-of-the-constitution", "label": "Sources of the Constitution", "path": "constitutional-framework/sources-of-the-constitution.html" },
+        { "id": "preamble", "label": "The Preamble", "path": "constitutional-framework/preamble.html" },
+        { "id": "parts-of-the-constitution", "label": "Parts of the Constitution", "path": "constitutional-framework/parts-of-the-constitution.html" },
+        { "id": "schedules-of-the-constitution", "label": "Schedules of the Constitution", "path": "constitutional-framework/schedules-of-the-constitution.html" },
+        { "id": "fundamental-rights", "label": "Fundamental Rights", "path": "constitutional-framework/fundamental-rights.html" },
+        { "id": "directive-principles", "label": "Directive Principles", "path": "constitutional-framework/directive-principles.html" },
+        { "id": "fundamental-duties", "label": "Fundamental Duties", "path": "constitutional-framework/fundamental-duties.html" },
+        { "id": "constitutional-amendment", "label": "Constitutional Amendment", "path": "constitutional-framework/constitutional-amendment.html" },
+        { "id": "basic-structure-doctrine", "label": "Basic Structure Doctrine", "path": "constitutional-framework/basic-structure-doctrine.html" }
       ]
     },
     {
       "id": "legislature",
       "label": "Legislature",
       "path": "legislature/index.html",
+      "description": "The legislature represents the people in the law-making process. It makes laws, authorises public expenditure, debates matters of public importance and exercises control over the executive. India's legislative system operates at two levels: Parliament at the Union level and State Legislatures at the State level.",
+      "explanation": "The Constitution defines the composition, powers and procedures of Parliament and State Legislatures. Part V, Chapter II deals with Parliament, while Part VI, Chapter III deals with State Legislatures. Other provisions govern legislative powers, distribution of subjects, financial control and the law-making process.",
+      "studyGuidance": [
+        "Begin with Parliament to understand the overall legislative framework and the relationship between the President, Lok Sabha and Rajya Sabha.",
+        "Study Lok Sabha and Rajya Sabha separately, including composition, elections, duration, membership, powers and special functions.",
+        "Understand the roles of presiding officers, parliamentary leadership and committees in legislative and financial oversight.",
+        "Study parliamentary procedures such as sessions, questions, motions, legislative stages, Money Bills and budgetary control.",
+        "Conclude with State Legislatures and compare their constitutional structure and powers with Parliament."
+      ],
+      "examRelevance": "Focus on constitutional articles, parliamentary procedures, legislative privileges, financial control, committee functions, the relationship between the two Houses and comparisons between Union and State legislatures.",
       "chapters": [
-        {
-          "id": "overview",
-          "label": "Overview",
-          "path": "legislature/index.html"
-        },
-        {
-          "id": "parliament",
-          "label": "Parliament",
-          "path": "legislature/parliament.html"
-        },
-        {
-          "id": "lok-sabha",
-          "label": "Lok Sabha",
-          "path": "legislature/lok-sabha.html"
-        },
-        {
-          "id": "rajya-sabha",
-          "label": "Rajya Sabha",
-          "path": "legislature/rajya-sabha.html"
-        },
-        {
-          "id": "parliamentary-officers",
-          "label": "Officers",
-          "path": "legislature/parliamentary-officers.html"
-        },
-        {
-          "id": "committees",
-          "label": "Committees",
-          "path": "legislature/committees.html"
-        },
-        {
-          "id": "procedures",
-          "label": "Procedures",
-          "path": "legislature/procedures.html"
-        },
-        {
-          "id": "state-legislatures",
-          "label": "State Legislatures",
-          "path": "legislature/state-legislatures.html"
-        },
-        {
-          "id": "constitutional-provisions",
-          "label": "Articles",
-          "path": "legislature/constitutional-provisions.html"
-        }
+        { "id": "overview", "label": "Overview", "path": "legislature/index.html" },
+        { "id": "parliament", "label": "Parliament", "path": "legislature/parliament.html" },
+        { "id": "lok-sabha", "label": "Lok Sabha", "path": "legislature/lok-sabha.html" },
+        { "id": "rajya-sabha", "label": "Rajya Sabha", "path": "legislature/rajya-sabha.html" },
+        { "id": "parliamentary-officers", "label": "Officers", "path": "legislature/parliamentary-officers.html" },
+        { "id": "committees", "label": "Committees", "path": "legislature/committees.html" },
+        { "id": "procedures", "label": "Procedures", "path": "legislature/procedures.html" },
+        { "id": "state-legislatures", "label": "State Legislatures", "path": "legislature/state-legislatures.html" },
+        { "id": "constitutional-provisions", "label": "Articles", "path": "legislature/constitutional-provisions.html" }
       ]
     },
     {
       "id": "executive",
       "label": "Executive",
       "path": "executive/index.html",
+      "description": "The Executive implements laws, administers public affairs and carries out the policies of the State. India follows a parliamentary system in which the President and Governor are the constitutional heads at the Union and State levels, while the Prime Minister and Chief Minister lead the respective Councils of Ministers and exercise real executive authority.",
+      "explanation": "The Union Executive is primarily covered by Part V of the Constitution, particularly Articles 52 to 78. The State Executive is covered by Part VI, particularly Articles 153 to 167. The constitutional scheme distinguishes the formal executive head from the Council of Ministers that ordinarily exercises executive functions and is collectively responsible to the elected legislature.",
+      "studyGuidance": [
+        "Start with the parliamentary executive system and distinguish the constitutional head from the real executive.",
+        "Study the President and Vice-President, followed by the Prime Minister and Council of Ministers.",
+        "Understand the Union administrative machinery and the role of the Attorney-General.",
+        "Study the Governor, Chief Minister and State Council of Ministers, then examine State administration and the Advocate-General.",
+        "Use the constitutional provisions to connect each office with its powers, functions, limitations and accountability."
+      ],
+      "examRelevance": "Pay particular attention to appointment, tenure, powers, discretionary functions, aid and advice, collective responsibility, ordinance-making powers and the constitutional relationship between Union and State executives.",
       "chapters": [
-        {
-          "id": "overview",
-          "label": "Overview",
-          "path": "executive/index.html"
-        },
-        {
-          "id": "president",
-          "label": "President",
-          "path": "executive/president.html"
-        },
-        {
-          "id": "vice-president",
-          "label": "Vice-President",
-          "path": "executive/vice-president.html"
-        },
-        {
-          "id": "prime-minister",
-          "label": "Prime Minister",
-          "path": "executive/prime-minister.html"
-        },
-        {
-          "id": "council-of-ministers",
-          "label": "Council of Ministers",
-          "path": "executive/council-of-ministers.html"
-        },
-        {
-          "id": "union-administration",
-          "label": "Union Administration",
-          "path": "executive/union-administration.html"
-        },
-        {
-          "id": "attorney-general",
-          "label": "Attorney-General",
-          "path": "executive/attorney-general.html"
-        },
-        {
-          "id": "governor",
-          "label": "Governor",
-          "path": "executive/governor.html"
-        },
-        {
-          "id": "chief-minister",
-          "label": "Chief Minister",
-          "path": "executive/chief-minister.html"
-        },
-        {
-          "id": "state-administration",
-          "label": "State Administration",
-          "path": "executive/state-administration.html"
-        },
-        {
-          "id": "advocate-general",
-          "label": "Advocate-General",
-          "path": "executive/advocate-general.html"
-        },
-        {
-          "id": "constitutional-provisions",
-          "label": "Constitutional Provisions",
-          "path": "executive/constitutional-provisions.html"
-        }
+        { "id": "overview", "label": "Overview", "path": "executive/index.html" },
+        { "id": "president", "label": "President", "path": "executive/president.html" },
+        { "id": "vice-president", "label": "Vice-President", "path": "executive/vice-president.html" },
+        { "id": "prime-minister", "label": "Prime Minister", "path": "executive/prime-minister.html" },
+        { "id": "council-of-ministers", "label": "Council of Ministers", "path": "executive/council-of-ministers.html" },
+        { "id": "union-administration", "label": "Union Administration", "path": "executive/union-administration.html" },
+        { "id": "attorney-general", "label": "Attorney-General", "path": "executive/attorney-general.html" },
+        { "id": "governor", "label": "Governor", "path": "executive/governor.html" },
+        { "id": "chief-minister", "label": "Chief Minister", "path": "executive/chief-minister.html" },
+        { "id": "state-administration", "label": "State Administration", "path": "executive/state-administration.html" },
+        { "id": "advocate-general", "label": "Advocate-General", "path": "executive/advocate-general.html" },
+        { "id": "constitutional-provisions", "label": "Constitutional Provisions", "path": "executive/constitutional-provisions.html" }
       ]
     },
     {
       "id": "judiciary",
       "label": "Judiciary",
       "path": "judiciary/index.html",
+      "description": "The judiciary interprets the Constitution and laws, resolves disputes, protects Fundamental Rights and ensures that public authorities act within constitutional limits. India has an integrated judicial system, with the Supreme Court at the apex, High Courts at the State level and subordinate courts below them.",
+      "explanation": "The Union Judiciary is dealt with in Part V, Chapter IV, principally Articles 124 to 147. High Courts are covered by Part VI, Chapter V, Articles 214 to 231, while subordinate courts are covered by Part VI, Chapter VI, Articles 233 to 237. Article 32, Article 50 and other provisions also shape the role and independence of the judiciary.",
+      "studyGuidance": [
+        "Begin with the integrated judicial structure and the constitutional position of the Supreme Court.",
+        "Study the High Courts and subordinate judiciary, including their composition, jurisdiction, powers and supervisory relationships.",
+        "Understand judicial review and its relationship with constitutional supremacy and the Basic Structure doctrine.",
+        "Examine judicial activism, judicial restraint and Public Interest Litigation.",
+        "Study judicial independence, appointment and removal of judges, and the constitutional framework for tribunals."
+      ],
+      "examRelevance": "Important themes include jurisdiction, writs, judicial review, independence of the judiciary, appointment and removal of judges, tribunal reforms and landmark constitutional judgments.",
       "chapters": [
-        {
-          "id": "overview",
-          "label": "Overview",
-          "path": "judiciary/index.html"
-        },
-        {
-          "id": "supreme-court",
-          "label": "Supreme Court",
-          "path": "judiciary/supreme-court.html"
-        },
-        {
-          "id": "high-courts",
-          "label": "High Courts",
-          "path": "judiciary/high-courts.html"
-        },
-        {
-          "id": "subordinate-courts",
-          "label": "Subordinate Courts",
-          "path": "judiciary/subordinate-courts.html"
-        },
-        {
-          "id": "judicial-review",
-          "label": "Judicial Review",
-          "path": "judiciary/judicial-review.html"
-        },
-        {
-          "id": "judicial-activism-pil",
-          "label": "Activism and PIL",
-          "path": "judiciary/judicial-activism-pil.html"
-        },
-        {
-          "id": "independence-of-judiciary",
-          "label": "Independence",
-          "path": "judiciary/independence-of-judiciary.html"
-        },
-        {
-          "id": "appointment-and-removal",
-          "label": "Appointment and Removal",
-          "path": "judiciary/appointment-and-removal.html"
-        },
-        {
-          "id": "tribunals",
-          "label": "Tribunals",
-          "path": "judiciary/tribunals.html"
-        },
-        {
-          "id": "constitutional-provisions",
-          "label": "Constitutional Provisions",
-          "path": "judiciary/constitutional-provisions.html"
-        }
+        { "id": "overview", "label": "Overview", "path": "judiciary/index.html" },
+        { "id": "supreme-court", "label": "Supreme Court", "path": "judiciary/supreme-court.html" },
+        { "id": "high-courts", "label": "High Courts", "path": "judiciary/high-courts.html" },
+        { "id": "subordinate-courts", "label": "Subordinate Courts", "path": "judiciary/subordinate-courts.html" },
+        { "id": "judicial-review", "label": "Judicial Review", "path": "judiciary/judicial-review.html" },
+        { "id": "judicial-activism-pil", "label": "Activism and PIL", "path": "judiciary/judicial-activism-pil.html" },
+        { "id": "independence-of-judiciary", "label": "Independence", "path": "judiciary/independence-of-judiciary.html" },
+        { "id": "appointment-and-removal", "label": "Appointment and Removal", "path": "judiciary/appointment-and-removal.html" },
+        { "id": "tribunals", "label": "Tribunals", "path": "judiciary/tribunals.html" },
+        { "id": "constitutional-provisions", "label": "Constitutional Provisions", "path": "judiciary/constitutional-provisions.html" }
       ]
     },
     {
       "id": "constitutional-bodies",
       "label": "Constitutional Bodies",
       "path": "constitutional-bodies/index.html",
+      "description": "Constitutional bodies are institutions whose establishment, composition, powers or functions are provided for by the Constitution of India. They perform specialised functions that strengthen democracy, support accountability, protect public finances, conduct elections and uphold constitutional safeguards.",
+      "explanation": "These institutions derive their authority from constitutional provisions. Their functions often require continuity, independence and accountability. Some exercise oversight, recruitment, audit or advisory responsibilities, while others protect the interests and safeguards of particular groups or support coordination between the Union and the States.",
+      "studyGuidance": [
+        "For each institution, identify its constitutional article and source of authority.",
+        "Study its composition, organisational structure, appointment process, tenure and removal safeguards.",
+        "Understand its powers, functions, jurisdiction and relationship with Union and State Governments.",
+        "Examine its reporting mechanism, independence, accountability and practical limitations.",
+        "Compare constitutional bodies with statutory and executive bodies, paying attention to their different legal foundations."
+      ],
+      "examRelevance": "Questions commonly test constitutional articles, appointment and removal procedures, independence, powers, reporting relationships and distinctions between constitutional, statutory and executive institutions.",
       "chapters": [
-        {
-          "id": "overview",
-          "label": "Overview",
-          "path": "constitutional-bodies/index.html"
-        },
-        {
-          "id": "election-commission",
-          "label": "Election Commission",
-          "path": "constitutional-bodies/election-commission.html"
-        },
-        {
-          "id": "upsc",
-          "label": "UPSC",
-          "path": "constitutional-bodies/upsc.html"
-        },
-        {
-          "id": "state-public-service-commissions",
-          "label": "State PSCs",
-          "path": "constitutional-bodies/state-public-service-commissions.html"
-        },
-        {
-          "id": "finance-commission",
-          "label": "Finance Commission",
-          "path": "constitutional-bodies/finance-commission.html"
-        },
-        {
-          "id": "cag",
-          "label": "CAG",
-          "path": "constitutional-bodies/cag.html"
-        },
-        {
-          "id": "attorney-general",
-          "label": "Attorney General",
-          "path": "constitutional-bodies/attorney-general.html"
-        },
-        {
-          "id": "advocate-general",
-          "label": "Advocate General",
-          "path": "constitutional-bodies/advocate-general.html"
-        },
-        {
-          "id": "national-commission-sc",
-          "label": "NCSC",
-          "path": "constitutional-bodies/national-commission-sc.html"
-        },
-        {
-          "id": "national-commission-st",
-          "label": "NCST",
-          "path": "constitutional-bodies/national-commission-st.html"
-        },
-        {
-          "id": "national-commission-bc",
-          "label": "NCBC",
-          "path": "constitutional-bodies/national-commission-bc.html"
-        },
-        {
-          "id": "linguistic-minorities",
-          "label": "Linguistic Minorities",
-          "path": "constitutional-bodies/linguistic-minorities.html"
-        },
-        {
-          "id": "gst-council",
-          "label": "GST Council",
-          "path": "constitutional-bodies/gst-council.html"
-        }
+        { "id": "overview", "label": "Overview", "path": "constitutional-bodies/index.html" },
+        { "id": "election-commission", "label": "Election Commission", "path": "constitutional-bodies/election-commission.html" },
+        { "id": "upsc", "label": "UPSC", "path": "constitutional-bodies/upsc.html" },
+        { "id": "state-public-service-commissions", "label": "State PSCs", "path": "constitutional-bodies/state-public-service-commissions.html" },
+        { "id": "finance-commission", "label": "Finance Commission", "path": "constitutional-bodies/finance-commission.html" },
+        { "id": "cag", "label": "CAG", "path": "constitutional-bodies/cag.html" },
+        { "id": "attorney-general", "label": "Attorney General", "path": "constitutional-bodies/attorney-general.html" },
+        { "id": "advocate-general", "label": "Advocate General", "path": "constitutional-bodies/advocate-general.html" },
+        { "id": "national-commission-sc", "label": "NCSC", "path": "constitutional-bodies/national-commission-sc.html" },
+        { "id": "national-commission-st", "label": "NCST", "path": "constitutional-bodies/national-commission-st.html" },
+        { "id": "national-commission-bc", "label": "NCBC", "path": "constitutional-bodies/national-commission-bc.html" },
+        { "id": "linguistic-minorities", "label": "Linguistic Minorities", "path": "constitutional-bodies/linguistic-minorities.html" },
+        { "id": "gst-council", "label": "GST Council", "path": "constitutional-bodies/gst-council.html" }
       ]
     },
     {
       "id": "statutory-bodies",
       "label": "Statutory Bodies",
       "path": "statutory-bodies/index.html",
+      "description": "India's governance framework includes institutions established by legislation or executive decisions. They perform specialised functions in human rights, transparency, vigilance, investigation, environmental protection, financial regulation and public policy. Their legal status, powers and independence depend on the law or administrative instrument under which they are established.",
+      "explanation": "Statutory bodies derive their authority from legislation enacted by Parliament or a State Legislature. Executive bodies are established through executive resolutions, orders or administrative decisions. Regulatory institutions may exercise specialised powers under their respective laws. Every institution operates within the Constitution and the legal framework governing its establishment.",
+      "studyGuidance": [
+        "Identify the legal basis and historical background of each institution.",
+        "Study its composition, appointment, removal, tenure, powers, functions and jurisdiction.",
+        "Understand its independence and relationship with the government and other institutions.",
+        "Examine reporting, accountability and enforcement mechanisms, including practical limitations.",
+        "Connect the institution with important judicial decisions, reforms and relevant contemporary developments."
+      ],
+      "examRelevance": "Focus on the law establishing each institution, its composition, jurisdiction, regulatory or investigative powers, accountability and the distinction between constitutional, statutory and executive bodies.",
       "chapters": [
-        {
-          "id": "overview",
-          "label": "Overview",
-          "path": "statutory-bodies/index.html"
-        },
-        {
-          "id": "national-human-rights-commission",
-          "label": "NHRC",
-          "path": "statutory-bodies/national-human-rights-commission.html"
-        },
-        {
-          "id": "state-human-rights-commissions",
-          "label": "State HRCs",
-          "path": "statutory-bodies/state-human-rights-commissions.html"
-        },
-        {
-          "id": "central-information-commission",
-          "label": "CIC",
-          "path": "statutory-bodies/central-information-commission.html"
-        },
-        {
-          "id": "state-information-commissions",
-          "label": "State ICs",
-          "path": "statutory-bodies/state-information-commissions.html"
-        },
-        {
-          "id": "central-vigilance-commission",
-          "label": "CVC",
-          "path": "statutory-bodies/central-vigilance-commission.html"
-        },
-        {
-          "id": "central-bureau-of-investigation",
-          "label": "CBI",
-          "path": "statutory-bodies/central-bureau-of-investigation.html"
-        },
-        {
-          "id": "lokpal",
-          "label": "Lokpal",
-          "path": "statutory-bodies/lokpal.html"
-        },
-        {
-          "id": "lokayukta",
-          "label": "Lokayukta",
-          "path": "statutory-bodies/lokayukta.html"
-        },
-        {
-          "id": "national-commission-for-women",
-          "label": "NCW",
-          "path": "statutory-bodies/national-commission-for-women.html"
-        },
-        {
-          "id": "national-commission-for-minorities",
-          "label": "NCM",
-          "path": "statutory-bodies/national-commission-for-minorities.html"
-        },
-        {
-          "id": "national-green-tribunal",
-          "label": "NGT",
-          "path": "statutory-bodies/national-green-tribunal.html"
-        },
-        {
-          "id": "competition-commission-of-india",
-          "label": "CCI",
-          "path": "statutory-bodies/competition-commission-of-india.html"
-        },
-        {
-          "id": "national-consumer-commission",
-          "label": "Consumer Commission",
-          "path": "statutory-bodies/national-consumer-commission.html"
-        },
-        {
-          "id": "reserve-bank-of-india",
-          "label": "RBI",
-          "path": "statutory-bodies/reserve-bank-of-india.html"
-        },
-        {
-          "id": "sebi",
-          "label": "SEBI",
-          "path": "statutory-bodies/sebi.html"
-        },
-        {
-          "id": "irdai",
-          "label": "IRDAI",
-          "path": "statutory-bodies/irdai.html"
-        },
-        {
-          "id": "trai",
-          "label": "TRAI",
-          "path": "statutory-bodies/trai.html"
-        },
-        {
-          "id": "pfrda",
-          "label": "PFRDA",
-          "path": "statutory-bodies/pfrda.html"
-        },
-        {
-          "id": "niti-aayog",
-          "label": "NITI Aayog",
-          "path": "statutory-bodies/niti-aayog.html"
-        },
-        {
-          "id": "national-development-council",
-          "label": "NDC",
-          "path": "statutory-bodies/national-development-council.html"
-        },
-        {
-          "id": "cara",
-          "label": "CARA",
-          "path": "statutory-bodies/cara.html"
-        }
+        { "id": "overview", "label": "Overview", "path": "statutory-bodies/index.html" },
+        { "id": "national-human-rights-commission", "label": "NHRC", "path": "statutory-bodies/national-human-rights-commission.html" },
+        { "id": "state-human-rights-commissions", "label": "State HRCs", "path": "statutory-bodies/state-human-rights-commissions.html" },
+        { "id": "central-information-commission", "label": "CIC", "path": "statutory-bodies/central-information-commission.html" },
+        { "id": "state-information-commissions", "label": "State ICs", "path": "statutory-bodies/state-information-commissions.html" },
+        { "id": "central-vigilance-commission", "label": "CVC", "path": "statutory-bodies/central-vigilance-commission.html" },
+        { "id": "central-bureau-of-investigation", "label": "CBI", "path": "statutory-bodies/central-bureau-of-investigation.html" },
+        { "id": "lokpal", "label": "Lokpal", "path": "statutory-bodies/lokpal.html" },
+        { "id": "lokayukta", "label": "Lokayukta", "path": "statutory-bodies/lokayukta.html" },
+        { "id": "national-commission-for-women", "label": "NCW", "path": "statutory-bodies/national-commission-for-women.html" },
+        { "id": "national-commission-for-minorities", "label": "NCM", "path": "statutory-bodies/national-commission-for-minorities.html" },
+        { "id": "national-green-tribunal", "label": "NGT", "path": "statutory-bodies/national-green-tribunal.html" },
+        { "id": "competition-commission-of-india", "label": "CCI", "path": "statutory-bodies/competition-commission-of-india.html" },
+        { "id": "national-consumer-commission", "label": "Consumer Commission", "path": "statutory-bodies/national-consumer-commission.html" },
+        { "id": "reserve-bank-of-india", "label": "RBI", "path": "statutory-bodies/reserve-bank-of-india.html" },
+        { "id": "sebi", "label": "SEBI", "path": "statutory-bodies/sebi.html" },
+        { "id": "irdai", "label": "IRDAI", "path": "statutory-bodies/irdai.html" },
+        { "id": "trai", "label": "TRAI", "path": "statutory-bodies/trai.html" },
+        { "id": "pfrda", "label": "PFRDA", "path": "statutory-bodies/pfrda.html" },
+        { "id": "niti-aayog", "label": "NITI Aayog", "path": "statutory-bodies/niti-aayog.html" },
+        { "id": "national-development-council", "label": "NDC", "path": "statutory-bodies/national-development-council.html" },
+        { "id": "cara", "label": "CARA", "path": "statutory-bodies/cara.html" }
       ]
     },
     {
       "id": "governance",
       "label": "Governance and Other Topics",
       "path": "governance/index.html",
+      "description": "Governance examines how public institutions formulate and implement policies, deliver services, remain accountable and respond to citizens' needs. It is broader than government: it includes the interaction of the State, citizens, civil society organisations and other stakeholders. In India, it is shaped by constitutional values, parliamentary democracy, federalism, the rule of law and social welfare.",
+      "explanation": "Effective governance requires institutions that are responsive, transparent, accountable, inclusive and capable of delivering public services. The subject connects administrative structures with citizen participation, development, welfare, social justice and the practical challenges of policy implementation.",
+      "studyGuidance": [
+        "Begin with governance concepts and principles, followed by good governance and its institutional foundations.",
+        "Study transparency, accountability, RTI, Citizens' Charters and social audits as mechanisms for making administration answerable.",
+        "Examine e-governance and digital governance, including service delivery, digital inclusion and data-related challenges.",
+        "Understand civil services, civil service reforms, pressure groups, NGOs, SHGs and civil society as participants in governance.",
+        "Connect development processes, welfare schemes, Direct Benefit Transfer and social-sector policies with implementation challenges.",
+        "Relate vulnerable sections, poverty, hunger, cooperative federalism and local governance to constitutional values and inclusive development."
+      ],
+      "examRelevance": "These themes are particularly relevant to General Studies Paper II, including governance, transparency and accountability, e-governance, civil services, development processes, welfare schemes and vulnerable sections. They also connect with social issues, development and ethics across other papers.",
       "chapters": [
-        {
-          "id": "overview",
-          "label": "Overview",
-          "path": "governance/index.html"
-        },
-        {
-          "id": "governance-concepts",
-          "label": "Governance Concepts",
-          "path": "governance/governance-concepts.html"
-        },
-        {
-          "id": "good-governance",
-          "label": "Good Governance",
-          "path": "governance/good-governance.html"
-        },
-        {
-          "id": "transparency-accountability",
-          "label": "Transparency & Accountability",
-          "path": "governance/transparency-accountability.html"
-        },
-        {
-          "id": "right-to-information",
-          "label": "Right to Information",
-          "path": "governance/right-to-information.html"
-        },
-        {
-          "id": "citizens-charter",
-          "label": "Citizens' Charter",
-          "path": "governance/citizens-charter.html"
-        },
-        {
-          "id": "social-audit",
-          "label": "Social Audit",
-          "path": "governance/social-audit.html"
-        },
-        {
-          "id": "e-governance",
-          "label": "E-Governance",
-          "path": "governance/e-governance.html"
-        },
-        {
-          "id": "digital-governance",
-          "label": "Digital Governance",
-          "path": "governance/digital-governance.html"
-        },
-        {
-          "id": "civil-services",
-          "label": "Civil Services",
-          "path": "governance/civil-services.html"
-        },
-        {
-          "id": "civil-service-reforms",
-          "label": "Civil Service Reforms",
-          "path": "governance/civil-service-reforms.html"
-        },
-        {
-          "id": "pressure-groups",
-          "label": "Pressure Groups",
-          "path": "governance/pressure-groups.html"
-        },
-        {
-          "id": "ngos-shgs",
-          "label": "NGOs & SHGs",
-          "path": "governance/ngos-shgs.html"
-        },
-        {
-          "id": "civil-society",
-          "label": "Civil Society",
-          "path": "governance/civil-society.html"
-        },
-        {
-          "id": "development-process",
-          "label": "Development Processes",
-          "path": "governance/development-process.html"
-        },
-        {
-          "id": "welfare-schemes",
-          "label": "Welfare Schemes",
-          "path": "governance/welfare-schemes.html"
-        },
-        {
-          "id": "direct-benefit-transfer",
-          "label": "Direct Benefit Transfer",
-          "path": "governance/direct-benefit-transfer.html"
-        },
-        {
-          "id": "vulnerable-sections",
-          "label": "Vulnerable Sections",
-          "path": "governance/vulnerable-sections.html"
-        },
-        {
-          "id": "social-sector",
-          "label": "Social Sector",
-          "path": "governance/social-sector.html"
-        },
-        {
-          "id": "poverty-hunger",
-          "label": "Poverty & Hunger",
-          "path": "governance/poverty-hunger.html"
-        },
-        {
-          "id": "implementation-challenges",
-          "label": "Implementation Challenges",
-          "path": "governance/implementation-challenges.html"
-        },
-        {
-          "id": "cooperative-federalism",
-          "label": "Cooperative Federalism",
-          "path": "governance/cooperative-federalism.html"
-        },
-        {
-          "id": "local-governance",
-          "label": "Local Governance",
-          "path": "governance/local-governance.html"
-        }
+        { "id": "overview", "label": "Overview", "path": "governance/index.html" },
+        { "id": "governance-concepts", "label": "Governance Concepts", "path": "governance/governance-concepts.html" },
+        { "id": "good-governance", "label": "Good Governance", "path": "governance/good-governance.html" },
+        { "id": "transparency-accountability", "label": "Transparency & Accountability", "path": "governance/transparency-accountability.html" },
+        { "id": "right-to-information", "label": "Right to Information", "path": "governance/right-to-information.html" },
+        { "id": "citizens-charter", "label": "Citizens' Charter", "path": "governance/citizens-charter.html" },
+        { "id": "social-audit", "label": "Social Audit", "path": "governance/social-audit.html" },
+        { "id": "e-governance", "label": "E-Governance", "path": "governance/e-governance.html" },
+        { "id": "digital-governance", "label": "Digital Governance", "path": "governance/digital-governance.html" },
+        { "id": "civil-services", "label": "Civil Services", "path": "governance/civil-services.html" },
+        { "id": "civil-service-reforms", "label": "Civil Service Reforms", "path": "governance/civil-service-reforms.html" },
+        { "id": "pressure-groups", "label": "Pressure Groups", "path": "governance/pressure-groups.html" },
+        { "id": "ngos-shgs", "label": "NGOs & SHGs", "path": "governance/ngos-shgs.html" },
+        { "id": "civil-society", "label": "Civil Society", "path": "governance/civil-society.html" },
+        { "id": "development-process", "label": "Development Processes", "path": "governance/development-process.html" },
+        { "id": "welfare-schemes", "label": "Welfare Schemes", "path": "governance/welfare-schemes.html" },
+        { "id": "direct-benefit-transfer", "label": "Direct Benefit Transfer", "path": "governance/direct-benefit-transfer.html" },
+        { "id": "vulnerable-sections", "label": "Vulnerable Sections", "path": "governance/vulnerable-sections.html" },
+        { "id": "social-sector", "label": "Social Sector", "path": "governance/social-sector.html" },
+        { "id": "poverty-hunger", "label": "Poverty & Hunger", "path": "governance/poverty-hunger.html" },
+        { "id": "implementation-challenges", "label": "Implementation Challenges", "path": "governance/implementation-challenges.html" },
+        { "id": "cooperative-federalism", "label": "Cooperative Federalism", "path": "governance/cooperative-federalism.html" },
+        { "id": "local-governance", "label": "Local Governance", "path": "governance/local-governance.html" }
       ]
     }
   ]

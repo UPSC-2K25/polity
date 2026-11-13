@@ -1,10 +1,7 @@
 
 /*
- * Site-wide navigation
+ * Site-wide navigation and dynamic index rendering
  * Configuration: data/navigation.json
- *
- * Generates the primary and secondary navigation, identifies the active
- * page, and supports left/right keyboard navigation between chapters.
  */
 
 const scriptUrl = import.meta.url;
@@ -12,238 +9,382 @@ const siteRoot = new URL("../", scriptUrl);
 const configUrl = new URL("../data/navigation.json", scriptUrl);
 
 const normalizePath = (path = "") =>
-  String(path)
-    .replace(/^\/+/, "")
-    .replace(/\/+$/, "")
-    .replace(/\/index\.html$/i, "")
-    .replace(/^index\.html$/i, "");
+    String(path)
+        .replace(/^\/+/, "")
+        .replace(/\/+$/, "")
+        .replace(/\/index\.html$/i, "")
+        .replace(/^index\.html$/i, "");
 
 const resolveSitePath = (path = "") =>
-  new URL(String(path).replace(/^\/+/, ""), siteRoot).href;
+    new URL(String(path).replace(/^\/+/, ""), siteRoot).href;
 
 const currentPath = normalizePath(
-  decodeURIComponent(
-    window.location.pathname.startsWith(siteRoot.pathname)
-      ? window.location.pathname.slice(siteRoot.pathname.length)
-      : window.location.pathname
-  )
+    decodeURIComponent(
+        window.location.pathname.startsWith(siteRoot.pathname)
+            ? window.location.pathname.slice(siteRoot.pathname.length)
+            : window.location.pathname
+    )
 );
 
-function getPath(item) {
-  return item?.path ?? item?.href ?? item?.url ?? "";
+const getPath = (item) => item?.path ?? "";
+const getLabel = (item) => item?.label ?? "";
+
+function createElement(tag, className, text) {
+    const element = document.createElement(tag);
+
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+
+    return element;
 }
 
-function getLabel(item) {
-  return item?.label ?? item?.title ?? item?.name ?? "";
-}
-
-function createLink(item, active = false, secondary = false) {
-  const link = document.createElement("a");
-
-  link.textContent = getLabel(item);
-  link.href = resolveSitePath(getPath(item));
-
-  if (secondary) {
-    if (active) {
-      link.classList.add("active");
-      link.setAttribute("aria-current", "page");
-    }
-  } else {
-    link.classList.add("nav-link");
+function createLink(item, active = false, className = "") {
+    const link = createElement("a", className, getLabel(item));
+    link.href = resolveSitePath(getPath(item));
 
     if (active) {
-      link.classList.add("active");
-      link.setAttribute("aria-current", "page");
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
     }
-  }
 
-  return link;
+    return link;
 }
 
 function findCurrentSection(sections) {
-  return sections.find((section) => {
-    const sectionPath = normalizePath(getPath(section));
+    return sections.find((section) => {
+        if (normalizePath(getPath(section)) === currentPath) {
+            return true;
+        }
 
-    if (sectionPath && sectionPath === currentPath) {
-      return true;
-    }
-
-    return (section.chapters ?? []).some(
-      (chapter) => normalizePath(getPath(chapter)) === currentPath
-    );
-  });
+        return (section.chapters ?? []).some(
+            (chapter) => normalizePath(getPath(chapter)) === currentPath
+        );
+    });
 }
+
+function isSectionLanding(section) {
+    return Boolean(
+        section &&
+        normalizePath(getPath(section)) === currentPath
+    );
+}
+
+/* PRIMARY NAVIGATION */
 
 function renderPrimaryNavigation(config, currentSection) {
-  const nav = document.querySelector(".primary-nav");
+    const nav = document.querySelector(".primary-nav");
 
-  if (!nav) {
-    console.warn("Navigation: .primary-nav was not found.");
-    return;
-  }
+    if (!nav) return;
 
-  nav.replaceChildren();
+    nav.replaceChildren();
 
-  const items = config.primaryNavigation ?? [];
-  const homePath = normalizePath(getPath(config.site?.home));
+    const homeItem = {
+        label: "Home",
+        path: config.site?.home ?? "index.html"
+    };
 
-  items.forEach((item) => {
-    const itemPath = normalizePath(getPath(item));
-    const sectionId = item.section ?? item.sectionId ?? item.id;
+    const homeLink = createLink(
+        homeItem,
+        !currentSection,
+        "nav-link"
+    );
 
-    const isHome =
-      itemPath === currentPath &&
-      (!currentSection || itemPath === homePath);
+    nav.appendChild(homeLink);
 
-    const isActive =
-      isHome ||
-      Boolean(
-        currentSection &&
-        (sectionId === currentSection.id ||
-          itemPath === normalizePath(getPath(currentSection)))
-      );
+    (config.sections ?? []).forEach((section) => {
+        const active = currentSection?.id === section.id;
 
-    nav.appendChild(createLink(item, isActive));
-  });
+        nav.appendChild(
+            createLink(section, active, "nav-link")
+        );
+    });
 }
+
+/* FIXED LEFT SIDEBAR */
 
 function renderSecondaryNavigation(currentSection) {
-  const header = document.querySelector(".site-header");
+    let sidebar = document.querySelector(".secondary-nav");
 
-  if (!header) {
-    console.warn("Navigation: .site-header was not found.");
-    return;
-  }
+    if (!currentSection) {
+        sidebar?.remove();
+        document.body.classList.remove("has-sidebar");
+        return;
+    }
 
-  let secondaryNav = document.querySelector(".secondary-nav");
+    if (!sidebar) {
+        sidebar = createElement("nav", "secondary-nav");
+        sidebar.setAttribute("aria-label", "Section chapters");
+    }
 
-  if (!currentSection) {
-    secondaryNav?.remove();
-    return;
-  }
+    sidebar.replaceChildren();
 
-  if (!secondaryNav) {
-    secondaryNav = document.createElement("nav");
-    secondaryNav.className = "secondary-nav";
-    secondaryNav.setAttribute("aria-label", "Section navigation");
+    const heading = createElement(
+        "div",
+        "secondary-nav-heading",
+        currentSection.label
+    );
 
-    const inner = document.createElement("div");
-    inner.className = "secondary-nav-inner";
-    secondaryNav.appendChild(inner);
-  }
+    sidebar.appendChild(heading);
 
-  // Keep both navigation rows together inside the sticky site header.
-  if (secondaryNav.parentElement !== header) {
-    header.appendChild(secondaryNav);
-  }
+    const inner = createElement("div", "secondary-nav-inner");
 
-  let inner = secondaryNav.querySelector(".secondary-nav-inner");
+    (currentSection.chapters ?? []).forEach((chapter) => {
+        const active =
+            normalizePath(getPath(chapter)) === currentPath;
 
-  if (!inner) {
-    inner = document.createElement("div");
-    inner.className = "secondary-nav-inner";
-    secondaryNav.appendChild(inner);
-  }
+        inner.appendChild(
+            createLink(chapter, active, "secondary-nav-link")
+        );
+    });
 
-  inner.replaceChildren();
+    sidebar.appendChild(inner);
 
-  (currentSection.chapters ?? []).forEach((chapter) => {
-    const isActive =
-      normalizePath(getPath(chapter)) === currentPath;
-
-    inner.appendChild(createLink(chapter, isActive, true));
-  });
+    // Keep the sidebar outside the sticky header.
+    document.body.appendChild(sidebar);
+    document.body.classList.add("has-sidebar");
 }
 
-function enableChapterKeyboardNavigation(currentSection) {
-  if (!currentSection || !Array.isArray(currentSection.chapters)) {
-    return;
-  }
+/* HOMEPAGE MODULE CARDS */
 
-  const chapters = currentSection.chapters;
-  const currentIndex = chapters.findIndex(
-    (chapter) => normalizePath(getPath(chapter)) === currentPath
-  );
+function createModuleCard(section, index) {
+    const card = createLink(
+        section,
+        false,
+        "module-card available"
+    );
 
-  // Section landing pages are not part of the chapter arrow sequence.
-  if (currentIndex === -1) {
-    return;
-  }
+    const top = createElement("div", "module-card-top");
 
-  document.addEventListener("keydown", (event) => {
-    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
-      return;
-    }
-
-    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
-      return;
-    }
-
-    const target = event.target;
-
-    if (
-      target instanceof HTMLElement &&
-      (
-        target.isContentEditable ||
-        target.closest(
-          "input, textarea, select, button, a, [contenteditable='true'], [role='textbox']"
+    top.appendChild(
+        createElement(
+            "span",
+            "module-index",
+            String(index + 1).padStart(2, "0")
         )
-      )
-    ) {
-      return;
-    }
+    );
 
-    // Do not navigate while the user is selecting text.
-    const selection = window.getSelection();
+    top.appendChild(
+        createElement(
+            "span",
+            "module-status",
+            "Available to explore"
+        )
+    );
 
-    if (selection && !selection.isCollapsed) {
-      return;
-    }
+    card.appendChild(top);
+    card.appendChild(
+        createElement("h3", "", section.label)
+    );
 
-    const nextIndex =
-      event.key === "ArrowRight"
-        ? currentIndex + 1
-        : currentIndex - 1;
+    card.appendChild(
+        createElement("p", "", section.description ?? "")
+    );
 
-    // Do nothing at the first and last chapter.
-    if (nextIndex < 0 || nextIndex >= chapters.length) {
-      return;
-    }
+    const bottom = createElement("div", "module-card-bottom");
 
-    const nextPath = getPath(chapters[nextIndex]);
+    bottom.appendChild(
+        createElement("span", "", "Explore section")
+    );
 
-    if (!nextPath) {
-      return;
-    }
+    bottom.appendChild(
+        createElement("span", "module-arrow", "→")
+    );
 
-    event.preventDefault();
-    window.location.href = resolveSitePath(nextPath);
-  });
+    card.appendChild(bottom);
+
+    return card;
 }
+
+function renderHomePage(config) {
+    const main = document.querySelector(".home-content");
+
+    if (!main) return;
+
+    const title = main.querySelector("[data-home-title], .section-heading h2");
+    const intro = main.querySelector("[data-home-description], .section-description");
+    const moduleList = main.querySelector("[data-home-modules], .module-list");
+
+    if (title) {
+        title.textContent = config.site?.homeTitle ?? "Polity Modules";
+    }
+
+    if (intro) {
+        intro.textContent = config.site?.homeIntro ?? "";
+    }
+
+    if (moduleList) {
+        moduleList.replaceChildren();
+
+        (config.sections ?? []).forEach((section, index) => {
+            moduleList.appendChild(
+                createModuleCard(section, index)
+            );
+        });
+    }
+}
+
+/* SECTION INDEX CONTENT */
+
+function renderTextList(container, items) {
+    if (!container) return;
+
+    container.replaceChildren();
+
+    (items ?? []).forEach((item) => {
+        container.appendChild(
+            createElement("li", "", item)
+        );
+    });
+}
+
+function renderSectionIntroduction(section) {
+    const title = document.querySelector(
+        "[data-section-title], .welcome-section h1"
+    );
+
+    const description = document.querySelector(
+        "[data-section-description], .welcome-description"
+    );
+
+    const explanation = document.querySelector(
+        "[data-section-explanation]"
+    );
+
+    if (title) {
+        title.textContent = section.label;
+    }
+
+    if (description) {
+        description.textContent = section.description ?? "";
+    }
+
+    if (explanation) {
+        explanation.textContent = section.explanation ?? "";
+    }
+
+    // Remove additional old introductory paragraphs where present.
+    document.querySelectorAll(
+        ".welcome-section .welcome-description:not(:first-of-type)"
+    ).forEach((paragraph) => paragraph.remove());
+}
+
+function renderStudyGuidance(section) {
+    const guidance = document.querySelector(
+        "[data-study-guidance]"
+    );
+
+    if (guidance) {
+        renderTextList(guidance, section.studyGuidance);
+    }
+
+    const examRelevance = document.querySelector(
+        "[data-exam-relevance]"
+    );
+
+    if (examRelevance) {
+        examRelevance.textContent = section.examRelevance ?? "";
+    }
+}
+
+function createChapterCard(chapter, index) {
+    const card = createElement("a", "module-card available");
+    card.href = resolveSitePath(getPath(chapter));
+
+    const top = createElement("div", "module-card-top");
+
+    top.appendChild(
+        createElement(
+            "span",
+            "module-index",
+            String(index + 1).padStart(2, "0")
+        )
+    );
+
+    top.appendChild(
+        createElement("span", "module-status", "Chapter")
+    );
+
+    card.appendChild(top);
+    card.appendChild(
+        createElement("h3", "", getLabel(chapter))
+    );
+
+    const bottom = createElement("div", "module-card-bottom");
+
+    bottom.appendChild(
+        createElement("span", "", "Open chapter")
+    );
+
+    bottom.appendChild(
+        createElement("span", "module-arrow", "→")
+    );
+
+    card.appendChild(bottom);
+
+    return card;
+}
+
+function renderChapterDirectory(section) {
+    const container = document.querySelector(
+        "[data-chapter-list], .module-list"
+    );
+
+    if (!container) return;
+
+    container.replaceChildren();
+
+    const chapters = (section.chapters ?? []).filter(
+        (chapter) => chapter.id !== "overview"
+    );
+
+    chapters.forEach((chapter, index) => {
+        container.appendChild(
+            createChapterCard(chapter, index)
+        );
+    });
+}
+
+function renderSectionPage(section) {
+    if (!isSectionLanding(section)) return;
+
+    renderSectionIntroduction(section);
+    renderStudyGuidance(section);
+    renderChapterDirectory(section);
+}
+
+/* INITIALIZATION */
 
 async function initializeNavigation() {
-  try {
-    const response = await fetch(configUrl);
+    try {
+        const response = await fetch(configUrl);
 
-    if (!response.ok) {
-      throw new Error(
-        `Could not load navigation.json (${response.status}).`
-      );
+        if (!response.ok) {
+            throw new Error(
+                `Could not load navigation.json (${response.status}).`
+            );
+        }
+
+        const config = await response.json();
+        const sections = Array.isArray(config.sections)
+            ? config.sections
+            : [];
+
+        const currentSection = findCurrentSection(sections);
+
+        renderPrimaryNavigation(config, currentSection);
+        renderSecondaryNavigation(currentSection);
+
+        if (!currentSection) {
+            renderHomePage(config);
+        } else {
+            renderSectionPage(currentSection);
+        }
+    } catch (error) {
+        console.error(
+            "Navigation initialization failed:",
+            error
+        );
     }
-
-    const config = await response.json();
-    const sections = Array.isArray(config.sections)
-      ? config.sections
-      : Object.values(config.sections ?? {});
-
-    const currentSection = findCurrentSection(sections);
-
-    renderPrimaryNavigation(config, currentSection);
-    renderSecondaryNavigation(currentSection);
-    enableChapterKeyboardNavigation(currentSection);
-  } catch (error) {
-    console.error("Navigation initialization failed:", error);
-  }
 }
 
 initializeNavigation();
