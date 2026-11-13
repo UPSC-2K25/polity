@@ -1,35 +1,46 @@
 
 /*
- * Site-wide navigation and dynamic index rendering
+ * Site-wide navigation and dynamic page rendering.
  * Configuration: data/navigation.json
  */
 
-const scriptUrl = import.meta.url;
-const siteRoot = new URL("../", scriptUrl);
-const configUrl = new URL("../data/navigation.json", scriptUrl);
+const siteRoot = new URL("../", import.meta.url);
+const configUrl = new URL("../data/navigation.json", import.meta.url);
 
-const normalizePath = (path = "") =>
-    String(path)
+function normalizePath(path = "") {
+    return decodeURIComponent(String(path))
         .replace(/^\/+/, "")
         .replace(/\/+$/, "")
         .replace(/\/index\.html$/i, "")
         .replace(/^index\.html$/i, "");
+}
 
-const resolveSitePath = (path = "") =>
-    new URL(String(path).replace(/^\/+/, ""), siteRoot).href;
+function getCurrentPath() {
+    const rootPath = siteRoot.pathname;
+    const pathname = window.location.pathname;
 
-const currentPath = normalizePath(
-    decodeURIComponent(
-        window.location.pathname.startsWith(siteRoot.pathname)
-            ? window.location.pathname.slice(siteRoot.pathname.length)
-            : window.location.pathname
-    )
-);
+    return normalizePath(
+        pathname.startsWith(rootPath)
+            ? pathname.slice(rootPath.length)
+            : pathname
+    );
+}
 
-const getPath = (item) => item?.path ?? "";
-const getLabel = (item) => item?.label ?? "";
+const currentPath = getCurrentPath();
 
-function createElement(tag, className, text) {
+function resolveSitePath(path = "") {
+    return new URL(String(path).replace(/^\/+/, ""), siteRoot).href;
+}
+
+function getPath(item) {
+    return item?.path ?? "";
+}
+
+function getLabel(item) {
+    return item?.label ?? "";
+}
+
+function createElement(tag, className = "", text) {
     const element = document.createElement(tag);
 
     if (className) element.className = className;
@@ -50,11 +61,13 @@ function createLink(item, active = false, className = "") {
     return link;
 }
 
+/* SECTION RESOLUTION */
+
 function findCurrentSection(sections) {
     return sections.find((section) => {
-        if (normalizePath(getPath(section)) === currentPath) {
-            return true;
-        }
+        const sectionPath = normalizePath(getPath(section));
+
+        if (sectionPath === currentPath) return true;
 
         return (section.chapters ?? []).some(
             (chapter) => normalizePath(getPath(chapter)) === currentPath
@@ -79,33 +92,31 @@ function renderPrimaryNavigation(config, currentSection) {
     nav.replaceChildren();
 
     const homeItem = {
-        label: "Home",
+        label: config.site?.homeLabel ?? "Home",
         path: config.site?.home ?? "index.html"
     };
 
-    const homeLink = createLink(
-        homeItem,
-        !currentSection,
-        "nav-link"
+    nav.appendChild(
+        createLink(homeItem, !currentSection, "nav-link")
     );
 
-    nav.appendChild(homeLink);
-
     (config.sections ?? []).forEach((section) => {
-        const active = currentSection?.id === section.id;
-
         nav.appendChild(
-            createLink(section, active, "nav-link")
+            createLink(
+                section,
+                currentSection?.id === section.id,
+                "nav-link"
+            )
         );
     });
 }
 
 /* FIXED LEFT SIDEBAR */
 
-function renderSecondaryNavigation(currentSection) {
+function renderSecondaryNavigation(section) {
     let sidebar = document.querySelector(".secondary-nav");
 
-    if (!currentSection) {
+    if (!section) {
         sidebar?.remove();
         document.body.classList.remove("has-sidebar");
         return;
@@ -121,16 +132,15 @@ function renderSecondaryNavigation(currentSection) {
     const heading = createElement(
         "div",
         "secondary-nav-heading",
-        currentSection.label
+        section.label
     );
 
     sidebar.appendChild(heading);
 
     const inner = createElement("div", "secondary-nav-inner");
 
-    (currentSection.chapters ?? []).forEach((chapter) => {
-        const active =
-            normalizePath(getPath(chapter)) === currentPath;
+    (section.chapters ?? []).forEach((chapter) => {
+        const active = normalizePath(getPath(chapter)) === currentPath;
 
         inner.appendChild(
             createLink(chapter, active, "secondary-nav-link")
@@ -138,21 +148,14 @@ function renderSecondaryNavigation(currentSection) {
     });
 
     sidebar.appendChild(inner);
-
-    // Keep the sidebar outside the sticky header.
     document.body.appendChild(sidebar);
     document.body.classList.add("has-sidebar");
 }
 
-/* HOMEPAGE MODULE CARDS */
+/* HOMEPAGE */
 
-function createModuleCard(section, index) {
-    const card = createLink(
-        section,
-        false,
-        "module-card available"
-    );
-
+function createSectionCard(section, index) {
+    const card = createLink(section, false, "module-card available");
     const top = createElement("div", "module-card-top");
 
     top.appendChild(
@@ -172,24 +175,12 @@ function createModuleCard(section, index) {
     );
 
     card.appendChild(top);
-    card.appendChild(
-        createElement("h3", "", section.label)
-    );
-
-    card.appendChild(
-        createElement("p", "", section.description ?? "")
-    );
+    card.appendChild(createElement("h3", "", section.label));
+    card.appendChild(createElement("p", "", section.description ?? ""));
 
     const bottom = createElement("div", "module-card-bottom");
-
-    bottom.appendChild(
-        createElement("span", "", "Explore section")
-    );
-
-    bottom.appendChild(
-        createElement("span", "module-arrow", "→")
-    );
-
+    bottom.appendChild(createElement("span", "", "Explore section"));
+    bottom.appendChild(createElement("span", "module-arrow", "→"));
     card.appendChild(bottom);
 
     return card;
@@ -200,30 +191,44 @@ function renderHomePage(config) {
 
     if (!main) return;
 
-    const title = main.querySelector("[data-home-title], .section-heading h2");
-    const intro = main.querySelector("[data-home-description], .section-description");
-    const moduleList = main.querySelector("[data-home-modules], .module-list");
+    const title = main.querySelector("[data-home-title]");
+    const description = main.querySelector("[data-home-description]");
+    const moduleList = main.querySelector("[data-home-modules]");
 
     if (title) {
-        title.textContent = config.site?.homeTitle ?? "Polity Modules";
+        title.textContent = config.site?.homeTitle ?? "";
     }
 
-    if (intro) {
-        intro.textContent = config.site?.homeIntro ?? "";
+    if (description) {
+        description.textContent = config.site?.homeIntro ?? "";
     }
 
     if (moduleList) {
         moduleList.replaceChildren();
 
         (config.sections ?? []).forEach((section, index) => {
-            moduleList.appendChild(
-                createModuleCard(section, index)
-            );
+            moduleList.appendChild(createSectionCard(section, index));
         });
     }
+
+    document.title = config.site?.pageTitle ?? "Indian Polity | Learning Reference";
 }
 
-/* SECTION INDEX CONTENT */
+/* SECTION INTRODUCTION */
+
+function renderSectionIntroduction(section) {
+    const title = document.querySelector("[data-section-title]");
+    const description = document.querySelector("[data-section-description]");
+    const explanation = document.querySelector("[data-section-explanation]");
+
+    if (title) title.textContent = section.label;
+    if (description) description.textContent = section.description ?? "";
+    if (explanation) explanation.textContent = section.explanation ?? "";
+
+    document.title = `${section.label} | Indian Polity`;
+}
+
+/* STUDY GUIDANCE AND EXAM RELEVANCE */
 
 function renderTextList(container, items) {
     if (!container) return;
@@ -231,60 +236,22 @@ function renderTextList(container, items) {
     container.replaceChildren();
 
     (items ?? []).forEach((item) => {
-        container.appendChild(
-            createElement("li", "", item)
-        );
+        container.appendChild(createElement("li", "", item));
     });
 }
 
-function renderSectionIntroduction(section) {
-    const title = document.querySelector(
-        "[data-section-title], .welcome-section h1"
-    );
-
-    const description = document.querySelector(
-        "[data-section-description], .welcome-description"
-    );
-
-    const explanation = document.querySelector(
-        "[data-section-explanation]"
-    );
-
-    if (title) {
-        title.textContent = section.label;
-    }
-
-    if (description) {
-        description.textContent = section.description ?? "";
-    }
-
-    if (explanation) {
-        explanation.textContent = section.explanation ?? "";
-    }
-
-    // Remove additional old introductory paragraphs where present.
-    document.querySelectorAll(
-        ".welcome-section .welcome-description:not(:first-of-type)"
-    ).forEach((paragraph) => paragraph.remove());
-}
-
 function renderStudyGuidance(section) {
-    const guidance = document.querySelector(
-        "[data-study-guidance]"
-    );
+    const guidance = document.querySelector("[data-study-guidance]");
+    const examRelevance = document.querySelector("[data-exam-relevance]");
 
-    if (guidance) {
-        renderTextList(guidance, section.studyGuidance);
-    }
-
-    const examRelevance = document.querySelector(
-        "[data-exam-relevance]"
-    );
+    renderTextList(guidance, section.studyGuidance);
 
     if (examRelevance) {
         examRelevance.textContent = section.examRelevance ?? "";
     }
 }
+
+/* CHAPTER DIRECTORY */
 
 function createChapterCard(chapter, index) {
     const card = createElement("a", "module-card available");
@@ -305,29 +272,18 @@ function createChapterCard(chapter, index) {
     );
 
     card.appendChild(top);
-    card.appendChild(
-        createElement("h3", "", getLabel(chapter))
-    );
+    card.appendChild(createElement("h3", "", getLabel(chapter)));
 
     const bottom = createElement("div", "module-card-bottom");
-
-    bottom.appendChild(
-        createElement("span", "", "Open chapter")
-    );
-
-    bottom.appendChild(
-        createElement("span", "module-arrow", "→")
-    );
-
+    bottom.appendChild(createElement("span", "", "Open chapter"));
+    bottom.appendChild(createElement("span", "module-arrow", "→"));
     card.appendChild(bottom);
 
     return card;
 }
 
 function renderChapterDirectory(section) {
-    const container = document.querySelector(
-        "[data-chapter-list], .module-list"
-    );
+    const container = document.querySelector("[data-chapter-list]");
 
     if (!container) return;
 
@@ -338,11 +294,11 @@ function renderChapterDirectory(section) {
     );
 
     chapters.forEach((chapter, index) => {
-        container.appendChild(
-            createChapterCard(chapter, index)
-        );
+        container.appendChild(createChapterCard(chapter, index));
     });
 }
+
+/* SECTION PAGE */
 
 function renderSectionPage(section) {
     if (!isSectionLanding(section)) return;
@@ -365,25 +321,23 @@ async function initializeNavigation() {
         }
 
         const config = await response.json();
-        const sections = Array.isArray(config.sections)
-            ? config.sections
-            : [];
 
-        const currentSection = findCurrentSection(sections);
+        if (!Array.isArray(config.sections)) {
+            throw new Error("The sections array is missing from navigation.json.");
+        }
+
+        const currentSection = findCurrentSection(config.sections);
 
         renderPrimaryNavigation(config, currentSection);
         renderSecondaryNavigation(currentSection);
 
-        if (!currentSection) {
-            renderHomePage(config);
-        } else {
+        if (currentSection) {
             renderSectionPage(currentSection);
+        } else {
+            renderHomePage(config);
         }
     } catch (error) {
-        console.error(
-            "Navigation initialization failed:",
-            error
-        );
+        console.error("Navigation initialization failed:", error);
     }
 }
 
