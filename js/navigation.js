@@ -251,52 +251,6 @@ function renderStudyGuidance(section) {
     }
 }
 
-/* CHAPTER DIRECTORY */
-
-function createChapterCard(chapter, index) {
-    const card = createElement("a", "module-card available");
-    card.href = resolveSitePath(getPath(chapter));
-
-    const top = createElement("div", "module-card-top");
-
-    top.appendChild(
-        createElement(
-            "span",
-            "module-index",
-            String(index + 1).padStart(2, "0")
-        )
-    );
-
-    top.appendChild(
-        createElement("span", "module-status", "Chapter")
-    );
-
-    card.appendChild(top);
-    card.appendChild(createElement("h3", "", getLabel(chapter)));
-
-    const bottom = createElement("div", "module-card-bottom");
-    bottom.appendChild(createElement("span", "", "Open chapter"));
-    bottom.appendChild(createElement("span", "module-arrow", "→"));
-    card.appendChild(bottom);
-
-    return card;
-}
-
-function renderChapterDirectory(section) {
-    const container = document.querySelector("[data-chapter-list]");
-
-    if (!container) return;
-
-    container.replaceChildren();
-
-    const chapters = (section.chapters ?? []).filter(
-        (chapter) => chapter.id !== "overview"
-    );
-
-    chapters.forEach((chapter, index) => {
-        container.appendChild(createChapterCard(chapter, index));
-    });
-}
 
 /* SECTION PAGE */
 
@@ -305,7 +259,6 @@ function renderSectionPage(section) {
 
     renderSectionIntroduction(section);
     renderStudyGuidance(section);
-    renderChapterDirectory(section);
 }
 
 /* INITIALIZATION */
