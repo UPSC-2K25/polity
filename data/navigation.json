@@ -13,6 +13,11 @@
       "path": "index.html"
     },
     {
+      "id": "constitutional-framework",
+      "label": "Constitutional Framework",
+      "path": "constitutional-framework/index.html"
+    },
+    {
       "id": "legislature",
       "label": "Legislature",
       "path": "legislature/index.html"
@@ -44,6 +49,78 @@
     }
   ],
   "sections": [
+    {
+      "id": "constitutional-framework",
+      "label": "Constitutional Framework",
+      "path": "constitutional-framework/index.html",
+      "chapters": [
+        {
+          "id": "overview",
+          "label": "Overview",
+          "path": "constitutional-framework/index.html"
+        },
+        {
+          "id": "historical-background",
+          "label": "Historical Background",
+          "path": "constitutional-framework/historical-background.html"
+        },
+        {
+          "id": "making-of-the-constitution",
+          "label": "Making of the Constitution",
+          "path": "constitutional-framework/making-of-the-constitution.html"
+        },
+        {
+          "id": "salient-features",
+          "label": "Salient Features",
+          "path": "constitutional-framework/salient-features.html"
+        },
+        {
+          "id": "sources-of-the-constitution",
+          "label": "Sources of the Constitution",
+          "path": "constitutional-framework/sources-of-the-constitution.html"
+        },
+        {
+          "id": "preamble",
+          "label": "The Preamble",
+          "path": "constitutional-framework/preamble.html"
+        },
+        {
+          "id": "parts-of-the-constitution",
+          "label": "Parts of the Constitution",
+          "path": "constitutional-framework/parts-of-the-constitution.html"
+        },
+        {
+          "id": "schedules-of-the-constitution",
+          "label": "Schedules of the Constitution",
+          "path": "constitutional-framework/schedules-of-the-constitution.html"
+        },
+        {
+          "id": "fundamental-rights",
+          "label": "Fundamental Rights",
+          "path": "constitutional-framework/fundamental-rights.html"
+        },
+        {
+          "id": "directive-principles",
+          "label": "Directive Principles",
+          "path": "constitutional-framework/directive-principles.html"
+        },
+        {
+          "id": "fundamental-duties",
+          "label": "Fundamental Duties",
+          "path": "constitutional-framework/fundamental-duties.html"
+        },
+        {
+          "id": "constitutional-amendment",
+          "label": "Constitutional Amendment",
+          "path": "constitutional-framework/constitutional-amendment.html"
+        },
+        {
+          "id": "basic-structure-doctrine",
+          "label": "Basic Structure Doctrine",
+          "path": "constitutional-framework/basic-structure-doctrine.html"
+        }
+      ]
+    },
     {
       "id": "legislature",
       "label": "Legislature",
