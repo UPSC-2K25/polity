@@ -1280,3 +1280,103 @@ textarea:focus-visible {
         padding: 9px 12px;
     }
 }
+
+/*
+ * File: style.css
+ * Full path: /css/style.css
+ * Add this block at the END of the existing file.
+ */
+
+/* DYNAMIC CHAPTER NAVIGATION */
+
+.chapter-navigation {
+    width: 100%;
+    margin: 24px auto 20px;
+    padding: 14px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    gap: 14px;
+    border-top: 1px solid var(--border);
+}
+
+.chapter-navigation > div {
+    min-width: 0;
+}
+
+.chapter-navigation .previous-chapter {
+    text-align: left;
+}
+
+.chapter-navigation .next-chapter {
+    text-align: right;
+}
+
+.chapter-navigation .chapter-nav-link {
+    display: inline-block;
+    max-width: 100%;
+    padding: 9px 12px;
+    color: var(--primary);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.chapter-navigation .chapter-nav-link:hover {
+    background: var(--primary-soft);
+    border-color: var(--border-strong);
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+/* DYNAMIC SHARED FOOTER */
+
+.site-footer {
+    width: 100%;
+    min-height: 40px;
+    margin-top: auto;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.site-footer span {
+    display: inline-block;
+}
+
+/* FOOTER AND NAVIGATION ON SMALL SCREENS */
+
+@media (max-width: 600px) {
+    .chapter-navigation {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .chapter-navigation .previous-chapter,
+    .chapter-navigation .next-chapter {
+        text-align: left;
+    }
+
+    .chapter-navigation .chapter-nav-link {
+        width: 100%;
+    }
+
+    .site-footer {
+        justify-content: center;
+        padding: 9px 12px;
+        gap: 4px 12px;
+    }
+}

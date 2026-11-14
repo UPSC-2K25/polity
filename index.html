@@ -1,54 +1,99 @@
+<!-- File: index.html -->
+<!-- Full path: /index.html -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A structured, explanatory and interconnected Indian Polity learning reference for UPSC preparation.">
-    <title>Indian Polity | Learning Reference</title>
+    <meta name="description" content="UPSC GS-II Knowledge System">
+    <meta name="theme-color" content="#f5f7fa">
+
+    <title>Loading...</title>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+
+<body data-page-type="home">
+
     <div class="site-shell">
+
         <header class="site-header">
             <div class="header-inner">
-                <a class="site-brand" href="index.html">
-                    <span class="brand-mark">IP</span>
+
+                <a class="site-brand" href="index.html" data-site-home>
+                    <span class="brand-mark" data-brand-mark></span>
+
                     <span class="brand-text">
-                        <strong>Indian Polity</strong>
-                        <small>Learning Reference</small>
+                        <strong data-site-name></strong>
+                        <small data-site-subtitle></small>
                     </span>
                 </a>
-                <nav class="primary-nav" aria-label="Main navigation"></nav>
+
+                <nav
+                    class="primary-nav"
+                    aria-label="Main navigation"
+                    data-primary-navigation
+                ></nav>
+
             </div>
         </header>
 
         <main class="home-content">
-            <section class="modules-section" aria-labelledby="home-title">
+
+            <section
+                class="modules-section"
+                aria-labelledby="home-title"
+            >
+
                 <div class="section-heading">
+
                     <div>
-                        <p class="eyebrow">EXPLORE THE SUBJECT</p>
-                        <h2 id="home-title" data-home-title>Polity Modules</h2>
+                        <p class="eyebrow" data-home-eyebrow></p>
+                        <h1 id="home-title" data-home-title></h1>
                     </div>
-                    <p class="section-description" data-home-description>
-                        Loading the subject overview...
-                    </p>
+
+                    <p
+                        class="section-description"
+                        data-home-description
+                    ></p>
+
                 </div>
 
                 <div
                     class="module-list"
                     data-home-modules
-                    aria-label="Indian Polity sections"
+                    aria-label="Knowledge system modules"
                 ></div>
+
+                <p
+                    class="text-muted"
+                    data-home-status
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
             </section>
+
         </main>
 
         <footer class="site-footer">
-            <span>Indian Polity Learning Reference</span>
-            <span>Built for conceptual understanding and UPSC preparation</span>
+
+            <span data-footer-primary></span>
+            <span data-footer-secondary></span>
+
         </footer>
+
     </div>
 
+    <noscript>
+        <p>
+            JavaScript is required to load the knowledge system.
+            Please enable JavaScript in your browser.
+        </p>
+    </noscript>
+
     <script type="module" src="js/navigation.js"></script>
+
 </body>
 </html>

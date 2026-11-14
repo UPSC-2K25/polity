@@ -1,7 +1,9 @@
-
 /*
- * Site-wide navigation and dynamic page rendering.
- * Configuration: data/navigation.json
+ * File: navigation.js
+ * Full path: /js/navigation.js
+ *
+ * Shared dynamic navigation, page controls and footer.
+ * Site structure and chapter order are read from data/navigation.json.
  */
 
 const siteRoot = new URL("../", import.meta.url);
@@ -15,43 +17,34 @@ function normalizePath(path = "") {
         .replace(/^index\.html$/i, "");
 }
 
-function getCurrentPath() {
-    const rootPath = siteRoot.pathname;
-    const pathname = window.location.pathname;
-
-    return normalizePath(
-        pathname.startsWith(rootPath)
-            ? pathname.slice(rootPath.length)
-            : pathname
-    );
-}
-
-const currentPath = getCurrentPath();
+const currentPath = normalizePath(
+    window.location.pathname.startsWith(siteRoot.pathname)
+        ? window.location.pathname.slice(siteRoot.pathname.length)
+        : window.location.pathname
+);
 
 function resolveSitePath(path = "") {
     return new URL(String(path).replace(/^\/+/, ""), siteRoot).href;
 }
 
-function getPath(item) {
-    return item?.path ?? "";
-}
-
-function getLabel(item) {
-    return item?.label ?? "";
-}
-
-function createElement(tag, className = "", text) {
+function createElement(tag, className = "", text = "") {
     const element = document.createElement(tag);
 
     if (className) element.className = className;
-    if (text !== undefined) element.textContent = text;
+    if (text !== undefined && text !== null) {
+        element.textContent = text;
+    }
 
     return element;
 }
 
-function createLink(item, active = false, className = "") {
-    const link = createElement("a", className, getLabel(item));
-    link.href = resolveSitePath(getPath(item));
+function itemPath(item) {
+    return normalizePath(item?.path ?? "");
+}
+
+function createLink(item, className = "", active = false) {
+    const link = createElement("a", className, item?.label ?? "");
+    link.href = resolveSitePath(item?.path ?? "");
 
     if (active) {
         link.classList.add("active");
@@ -61,89 +54,121 @@ function createLink(item, active = false, className = "") {
     return link;
 }
 
-/* SECTION RESOLUTION */
+/* ---------------------------------------------------------
+   PAGE AND SECTION RESOLUTION
+   --------------------------------------------------------- */
 
 function findCurrentSection(sections) {
-    return sections.find((section) => {
-        const sectionPath = normalizePath(getPath(section));
+    return sections.find((section) =>
+        itemPath(section) === currentPath ||
+        (section.chapters ?? []).some(
+            (chapter) => itemPath(chapter) === currentPath
+        )
+    ) ?? null;
+}
 
-        if (sectionPath === currentPath) return true;
+function findCurrentChapter(section) {
+    if (!section) return null;
 
-        return (section.chapters ?? []).some(
-            (chapter) => normalizePath(getPath(chapter)) === currentPath
-        );
-    });
+    return (section.chapters ?? []).find(
+        (chapter) =>
+            itemPath(chapter) === currentPath &&
+            itemPath(chapter) !== itemPath(section)
+    ) ?? null;
 }
 
 function isSectionLanding(section) {
-    return Boolean(
-        section &&
-        normalizePath(getPath(section)) === currentPath
-    );
+    return Boolean(section && itemPath(section) === currentPath);
 }
 
-/* PRIMARY NAVIGATION */
+/* ---------------------------------------------------------
+   SITE IDENTITY
+   --------------------------------------------------------- */
+
+function renderSiteIdentity(config) {
+    const site = config.site ?? {};
+
+    document.title = site.pageTitle ?? site.name ?? document.title;
+
+    document.querySelectorAll("[data-site-name]").forEach((element) => {
+        element.textContent = site.name ?? "";
+    });
+
+    document.querySelectorAll("[data-site-subtitle]").forEach((element) => {
+        element.textContent = site.subtitle ?? "";
+    });
+
+    document.querySelectorAll("[data-brand-mark]").forEach((element) => {
+        element.textContent = site.brandMark ?? "";
+    });
+
+    document.querySelectorAll("[data-site-home]").forEach((element) => {
+        element.href = resolveSitePath(site.home ?? "index.html");
+    });
+}
+
+/* ---------------------------------------------------------
+   PRIMARY NAVIGATION
+   --------------------------------------------------------- */
 
 function renderPrimaryNavigation(config, currentSection) {
     const nav = document.querySelector(".primary-nav");
-
     if (!nav) return;
 
     nav.replaceChildren();
 
-    const homeItem = {
-        label: config.site?.homeLabel ?? "Home",
+    const home = {
+        label: config.site?.homeLabel ?? "",
         path: config.site?.home ?? "index.html"
     };
 
     nav.appendChild(
-        createLink(homeItem, !currentSection, "nav-link")
+        createLink(home, "nav-link", !currentSection)
     );
 
-    (config.sections ?? []).forEach((section) => {
-        nav.appendChild(
-            createLink(
-                section,
-                currentSection?.id === section.id,
-                "nav-link"
-            )
-        );
-    });
+    if (config.interface?.primaryNavigation === "all-modules") {
+        (config.sections ?? []).forEach((section) => {
+            nav.appendChild(
+                createLink(
+                    section,
+                    "nav-link",
+                    currentSection?.id === section.id
+                )
+            );
+        });
+    }
 }
 
-/* FIXED LEFT SIDEBAR */
+/* ---------------------------------------------------------
+   MODULE SIDEBAR
+   --------------------------------------------------------- */
 
 function renderSecondaryNavigation(section) {
-    let sidebar = document.querySelector(".secondary-nav");
+    document.querySelector(".secondary-nav")?.remove();
 
     if (!section) {
-        sidebar?.remove();
         document.body.classList.remove("has-sidebar");
         return;
     }
 
-    if (!sidebar) {
-        sidebar = createElement("nav", "secondary-nav");
-        sidebar.setAttribute("aria-label", "Section chapters");
-    }
+    const sidebar = createElement("nav", "secondary-nav");
+    sidebar.setAttribute("aria-label", "Module chapters");
 
-    sidebar.replaceChildren();
-
-    const heading = createElement(
-        "div",
-        "secondary-nav-heading",
-        section.label
+    sidebar.appendChild(
+        createElement(
+            "div",
+            "secondary-nav-heading",
+            section.label ?? ""
+        )
     );
-
-    sidebar.appendChild(heading);
 
     const inner = createElement("div", "secondary-nav-inner");
 
     (section.chapters ?? []).forEach((chapter) => {
-        const active = normalizePath(getPath(chapter)) === currentPath;
+        const active = itemPath(chapter) === currentPath;
 
         inner.appendChild(
-            createLink(chapter, active, "secondary-nav-link")
+            createLink(chapter, "secondary-nav-link", active)
         );
     });
 
@@ -152,17 +177,20 @@ function renderSecondaryNavigation(section) {
     document.body.classList.add("has-sidebar");
 }
 
-/* HOMEPAGE */
+/* ---------------------------------------------------------
+   HOME PAGE
+   --------------------------------------------------------- */
 
-function createSectionCard(section, index) {
-    const card = createLink(section, false, "module-card available");
+function createModuleCard(section, index) {
+    const card = createLink(section, "module-card");
+
     const top = createElement("div", "module-card-top");
 
     top.appendChild(
         createElement(
             "span",
             "module-index",
-            String(index + 1).padStart(2, "0")
+            String(section.number ?? index + 1).padStart(2, "0")
         )
     );
 
@@ -170,17 +198,24 @@ function createSectionCard(section, index) {
         createElement(
             "span",
             "module-status",
-            "Available to explore"
+            String(
+                (section.chapters ?? []).filter(
+                    chapter => itemPath(chapter) !== itemPath(section)
+                ).length
+            )
         )
     );
 
     card.appendChild(top);
-    card.appendChild(createElement("h3", "", section.label));
+    card.appendChild(createElement("h2", "", section.label ?? ""));
     card.appendChild(createElement("p", "", section.description ?? ""));
 
     const bottom = createElement("div", "module-card-bottom");
-    bottom.appendChild(createElement("span", "", "Explore section"));
+    bottom.appendChild(
+        createElement("span", "", section.cardLabel ?? "")
+    );
     bottom.appendChild(createElement("span", "module-arrow", "→"));
+
     card.appendChild(bottom);
 
     return card;
@@ -188,47 +223,48 @@ function createSectionCard(section, index) {
 
 function renderHomePage(config) {
     const main = document.querySelector(".home-content");
-
     if (!main) return;
+
+    const site = config.site ?? {};
 
     const title = main.querySelector("[data-home-title]");
     const description = main.querySelector("[data-home-description]");
-    const moduleList = main.querySelector("[data-home-modules]");
+    const eyebrow = main.querySelector("[data-home-eyebrow]");
+    const modules = main.querySelector("[data-home-modules]");
+    const status = main.querySelector("[data-home-status]");
 
-    if (title) {
-        title.textContent = config.site?.homeTitle ?? "";
-    }
+    if (title) title.textContent = site.homeTitle ?? "";
+    if (description) description.textContent = site.homeIntro ?? "";
+    if (eyebrow) eyebrow.textContent = site.homeEyebrow ?? "";
 
-    if (description) {
-        description.textContent = config.site?.homeIntro ?? "";
-    }
-
-    if (moduleList) {
-        moduleList.replaceChildren();
+    if (modules) {
+        modules.replaceChildren();
 
         (config.sections ?? []).forEach((section, index) => {
-            moduleList.appendChild(createSectionCard(section, index));
+            modules.appendChild(createModuleCard(section, index));
         });
     }
 
-    document.title = config.site?.pageTitle ?? "Indian Polity | Learning Reference";
+    if (status) {
+        const count = (config.sections ?? []).reduce(
+            (total, section) =>
+                total + (section.chapters ?? []).filter(
+                    chapter => itemPath(chapter) !== itemPath(section)
+                ).length,
+            0
+        );
+
+        status.textContent =
+            site.overviewSummary ??
+            `${config.sections.length} modules · ${count} chapters`;
+    }
+
+    document.title = site.pageTitle ?? document.title;
 }
 
-/* SECTION INTRODUCTION */
-
-function renderSectionIntroduction(section) {
-    const title = document.querySelector("[data-section-title]");
-    const description = document.querySelector("[data-section-description]");
-    const explanation = document.querySelector("[data-section-explanation]");
-
-    if (title) title.textContent = section.label;
-    if (description) description.textContent = section.description ?? "";
-    if (explanation) explanation.textContent = section.explanation ?? "";
-
-    document.title = `${section.label} | Indian Polity`;
-}
-
-/* STUDY GUIDANCE AND EXAM RELEVANCE */
+/* ---------------------------------------------------------
+   MODULE LANDING PAGES
+   --------------------------------------------------------- */
 
 function renderTextList(container, items) {
     if (!container) return;
@@ -240,58 +276,222 @@ function renderTextList(container, items) {
     });
 }
 
-function renderStudyGuidance(section) {
-    const guidance = document.querySelector("[data-study-guidance]");
-    const examRelevance = document.querySelector("[data-exam-relevance]");
-
-    renderTextList(guidance, section.studyGuidance);
-
-    if (examRelevance) {
-        examRelevance.textContent = section.examRelevance ?? "";
-    }
-}
-
-
-/* SECTION PAGE */
-
 function renderSectionPage(section) {
     if (!isSectionLanding(section)) return;
 
-    renderSectionIntroduction(section);
-    renderStudyGuidance(section);
+    const title = document.querySelector("[data-section-title]");
+    const description = document.querySelector("[data-section-description]");
+    const explanation = document.querySelector("[data-section-explanation]");
+    const guidance = document.querySelector("[data-study-guidance]");
+    const relevance = document.querySelector("[data-exam-relevance]");
+
+    if (title) title.textContent = section.label ?? "";
+    if (description) description.textContent = section.description ?? "";
+    if (explanation) explanation.textContent = section.explanation ?? "";
+
+    renderTextList(guidance, section.studyGuidance);
+
+    if (relevance) {
+        relevance.textContent = section.examRelevance ?? "";
+    }
+
+    document.title = `${section.label ?? ""} | ${document.title}`;
 }
 
-/* INITIALIZATION */
+/* ---------------------------------------------------------
+   BREADCRUMBS
+   --------------------------------------------------------- */
 
-async function initializeNavigation() {
+function renderBreadcrumb(config, section, chapter) {
+    const breadcrumb = document.querySelector(".breadcrumb");
+    if (!breadcrumb) return;
+
+    breadcrumb.replaceChildren();
+
+    const home = createElement(
+        "a",
+        "",
+        config.site?.homeLabel ?? ""
+    );
+
+    home.href = resolveSitePath(config.site?.home ?? "index.html");
+    breadcrumb.appendChild(home);
+
+    if (!section) return;
+
+    breadcrumb.appendChild(createElement("span", "", " / "));
+
+    if (chapter) {
+        const moduleLink = createElement("a", "", section.label ?? "");
+        moduleLink.href = resolveSitePath(section.path);
+
+        breadcrumb.appendChild(moduleLink);
+        breadcrumb.appendChild(createElement("span", "", " / "));
+        breadcrumb.appendChild(
+            createElement("span", "", chapter.label ?? "")
+        );
+    } else {
+        breadcrumb.appendChild(
+            createElement("span", "", section.label ?? "")
+        );
+    }
+}
+
+/* ---------------------------------------------------------
+   DYNAMIC PREVIOUS / NEXT PAGE NAVIGATION
+   --------------------------------------------------------- */
+
+function buildPageSequence(sections) {
+    const pages = [];
+
+    sections.forEach((section) => {
+        pages.push({
+            label: section.label,
+            path: section.path,
+            type: "module"
+        });
+
+        (section.chapters ?? []).forEach((chapter) => {
+            if (itemPath(chapter) === itemPath(section)) return;
+
+            pages.push({
+                ...chapter,
+                type: "chapter",
+                section
+            });
+        });
+    });
+
+    return pages;
+}
+
+function renderPreviousNext(config) {
+    document.querySelectorAll(".chapter-navigation").forEach(
+        element => element.remove()
+    );
+
+    const sequence = buildPageSequence(config.sections ?? []);
+    const currentIndex = sequence.findIndex(
+        page => itemPath(page) === currentPath
+    );
+
+    if (currentIndex < 0) return;
+
+    const previous = sequence[currentIndex - 1];
+    const next = sequence[currentIndex + 1];
+
+    const main = document.querySelector(".site-shell > main");
+    if (!main) return;
+
+    const navigation = createElement(
+        "nav",
+        "chapter-navigation"
+    );
+
+    navigation.setAttribute(
+        "aria-label",
+        "Previous and next pages"
+    );
+
+    const previousContainer = createElement(
+        "div",
+        "previous-chapter"
+    );
+
+    const nextContainer = createElement(
+        "div",
+        "next-chapter"
+    );
+
+    if (previous) {
+        const link = createLink(previous, "chapter-nav-link");
+        link.textContent = `← ${previous.label}`;
+        previousContainer.appendChild(link);
+    }
+
+    if (next) {
+        const link = createLink(next, "chapter-nav-link");
+        link.textContent = `${next.label} →`;
+        nextContainer.appendChild(link);
+    }
+
+    navigation.append(previousContainer, nextContainer);
+    main.appendChild(navigation);
+}
+
+/* ---------------------------------------------------------
+   DYNAMIC SHARED FOOTER
+   --------------------------------------------------------- */
+
+function renderFooter(config) {
+    document.querySelectorAll(".site-footer").forEach(
+        footer => footer.remove()
+    );
+
+    const shell = document.querySelector(".site-shell");
+    if (!shell) return;
+
+    const site = config.site ?? {};
+    const footer = createElement("footer", "site-footer");
+
+    const primary = createElement(
+        "span",
+        "footer-primary",
+        site.footerPrimary ?? site.name ?? ""
+    );
+
+    const secondary = createElement(
+        "span",
+        "footer-secondary",
+        site.footerSecondary ?? site.subtitle ?? ""
+    );
+
+    footer.append(primary, secondary);
+    shell.appendChild(footer);
+}
+
+/* ---------------------------------------------------------
+   INITIALIZATION
+   --------------------------------------------------------- */
+
+async function initializeSite() {
     try {
         const response = await fetch(configUrl);
 
         if (!response.ok) {
             throw new Error(
-                `Could not load navigation.json (${response.status}).`
+                `Unable to load navigation configuration: ${response.status}`
             );
         }
 
         const config = await response.json();
 
         if (!Array.isArray(config.sections)) {
-            throw new Error("The sections array is missing from navigation.json.");
+            throw new Error(
+                "The sections array is missing from navigation.json."
+            );
         }
 
-        const currentSection = findCurrentSection(config.sections);
+        renderSiteIdentity(config);
 
-        renderPrimaryNavigation(config, currentSection);
-        renderSecondaryNavigation(currentSection);
+        const section = findCurrentSection(config.sections);
+        const chapter = findCurrentChapter(section);
 
-        if (currentSection) {
-            renderSectionPage(currentSection);
+        renderPrimaryNavigation(config, section);
+        renderSecondaryNavigation(section);
+        renderFooter(config);
+        renderPreviousNext(config);
+
+        if (section) {
+            renderBreadcrumb(config, section, chapter);
+            renderSectionPage(section);
         } else {
             renderHomePage(config);
         }
+
     } catch (error) {
-        console.error("Navigation initialization failed:", error);
+        console.error("Site initialization failed:", error);
     }
 }
 
-initializeNavigation();
+initializeSite();
